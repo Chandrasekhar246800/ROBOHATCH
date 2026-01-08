@@ -49,8 +49,8 @@ export default function Footer() {
           <div className="footer-section">
             <h4>Support</h4>
             <ul>
-              <li><Link href="#">Contact Us</Link></li>
-              <li><Link href="#">FAQs</Link></li>
+              <li><Link href="/contact">Contact Us</Link></li>
+              <li><Link href="/faqs">FAQs</Link></li>
               <li><Link href="#">Shipping Info</Link></li>
               <li><Link href="#">Returns</Link></li>
             </ul>
