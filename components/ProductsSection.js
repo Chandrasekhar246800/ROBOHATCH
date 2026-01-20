@@ -1,46 +1,71 @@
 'use client'
+import { useState, useEffect } from 'react'
+import { getCategoryProducts } from '../data/products'
 import Link from 'next/link'
-import { useState } from 'react'
 
 export default function ProductsSection() {
   const [activeCategory, setActiveCategory] = useState('keychains')
+  const [expandedCategory, setExpandedCategory] = useState(null)
+  const [notification, setNotification] = useState('')
+  const [removedProducts, setRemovedProducts] = useState([])
+
+  // Load removed products from localStorage
+  useEffect(() => {
+    const loadRemovedProducts = () => {
+      const stored = localStorage.getItem('removedProducts')
+      if (stored) {
+        setRemovedProducts(JSON.parse(stored))
+      }
+    }
+    
+    loadRemovedProducts()
+    
+    // Listen for products update event
+    const handleProductsUpdate = () => {
+      loadRemovedProducts()
+    }
+    
+    window.addEventListener('productsUpdated', handleProductsUpdate)
+    return () => window.removeEventListener('productsUpdated', handleProductsUpdate)
+  }, [])
 
   const categories = [
-    { id: 1, icon: 'fa-key', name: 'Keychains', link: '/keychains', key: 'keychains' },
-    { id: 2, icon: 'fa-mask', name: 'Superhero Models', link: '/superhero-models', key: 'superhero' },
-    { id: 3, icon: 'fa-om', name: 'Devotional', link: '/devotional', key: 'devotional' },
-    { id: 4, icon: 'fa-dice', name: 'Toys', link: '/toys', key: 'toys' }
+    { id: 1, icon: 'fa-key', name: 'Keychains', key: 'keychains' },
+    { id: 2, icon: 'fa-mask', name: 'Superhero Models', key: 'superhero' },
+    { id: 3, icon: 'fa-om', name: 'Devotional', key: 'devotional' },
+    { id: 4, icon: 'fa-dice', name: 'Toys', key: 'toys' }
   ]
-
-  const products = {
-    keychains: [
-      { name: 'Custom Name Keychain', price: '₹199', icon: 'fa-key' },
-      { name: 'Logo Keychain', price: '₹249', icon: 'fa-tag' },
-      { name: 'Photo Keychain', price: '₹299', icon: 'fa-image' },
-      { name: 'Designer Keychain', price: '₹349', icon: 'fa-star' }
-    ],
-    superhero: [
-      { name: 'Iron Man Figure', price: '₹1,299', icon: 'fa-robot' },
-      { name: 'Spider-Man Model', price: '₹1,199', icon: 'fa-spider' },
-      { name: 'Batman Statue', price: '₹1,399', icon: 'fa-bat' },
-      { name: 'Captain America', price: '₹1,499', icon: 'fa-shield-alt' }
-    ],
-    devotional: [
-      { name: 'Ganesha Idol', price: '₹899', icon: 'fa-om' },
-      { name: 'Buddha Statue', price: '₹1,099', icon: 'fa-praying-hands' },
-      { name: 'Lakshmi Figure', price: '₹799', icon: 'fa-lotus' },
-      { name: 'Hanuman Idol', price: '₹949', icon: 'fa-hands-praying' }
-    ],
-    toys: [
-      { name: 'Puzzle Cube', price: '₹399', icon: 'fa-cube' },
-      { name: 'Action Figure', price: '₹599', icon: 'fa-user-ninja' },
-      { name: 'Educational Toy', price: '₹449', icon: 'fa-graduation-cap' },
-      { name: 'Building Blocks', price: '₹699', icon: 'fa-cubes' }
-    ]
-  }
 
   const handleCategoryClick = (categoryKey) => {
     setActiveCategory(activeCategory === categoryKey ? null : categoryKey)
+    setExpandedCategory(null)
+  }
+
+  const handleViewAll = (categoryKey) => {
+    setExpandedCategory(expandedCategory === categoryKey ? null : categoryKey)
+  }
+
+  const addToCart = (product) => {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]')
+    const existingItemIndex = cart.findIndex(item => item.id === product.id)
+    
+    if (existingItemIndex > -1) {
+      cart[existingItemIndex].quantity += 1
+    } else {
+      cart.push({ ...product, quantity: 1 })
+    }
+    
+    localStorage.setItem('cart', JSON.stringify(cart))
+    setNotification(`${product.name} added to cart!`)
+    setTimeout(() => setNotification(''), 3000)
+    window.dispatchEvent(new Event('cartUpdated'))
+  }
+
+  const getDisplayProducts = (categoryKey) => {
+    const allProducts = getCategoryProducts(categoryKey)
+    // Filter out removed products
+    const activeProducts = allProducts.filter(p => !removedProducts.includes(p.id))
+    return expandedCategory === categoryKey ? activeProducts : activeProducts.slice(0, 4)
   }
 
   return (
@@ -81,21 +106,36 @@ export default function ProductsSection() {
                   <h1 className="category-group-title">
                     <i className="fas fa-key"></i> Keychains
                   </h1>
-                  <Link href="/keychains" className="view-all-link">
-                    View All <i className="fas fa-arrow-right"></i>
-                  </Link>
+                  <button 
+                    onClick={() => handleViewAll('keychains')} 
+                    className="view-all-link"
+                  >
+                    {expandedCategory === 'keychains' ? 'Show Less' : 'View All'} 
+                    <i className={`fas fa-arrow-${expandedCategory === 'keychains' ? 'up' : 'right'}`}></i>
+                  </button>
                 </div>
                 <div className="category-cards-grid">
-                  {products.keychains.map((product, index) => (
-                    <Link href="/keychains" key={index} className="mini-product-card">
-                      <div className="product-image-placeholder">
-                        <i className={`fas ${product.icon}`}></i>
-                      </div>
-                      <div className="product-card-name">
-                        <h4>{product.name}</h4>
-                        <span className="product-card-price">{product.price}</span>
-                      </div>
-                    </Link>
+                  {getDisplayProducts('keychains').map((product, index) => (
+                    <div key={product.id} className="mini-product-card">
+                      <Link href={`/product/${product.id}`} className="product-link-overlay">
+                        <div className="product-image-placeholder">
+                          <i className={`fas ${product.icon}`}></i>
+                        </div>
+                        <div className="product-card-name">
+                          <h4>{product.name}</h4>
+                          <span className="product-card-price">₹{product.price}</span>
+                        </div>
+                      </Link>
+                      <button 
+                        className="mini-add-to-cart"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          addToCart(product)
+                        }}
+                      >
+                        <i className="fas fa-shopping-cart"></i>
+                      </button>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -108,21 +148,36 @@ export default function ProductsSection() {
                   <h3 className="category-group-title">
                     <i className="fas fa-mask"></i> Superhero Models
                   </h3>
-                  <Link href="/superhero-models" className="view-all-link">
-                    View All <i className="fas fa-arrow-right"></i>
-                  </Link>
+                  <button 
+                    onClick={() => handleViewAll('superhero')} 
+                    className="view-all-link"
+                  >
+                    {expandedCategory === 'superhero' ? 'Show Less' : 'View All'} 
+                    <i className={`fas fa-arrow-${expandedCategory === 'superhero' ? 'up' : 'right'}`}></i>
+                  </button>
                 </div>
                 <div className="category-cards-grid">
-                  {products.superhero.map((product, index) => (
-                    <Link href="/superhero-models" key={index} className="mini-product-card">
-                      <div className="product-image-placeholder">
-                        <i className={`fas ${product.icon}`}></i>
-                      </div>
-                      <div className="product-card-name">
-                        <h4>{product.name}</h4>
-                        <span className="product-card-price">{product.price}</span>
-                      </div>
-                    </Link>
+                  {getDisplayProducts('superhero').map((product, index) => (
+                    <div key={product.id} className="mini-product-card">
+                      <Link href={`/product/${product.id}`} className="product-link-overlay">
+                        <div className="product-image-placeholder">
+                          <i className={`fas ${product.icon}`}></i>
+                        </div>
+                        <div className="product-card-name">
+                          <h4>{product.name}</h4>
+                          <span className="product-card-price">₹{product.price}</span>
+                        </div>
+                      </Link>
+                      <button 
+                        className="mini-add-to-cart"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          addToCart(product)
+                        }}
+                      >
+                        <i className="fas fa-shopping-cart"></i>
+                      </button>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -135,21 +190,36 @@ export default function ProductsSection() {
                   <h3 className="category-group-title">
                     <i className="fas fa-om"></i> Devotional
                   </h3>
-                  <Link href="/devotional" className="view-all-link">
-                    View All <i className="fas fa-arrow-right"></i>
-                  </Link>
+                  <button 
+                    onClick={() => handleViewAll('devotional')} 
+                    className="view-all-link"
+                  >
+                    {expandedCategory === 'devotional' ? 'Show Less' : 'View All'} 
+                    <i className={`fas fa-arrow-${expandedCategory === 'devotional' ? 'up' : 'right'}`}></i>
+                  </button>
                 </div>
                 <div className="category-cards-grid">
-                  {products.devotional.map((product, index) => (
-                    <Link href="/devotional" key={index} className="mini-product-card">
-                      <div className="product-image-placeholder">
-                        <i className={`fas ${product.icon}`}></i>
-                      </div>
-                      <div className="product-card-name">
-                        <h4>{product.name}</h4>
-                        <span className="product-card-price">{product.price}</span>
-                      </div>
-                    </Link>
+                  {getDisplayProducts('devotional').map((product, index) => (
+                    <div key={product.id} className="mini-product-card">
+                      <Link href={`/product/${product.id}`} className="product-link-overlay">
+                        <div className="product-image-placeholder">
+                          <i className={`fas ${product.icon}`}></i>
+                        </div>
+                        <div className="product-card-name">
+                          <h4>{product.name}</h4>
+                          <span className="product-card-price">₹{product.price}</span>
+                        </div>
+                      </Link>
+                      <button 
+                        className="mini-add-to-cart"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          addToCart(product)
+                        }}
+                      >
+                        <i className="fas fa-shopping-cart"></i>
+                      </button>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -162,21 +232,36 @@ export default function ProductsSection() {
                   <h3 className="category-group-title">
                     <i className="fas fa-dice"></i> Toys
                   </h3>
-                  <Link href="/toys" className="view-all-link">
-                    View All <i className="fas fa-arrow-right"></i>
-                  </Link>
+                  <button 
+                    onClick={() => handleViewAll('toys')} 
+                    className="view-all-link"
+                  >
+                    {expandedCategory === 'toys' ? 'Show Less' : 'View All'} 
+                    <i className={`fas fa-arrow-${expandedCategory === 'toys' ? 'up' : 'right'}`}></i>
+                  </button>
                 </div>
                 <div className="category-cards-grid">
-                  {products.toys.map((product, index) => (
-                    <Link href="/toys" key={index} className="mini-product-card">
-                      <div className="product-image-placeholder">
-                        <i className={`fas ${product.icon}`}></i>
-                      </div>
-                      <div className="product-card-name">
-                        <h4>{product.name}</h4>
-                        <span className="product-card-price">{product.price}</span>
-                      </div>
-                    </Link>
+                  {getDisplayProducts('toys').map((product, index) => (
+                    <div key={product.id} className="mini-product-card">
+                      <Link href={`/product/${product.id}`} className="product-link-overlay">
+                        <div className="product-image-placeholder">
+                          <i className={`fas ${product.icon}`}></i>
+                        </div>
+                        <div className="product-card-name">
+                          <h4>{product.name}</h4>
+                          <span className="product-card-price">₹{product.price}</span>
+                        </div>
+                      </Link>
+                      <button 
+                        className="mini-add-to-cart"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          addToCart(product)
+                        }}
+                      >
+                        <i className="fas fa-shopping-cart"></i>
+                      </button>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -184,6 +269,13 @@ export default function ProductsSection() {
           </div>
         </div>
       </div>
+      
+      {notification && (
+        <div className="notification-popup">
+          <i className="fas fa-check-circle"></i>
+          {notification}
+        </div>
+      )}
     </section>
   )
 }

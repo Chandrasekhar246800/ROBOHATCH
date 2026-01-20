@@ -40,9 +40,9 @@ export default function Footer() {
             <h4>Quick Links</h4>
             <ul>
               <li><Link href="#home">Home</Link></li>
-              <li><Link href="#categories">Categories</Link></li>
+              <li><Link href="/#services">Categories</Link></li>
               <li><Link href="#products">Products</Link></li>
-              <li><Link href="#about">About Us</Link></li>
+              <li><Link href="/about">About Us</Link></li>
             </ul>
           </div>
 
