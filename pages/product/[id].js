@@ -96,8 +96,8 @@ export default function ProductDetail() {
               </div>
 
               <div className="mb-6 sm:mb-7 md:mb-8">
-                <h3 className=\"text-lg sm:text-xl md:text-2xl font-semibold text-[#2c3e50] mb-3 sm:mb-4\">Features</h3>
-                <ul className=\"space-y-2 sm:space-y-3\">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-[#2c3e50] mb-3 sm:mb-4">Features</h3>
+                <ul className="space-y-2 sm:space-y-3">
                   <li className="flex items-center gap-3 text-sm sm:text-base text-[#555]">
                     <i className="fas fa-check-circle text-[#4caf50] text-lg sm:text-xl"></i>
                     High-quality 3D printed material
@@ -147,7 +147,7 @@ export default function ProductDetail() {
                 </button>
               </div>
 
-              <div className=\"space-y-3 sm:space-y-4 bg-white rounded-xl p-5 sm:p-6 shadow-md\">
+              <div className="space-y-3 sm:space-y-4 bg-white rounded-xl p-5 sm:p-6 shadow-md">
                 <div className="flex items-center gap-4 text-[#555]">
                   <i className="fas fa-truck text-primary-orange text-xl"></i>
                   <span>Free delivery on orders above ₹500</span>
