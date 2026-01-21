@@ -34,28 +34,30 @@ export default function Toys() {
       
       <Navbar />
       
-      <div className="category-page">
-        <div className="container">
-          <div className="category-page-header">
-            <h1><i className="fas fa-dice"></i> Toys</h1>
-            <p>Educational and fun 3D printed toys</p>
+      <div className="min-h-screen pt-20 bg-light-gray">
+        <div className="container mx-auto px-4 py-12">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-bold text-dark-brown mb-4">
+              <i className="fas fa-dice mr-3"></i> Toys
+            </h1>
+            <p className="text-lg text-gray-600">Educational and fun 3D printed toys</p>
           </div>
 
-          <div className="products-grid-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {products.map((product) => (
-              <div key={product.id} className="product-card-full">
-                <div className="product-image-full">
-                  <div className="image-placeholder-full">
-                    <i className={`fas ${product.icon}`}></i>
+              <div key={product.id} className="bg-white rounded-[15px] overflow-hidden shadow-[0_5px_20px_rgba(0,0,0,0.08)] hover:-translate-y-2.5 hover:shadow-[0_15px_40px_rgba(0,0,0,0.15)] transition-all duration-300">
+                <div className="aspect-square bg-gradient-to-br from-soft-peach to-primary-orange p-8 flex items-center justify-center">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <i className={`fas ${product.icon} text-6xl text-white`}></i>
                   </div>
                 </div>
-                <div className="product-info-full">
-                  <h3>{product.name}</h3>
-                  <p className="product-description">{product.description}</p>
-                  <div className="product-footer-full">
-                    <span className="product-price-full">₹{product.price}</span>
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold text-dark-brown mb-2">{product.name}</h3>
+                  <p className="text-gray-600 mb-4 text-sm line-clamp-2">{product.description}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-2xl font-bold text-primary-orange">₹{product.price}</span>
                     <button 
-                      className="add-to-cart-btn"
+                      className="px-6 py-3 bg-gradient-to-br from-primary-orange to-hover-orange text-white rounded-full font-semibold shadow-[0_4px_15px_rgba(242,92,5,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(242,92,5,0.4)] transition-all duration-300 flex items-center gap-2"
                       onClick={() => addToCart(product)}
                     >
                       <i className="fas fa-shopping-cart"></i>
@@ -70,8 +72,8 @@ export default function Toys() {
       </div>
       
       {notification && (
-        <div className="notification-popup">
-          <i className="fas fa-check-circle"></i>
+        <div className="fixed bottom-8 right-8 px-6 py-4 bg-green-500 text-white rounded-lg shadow-lg flex items-center gap-3 animate-slideInRight z-50">
+          <i className="fas fa-check-circle text-xl"></i>
           {notification}
         </div>
       )}

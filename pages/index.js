@@ -8,7 +8,7 @@ import Footer from '@/components/Footer'
 
 export default function Home() {
   return (
-    <>
+    <div className="min-h-screen bg-light-gray">
       <Head>
         <title>ROBOHATCH - Custom 3D Printed Products</title>
         <meta name="description" content="Discover unique, handcrafted 3D-printed lamps, idols, accessories, and more." />
@@ -22,6 +22,6 @@ export default function Home() {
       <Services />
       <Highlights />
       <Footer />
-    </>
+    </div>
   )
 }

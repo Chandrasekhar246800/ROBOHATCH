@@ -357,143 +357,141 @@ export default function Admin() {
   return (
     <>
       <Navbar />
-      <div className="admin-page">
-        <div className="admin-container">
-          {/* Sidebar */}
-          <div className="admin-sidebar">
-            <div className="admin-logo">
-              <i className="fas fa-user-shield"></i>
-              <h2>Admin Panel</h2>
-            </div>
-            <nav className="admin-nav">
-              <button 
-                className={`admin-nav-item ${activeTab === 'overview' ? 'active' : ''}`}
-                onClick={() => setActiveTab('overview')}
-              >
-                <i className="fas fa-chart-line"></i>
-                Overview
-              </button>
-              <button 
-                className={`admin-nav-item ${activeTab === 'orders' ? 'active' : ''}`}
-                onClick={() => setActiveTab('orders')}
-              >
-                <i className="fas fa-shopping-bag"></i>
-                Orders
-              </button>
-              <button 
-                className={`admin-nav-item ${activeTab === 'products' ? 'active' : ''}`}
-                onClick={() => setActiveTab('products')}
-              >
-                <i className="fas fa-box"></i>
-                Products
-              </button>
-              <button 
-                className={`admin-nav-item ${activeTab === 'categories' ? 'active' : ''}`}
-                onClick={() => setActiveTab('categories')}
-              >
-                <i className="fas fa-th-large"></i>
-                Categories
-              </button>
-              <button 
-                className={`admin-nav-item ${activeTab === 'customers' ? 'active' : ''}`}
-                onClick={() => setActiveTab('customers')}
-              >
-                <i className="fas fa-users"></i>
-                Customers
-              </button>
-              <button 
-                className={`admin-nav-item ${activeTab === 'settings' ? 'active' : ''}`}
-                onClick={() => setActiveTab('settings')}
-              >
-                <i className="fas fa-cog"></i>
-                Settings
-              </button>
-            </nav>
-            <button className="admin-logout" onClick={handleLogout}>
+      <div className="flex bg-gradient-to-br from-orange-50/30 via-white to-amber-50/20 min-h-screen">
+        <div className="w-[260px] bg-dark-brown text-white p-0 py-8 sticky top-20 h-[calc(100vh-80px)] overflow-y-auto">
+          <div className="text-center px-6 mb-10">
+            <i className="fas fa-user-shield text-4xl mb-3 text-primary-orange"></i>
+            <h2 className="text-xl font-bold">Admin Panel</h2>
+          </div>
+          <nav className="flex flex-col gap-1">
+            <button 
+              className={`flex items-center gap-3 px-6 py-3.5 text-left transition-all border-none bg-transparent cursor-pointer w-full text-sm font-medium ${activeTab === 'overview' ? 'bg-primary-orange/10 text-primary-orange border-l-4 border-primary-orange' : 'text-white/80 hover:bg-white/5 hover:text-white'}`}
+              onClick={() => setActiveTab('overview')}
+            >
+              <i className="fas fa-chart-line text-lg"></i>
+              Overview
+            </button>
+            <button 
+              className={`flex items-center gap-3 px-6 py-3.5 text-left transition-all border-none bg-transparent cursor-pointer w-full text-sm font-medium ${activeTab === 'orders' ? 'bg-primary-orange/10 text-primary-orange border-l-4 border-primary-orange' : 'text-white/80 hover:bg-white/5 hover:text-white'}`}
+              onClick={() => setActiveTab('orders')}
+            >
+              <i className="fas fa-shopping-bag text-lg"></i>
+              Orders
+            </button>
+            <button 
+              className={`flex items-center gap-3 px-6 py-3.5 text-left transition-all border-none bg-transparent cursor-pointer w-full text-sm font-medium ${activeTab === 'products' ? 'bg-primary-orange/10 text-primary-orange border-l-4 border-primary-orange' : 'text-white/80 hover:bg-white/5 hover:text-white'}`}
+              onClick={() => setActiveTab('products')}
+            >
+              <i className="fas fa-box text-lg"></i>
+              Products
+            </button>
+            <button 
+              className={`flex items-center gap-3 px-6 py-3.5 text-left transition-all border-none bg-transparent cursor-pointer w-full text-sm font-medium ${activeTab === 'categories' ? 'bg-primary-orange/10 text-primary-orange border-l-4 border-primary-orange' : 'text-white/80 hover:bg-white/5 hover:text-white'}`}
+              onClick={() => setActiveTab('categories')}
+            >
+              <i className="fas fa-th-large text-lg"></i>
+              Categories
+            </button>
+            <button 
+              className={`flex items-center gap-3 px-6 py-3.5 text-left transition-all border-none bg-transparent cursor-pointer w-full text-sm font-medium ${activeTab === 'customers' ? 'bg-primary-orange/10 text-primary-orange border-l-4 border-primary-orange' : 'text-white/80 hover:bg-white/5 hover:text-white'}`}
+              onClick={() => setActiveTab('customers')}
+            >
+              <i className="fas fa-users text-lg"></i>
+              Customers
+            </button>
+            <button 
+              className={`flex items-center gap-3 px-6 py-3.5 text-left transition-all border-none bg-transparent cursor-pointer w-full text-sm font-medium ${activeTab === 'settings' ? 'bg-primary-orange/10 text-primary-orange border-l-4 border-primary-orange' : 'text-white/80 hover:bg-white/5 hover:text-white'}`}
+              onClick={() => setActiveTab('settings')}
+            >
+              <i className="fas fa-cog text-lg"></i>
+              Settings
+            </button>
+          </nav>
+          <button className="mt-auto mx-6 flex items-center justify-center gap-3 bg-red-600 text-white px-6 py-3 rounded-lg font-medium transition-all hover:bg-red-700 border-none cursor-pointer w-[calc(100%-3rem)]" onClick={handleLogout}>
               <i className="fas fa-sign-out-alt"></i>
               Logout
-            </button>
-          </div>
+          </button>
+        </div>
 
-          {/* Main Content */}
-          <div className="admin-content">
-            <div className="admin-header">
-              <h1>Welcome to Admin Dashboard</h1>
-              <p>Manage your ROBOHATCH store</p>
+        {/* Main Content */}
+        <div className="flex-1 p-8">
+          <div className="mb-10">
+            <h1 className="text-3xl font-bold text-[#2c3e50] mb-2">Welcome to Admin Dashboard</h1>
+            <p className="text-[#666]">Manage your ROBOHATCH store</p>
             </div>
 
             {activeTab === 'overview' && (
-              <div className="admin-overview">
-                <div className="stats-grid">
-                  <div className="stat-card">
-                    <div className="stat-icon blue">
+              <div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                  <div className="bg-white p-6 rounded-[15px] shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all hover:-translate-y-1.5 flex items-start gap-5">
+                    <div className="w-[60px] h-[60px] rounded-xl flex items-center justify-center text-2xl text-white bg-gradient-to-br from-[#667eea] to-[#764ba2]">
                       <i className="fas fa-shopping-cart"></i>
                     </div>
-                    <div className="stat-info">
-                      <h3>Total Orders</h3>
-                      <p className="stat-value">156</p>
-                      <span className="stat-change positive">+12% from last month</span>
+                    <div className="flex-1">
+                      <h3 className="text-sm text-[#666] font-medium mb-1">Total Orders</h3>
+                      <p className="text-[1.8rem] font-bold text-dark-brown mb-1">156</p>
+                      <span className="text-sm text-[#4caf50]">+12% from last month</span>
                     </div>
                   </div>
-                  <div className="stat-card">
-                    <div className="stat-icon green">
+                  <div className="bg-white p-6 rounded-[15px] shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all hover:-translate-y-1.5 flex items-start gap-5">
+                    <div className="w-[60px] h-[60px] rounded-xl flex items-center justify-center text-2xl text-white bg-gradient-to-br from-[#f093fb] to-[#f5576c]">
                       <i className="fas fa-dollar-sign"></i>
                     </div>
-                    <div className="stat-info">
-                      <h3>Revenue</h3>
-                      <p className="stat-value">₹45,890</p>
-                      <span className="stat-change positive">+8% from last month</span>
+                    <div className="flex-1">
+                      <h3 className="text-sm text-[#666] font-medium mb-1">Revenue</h3>
+                      <p className="text-[1.8rem] font-bold text-dark-brown mb-1">₹45,890</p>
+                      <span className="text-sm text-[#4caf50]">+8% from last month</span>
                     </div>
                   </div>
-                  <div className="stat-card">
-                    <div className="stat-icon orange">
+                  <div className="bg-white p-6 rounded-[15px] shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all hover:-translate-y-1.5 flex items-start gap-5">
+                    <div className="w-[60px] h-[60px] rounded-xl flex items-center justify-center text-2xl text-white bg-gradient-to-br from-[#fa709a] to-[#fee140]">
                       <i className="fas fa-box"></i>
                     </div>
-                    <div className="stat-info">
-                      <h3>Products</h3>
-                      <p className="stat-value">32</p>
-                      <span className="stat-change">4 categories</span>
+                    <div className="flex-1">
+                      <h3 className="text-sm text-[#666] font-medium mb-1">Products</h3>
+                      <p className="text-[1.8rem] font-bold text-dark-brown mb-1">32</p>
+                      <span className="text-sm text-[#666]">4 categories</span>
                     </div>
                   </div>
-                  <div className="stat-card">
-                    <div className="stat-icon purple">
+                  <div className="bg-white p-6 rounded-[15px] shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all hover:-translate-y-1.5 flex items-start gap-5">
+                    <div className="w-[60px] h-[60px] rounded-xl flex items-center justify-center text-2xl text-white bg-gradient-to-br from-[#30cfd0] to-[#330867]">
                       <i className="fas fa-users"></i>
                     </div>
-                    <div className="stat-info">
-                      <h3>Customers</h3>
-                      <p className="stat-value">89</p>
-                      <span className="stat-change positive">+15 this week</span>
+                    <div className="flex-1">
+                      <h3 className="text-sm text-[#666] font-medium mb-1">Customers</h3>
+                      <p className="text-[1.8rem] font-bold text-dark-brown mb-1">89</p>
+                      <span className="text-sm text-[#4caf50]">+15 this week</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="recent-activity">
-                  <h2>Recent Orders</h2>
-                  <div className="orders-table">
-                    <table>
-                      <thead>
+                <div className="bg-white p-6 rounded-[15px] shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+                  <h2 className="text-xl font-semibold text-dark-brown mb-6">Recent Orders</h2>
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse">
+                      <thead className="bg-[#f8f9fa]">
                         <tr>
-                          <th>Order ID</th>
-                          <th>Customer</th>
-                          <th>Product</th>
-                          <th>Status</th>
-                          <th>Total</th>
-                          <th>Date</th>
+                          <th className="p-4 text-left font-semibold text-dark-brown text-sm border-b-2 border-[#e9ecef]">Order ID</th>
+                          <th className="p-4 text-left font-semibold text-dark-brown text-sm border-b-2 border-[#e9ecef]">Customer</th>
+                          <th className="p-4 text-left font-semibold text-dark-brown text-sm border-b-2 border-[#e9ecef]">Product</th>
+                          <th className="p-4 text-left font-semibold text-dark-brown text-sm border-b-2 border-[#e9ecef]">Status</th>
+                          <th className="p-4 text-left font-semibold text-dark-brown text-sm border-b-2 border-[#e9ecef]">Total</th>
+                          <th className="p-4 text-left font-semibold text-dark-brown text-sm border-b-2 border-[#e9ecef]">Date</th>
                         </tr>
                       </thead>
                       <tbody>
                         {orders.map(order => (
                           <tr key={order.id}>
-                            <td>#{order.id}</td>
-                            <td>{order.customer}</td>
-                            <td>{order.product}</td>
-                            <td>
-                              <span className={`status-badge ${order.status.toLowerCase()}`}>
+                            <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm">#{order.id}</td>
+                            <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm">{order.customer}</td>
+                            <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm">{order.product}</td>
+                            <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm">
+                              <span className={`py-1.5 px-3 rounded-full text-xs font-semibold inline-block ${order.status.toLowerCase() === 'pending' ? 'bg-[#fff3cd] text-[#856404]' : order.status.toLowerCase() === 'completed' ? 'bg-[#d4edda] text-[#155724]' : 'bg-[#d1ecf1] text-[#0c5460]'}`}>
                                 {order.status}
                               </span>
                             </td>
-                            <td>{order.total}</td>
-                            <td>{order.date}</td>
+                            <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm">{order.total}</td>
+                            <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm">{order.date}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -504,41 +502,45 @@ export default function Admin() {
             )}
 
             {activeTab === 'orders' && (
-              <div className="admin-orders">
-                <h2>All Orders</h2>
-                <div className="orders-table">
-                  <table>
-                    <thead>
+              <div>
+                <h2 className="text-xl font-semibold text-dark-brown mb-6">All Orders</h2>
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse">
+                    <thead className="bg-[#f8f9fa]">
                       <tr>
-                        <th>Order ID</th>
-                        <th>Customer</th>
-                        <th>Email</th>
-                        <th>Product</th>
-                        <th>Status</th>
-                        <th>Total</th>
-                        <th>Date</th>
-                        <th>Actions</th>
+                        <th className="p-4 text-left font-semibold text-dark-brown text-sm border-b-2 border-[#e9ecef]">Order ID</th>
+                        <th className="p-4 text-left font-semibold text-dark-brown text-sm border-b-2 border-[#e9ecef]">Customer</th>
+                        <th className="p-4 text-left font-semibold text-dark-brown text-sm border-b-2 border-[#e9ecef]">Email</th>
+                        <th className="p-4 text-left font-semibold text-dark-brown text-sm border-b-2 border-[#e9ecef]">Product</th>
+                        <th className="p-4 text-left font-semibold text-dark-brown text-sm border-b-2 border-[#e9ecef]">Status</th>
+                        <th className="p-4 text-left font-semibold text-dark-brown text-sm border-b-2 border-[#e9ecef]">Total</th>
+                        <th className="p-4 text-left font-semibold text-dark-brown text-sm border-b-2 border-[#e9ecef]">Date</th>
+                        <th className="p-4 text-left font-semibold text-dark-brown text-sm border-b-2 border-[#e9ecef]">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
                       {orders.map(order => (
-                        <tr key={order.id}>
-                          <td>#{order.id}</td>
-                          <td>{order.customer}</td>
-                          <td>{order.email}</td>
-                          <td>{order.product}</td>
-                          <td>
-                            <span className={`status-badge ${order.status.toLowerCase()}`}>
+                        <tr key={order.id} className="hover:bg-gray-50 transition-colors duration-200">
+                          <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm font-medium">#{order.id}</td>
+                          <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm">{order.customer}</td>
+                          <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm">{order.email}</td>
+                          <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm">{order.product}</td>
+                          <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm">
+                            <span className={`py-1.5 px-3 rounded-full text-xs font-semibold inline-block ${
+                              order.status.toLowerCase() === 'pending' ? 'bg-[#fff3cd] text-[#856404]' : 
+                              order.status.toLowerCase() === 'completed' ? 'bg-[#d4edda] text-[#155724]' : 
+                              'bg-[#d1ecf1] text-[#0c5460]'
+                            }`}>
                               {order.status}
                             </span>
                           </td>
-                          <td>{order.total}</td>
-                          <td>{order.date}</td>
-                          <td>
-                            <button className="action-btn view">
+                          <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm font-semibold">{order.total}</td>
+                          <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm">{order.date}</td>
+                          <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm">
+                            <button className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors duration-200 mr-2">
                               <i className="fas fa-eye"></i>
                             </button>
-                            <button className="action-btn edit">
+                            <button className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition-colors duration-200">
                               <i className="fas fa-edit"></i>
                             </button>
                           </td>
@@ -551,19 +553,23 @@ export default function Admin() {
             )}
 
             {activeTab === 'products' && (
-              <div className="admin-products">
-                <div className="section-header">
-                  <h2>Products Management</h2>
-                  <div className="header-actions">
+              <div>
+                <div className="flex justify-between items-center mb-8">
+                  <h2 className="text-xl font-semibold text-dark-brown">Products Management</h2>
+                  <div className="flex gap-4 items-center">
                     <button 
-                      className={`toggle-removed-btn ${showRemoved ? 'active' : ''}`}
+                      className={`px-6 py-3 rounded-lg font-medium transition-all border-none cursor-pointer flex items-center gap-2 ${
+                        showRemoved 
+                          ? 'bg-gray-600 text-white hover:bg-gray-700' 
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
                       onClick={() => setShowRemoved(!showRemoved)}
                     >
                       <i className="fas fa-eye"></i>
                       {showRemoved ? 'Hide' : 'Show'} Removed ({getRemovedProductsList().length})
                     </button>
                     <button 
-                      className="add-product-btn"
+                      className="bg-primary-orange text-white px-6 py-3 rounded-lg font-medium transition-all hover:bg-hover-orange border-none cursor-pointer flex items-center gap-2"
                       onClick={handleAddProduct}
                     >
                       <i className="fas fa-plus"></i>
@@ -572,75 +578,75 @@ export default function Admin() {
                   </div>
                 </div>
 
-                <div className="category-filter">
+                <div className="flex gap-3 mb-8 flex-wrap">
                   <button 
-                    className={`filter-btn ${selectedCategory === 'all' ? 'active' : ''}`}
+                    className={`px-5 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all ${selectedCategory === 'all' ? 'bg-primary-orange border-primary-orange text-white border-2' : 'bg-white border-2 border-[#e9ecef] text-[#666] hover:border-primary-orange hover:text-primary-orange'}`}
                     onClick={() => setSelectedCategory('all')}
                   >
                     All Products ({getFilteredProducts().length})
                   </button>
                   <button 
-                    className={`filter-btn ${selectedCategory === 'keychains' ? 'active' : ''}`}
+                    className={`px-5 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all ${selectedCategory === 'keychains' ? 'bg-primary-orange border-primary-orange text-white border-2' : 'bg-white border-2 border-[#e9ecef] text-[#666] hover:border-primary-orange hover:text-primary-orange'}`}
                     onClick={() => setSelectedCategory('keychains')}
                   >
                     Keychains ({allProducts.keychains.filter(p => !removedProducts.includes(p.id)).length})
                   </button>
                   <button 
-                    className={`filter-btn ${selectedCategory === 'superhero' ? 'active' : ''}`}
+                    className={`px-5 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all ${selectedCategory === 'superhero' ? 'bg-primary-orange border-primary-orange text-white border-2' : 'bg-white border-2 border-[#e9ecef] text-[#666] hover:border-primary-orange hover:text-primary-orange'}`}
                     onClick={() => setSelectedCategory('superhero')}
                   >
                     Superhero ({allProducts.superhero.filter(p => !removedProducts.includes(p.id)).length})
                   </button>
                   <button 
-                    className={`filter-btn ${selectedCategory === 'devotional' ? 'active' : ''}`}
+                    className={`px-5 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all ${selectedCategory === 'devotional' ? 'bg-primary-orange border-primary-orange text-white border-2' : 'bg-white border-2 border-[#e9ecef] text-[#666] hover:border-primary-orange hover:text-primary-orange'}`}
                     onClick={() => setSelectedCategory('devotional')}
                   >
                     Devotional ({allProducts.devotional.filter(p => !removedProducts.includes(p.id)).length})
                   </button>
                   <button 
-                    className={`filter-btn ${selectedCategory === 'toys' ? 'active' : ''}`}
+                    className={`px-5 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all ${selectedCategory === 'toys' ? 'bg-primary-orange border-primary-orange text-white border-2' : 'bg-white border-2 border-[#e9ecef] text-[#666] hover:border-primary-orange hover:text-primary-orange'}`}
                     onClick={() => setSelectedCategory('toys')}
                   >
                     Toys ({allProducts.toys.filter(p => !removedProducts.includes(p.id)).length})
                   </button>
                   <button 
-                    className={`filter-btn ${selectedCategory === 'lamps' ? 'active' : ''}`}
+                    className={`px-5 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all ${selectedCategory === 'lamps' ? 'bg-primary-orange border-primary-orange text-white border-2' : 'bg-white border-2 border-[#e9ecef] text-[#666] hover:border-primary-orange hover:text-primary-orange'}`}
                     onClick={() => setSelectedCategory('lamps')}
                   >
                     Lamps ({allProducts.lamps.filter(p => !removedProducts.includes(p.id)).length})
                   </button>
                   <button 
-                    className={`filter-btn ${selectedCategory === 'idols' ? 'active' : ''}`}
+                    className={`px-5 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all ${selectedCategory === 'idols' ? 'bg-primary-orange border-primary-orange text-white border-2' : 'bg-white border-2 border-[#e9ecef] text-[#666] hover:border-primary-orange hover:text-primary-orange'}`}
                     onClick={() => setSelectedCategory('idols')}
                   >
                     Idols ({allProducts.idols.filter(p => !removedProducts.includes(p.id)).length})
                   </button>
                   <button 
-                    className={`filter-btn ${selectedCategory === 'flowerpots' ? 'active' : ''}`}
+                    className={`px-5 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all ${selectedCategory === 'flowerpots' ? 'bg-primary-orange border-primary-orange text-white border-2' : 'bg-white border-2 border-[#e9ecef] text-[#666] hover:border-primary-orange hover:text-primary-orange'}`}
                     onClick={() => setSelectedCategory('flowerpots')}
                   >
                     Flower Pots ({allProducts.flowerpots.filter(p => !removedProducts.includes(p.id)).length})
                   </button>
                   <button 
-                    className={`filter-btn ${selectedCategory === 'office' ? 'active' : ''}`}
+                    className={`px-5 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all ${selectedCategory === 'office' ? 'bg-primary-orange border-primary-orange text-white border-2' : 'bg-white border-2 border-[#e9ecef] text-[#666] hover:border-primary-orange hover:text-primary-orange'}`}
                     onClick={() => setSelectedCategory('office')}
                   >
                     Office Supplies ({allProducts.office.filter(p => !removedProducts.includes(p.id)).length})
                   </button>
                   <button 
-                    className={`filter-btn ${selectedCategory === 'phoneaccessories' ? 'active' : ''}`}
+                    className={`px-5 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all ${selectedCategory === 'phoneaccessories' ? 'bg-primary-orange border-primary-orange text-white border-2' : 'bg-white border-2 border-[#e9ecef] text-[#666] hover:border-primary-orange hover:text-primary-orange'}`}
                     onClick={() => setSelectedCategory('phoneaccessories')}
                   >
                     Phone Accessories ({allProducts.phoneaccessories.filter(p => !removedProducts.includes(p.id)).length})
                   </button>
                   <button 
-                    className={`filter-btn ${selectedCategory === 'homedecor' ? 'active' : ''}`}
+                    className={`px-5 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all ${selectedCategory === 'homedecor' ? 'bg-primary-orange border-primary-orange text-white border-2' : 'bg-white border-2 border-[#e9ecef] text-[#666] hover:border-primary-orange hover:text-primary-orange'}`}
                     onClick={() => setSelectedCategory('homedecor')}
                   >
                     Home Decor ({allProducts.homedecor.filter(p => !removedProducts.includes(p.id)).length})
                   </button>
                   <button 
-                    className={`filter-btn ${selectedCategory === 'jewelry' ? 'active' : ''}`}
+                    className={`px-5 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all ${selectedCategory === 'jewelry' ? 'bg-primary-orange border-primary-orange text-white border-2' : 'bg-white border-2 border-[#e9ecef] text-[#666] hover:border-primary-orange hover:text-primary-orange'}`}
                     onClick={() => setSelectedCategory('jewelry')}
                   >
                     Jewelry ({allProducts.jewelry.filter(p => !removedProducts.includes(p.id)).length})
@@ -648,30 +654,30 @@ export default function Admin() {
                 </div>
 
                 {!showRemoved && (
-                  <div className="products-grid">
+                  <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-6">
                     {getFilteredProducts().map(product => (
-                      <div key={product.id} className="product-card-admin">
-                        <div className="product-icon-admin">
+                      <div key={product.id} className="bg-white rounded-[15px] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex gap-4 transition-all hover:-translate-y-1.5 hover:shadow-[0_5px_20px_rgba(0,0,0,0.12)] relative">
+                        <div className="w-[60px] h-[60px] min-w-[60px] bg-gradient-to-br from-primary-orange to-hover-orange rounded-xl flex items-center justify-center text-[1.8rem] text-white">
                           <i className={`fas ${product.icon}`}></i>
                         </div>
-                        <div className="product-details-admin">
-                          <h3>{product.name}</h3>
-                          <p className="product-description">{product.description}</p>
-                          <div className="product-meta">
-                            <span className="product-category">{product.category}</span>
-                            <span className="product-price">₹{product.price}</span>
+                        <div className="flex-1">
+                          <h3 className="text-lg text-dark-brown mb-2 font-bold">{product.name}</h3>
+                          <p className="text-sm text-[#666] mb-3 leading-snug">{product.description}</p>
+                          <div className="flex justify-between items-center gap-3">
+                            <span className="text-xs py-1.5 px-3 bg-[#e3f2fd] text-[#1976d2] rounded-full font-semibold">{product.category}</span>
+                            <span className="text-lg font-bold text-primary-orange">₹{product.price}</span>
                           </div>
                         </div>
-                        <div className="product-actions">
+                        <div className="flex flex-col gap-2">
                           <button 
-                            className="action-btn edit" 
+                            className="bg-transparent border-none p-2.5 cursor-pointer text-[#666] transition-colors text-[0.95rem] hover:text-primary-orange" 
                             title="Edit Product"
                             onClick={() => handleEditProduct(product)}
                           >
                             <i className="fas fa-edit"></i>
                           </button>
                           <button 
-                            className="action-btn delete" 
+                            className="bg-transparent border-none p-2.5 cursor-pointer text-[#666] transition-colors text-[0.95rem] hover:text-[#f44336]" 
                             title="Remove Product"
                             onClick={() => handleRemoveProduct(product.id)}
                           >
@@ -684,31 +690,31 @@ export default function Admin() {
                 )}
 
                 {showRemoved && (
-                  <div className="removed-products-section">
-                    <h3 className="removed-title">
-                      <i className="fas fa-archive"></i>
+                  <div className="mt-8 p-6 bg-white rounded-[15px] shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+                    <h3 className="text-xl text-[#666] mb-6 flex items-center gap-3">
+                      <i className="fas fa-archive text-primary-orange"></i>
                       Removed Products ({getRemovedProductsList().length})
                     </h3>
                     {getRemovedProductsList().length === 0 ? (
-                      <p className="no-removed">No removed products</p>
+                      <p className="text-center py-12 text-[#999] text-lg bg-white rounded-[15px]">No removed products</p>
                     ) : (
-                      <div className="products-grid">
+                      <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-6">
                         {getRemovedProductsList().map(product => (
-                          <div key={product.id} className="product-card-admin removed">
-                            <div className="product-icon-admin">
+                          <div key={product.id} className="bg-white rounded-[15px] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex gap-4 transition-all hover:-translate-y-1.5 hover:shadow-[0_5px_20px_rgba(0,0,0,0.12)] relative opacity-70 border-2 border-dashed border-[#ddd] hover:opacity-100 hover:border-primary-orange">
+                            <div className="w-[60px] h-[60px] min-w-[60px] bg-gradient-to-br from-primary-orange to-hover-orange rounded-xl flex items-center justify-center text-[1.8rem] text-white">
                               <i className={`fas ${product.icon}`}></i>
                             </div>
-                            <div className="product-details-admin">
-                              <h3>{product.name}</h3>
-                              <p className="product-description">{product.description}</p>
-                              <div className="product-meta">
-                                <span className="product-category">{product.category}</span>
-                                <span className="product-price">₹{product.price}</span>
+                            <div className="flex-1">
+                              <h3 className="text-lg text-dark-brown mb-2 font-bold">{product.name}</h3>
+                              <p className="text-sm text-[#666] mb-3 leading-snug">{product.description}</p>
+                              <div className="flex justify-between items-center gap-3">
+                                <span className="text-xs py-1.5 px-3 bg-[#e3f2fd] text-[#1976d2] rounded-full font-semibold">{product.category}</span>
+                                <span className="text-lg font-bold text-primary-orange">₹{product.price}</span>
                               </div>
                             </div>
-                            <div className="product-actions">
+                            <div className="flex flex-col gap-2">
                               <button 
-                                className="action-btn restore" 
+                                className="bg-primary-orange text-white rounded-full w-[35px] h-[35px] flex items-center justify-center border-none p-2.5 cursor-pointer transition-colors text-[0.95rem] hover:bg-hover-orange hover:scale-110" 
                                 title="Restore Product"
                                 onClick={() => handleRestoreProduct(product.id)}
                               >
@@ -725,19 +731,19 @@ export default function Admin() {
             )}
 
             {activeTab === 'categories' && (
-              <div className="admin-categories">
-                <div className="section-header">
-                  <h2>Categories Management</h2>
-                  <div className="header-actions">
+              <div>
+                <div className="flex justify-between items-center mb-8">
+                  <h2 className="text-xl font-semibold text-dark-brown">Categories Management</h2>
+                  <div className="flex gap-4 items-center">
                     <button 
-                      className={`toggle-removed-btn ${showRemovedCategories ? 'active' : ''}`}
+                      className={`px-6 py-3 rounded-lg flex items-center gap-2 text-sm font-semibold cursor-pointer transition-all ${showRemovedCategories ? 'bg-primary-orange border-primary-orange text-white border-2' : 'bg-white text-[#666] border-2 border-[#e9ecef] hover:border-primary-orange hover:text-primary-orange'}`}
                       onClick={() => setShowRemovedCategories(!showRemovedCategories)}
                     >
                       <i className="fas fa-eye"></i>
                       {showRemovedCategories ? 'Hide' : 'Show'} Removed ({getRemovedCategoriesList().length})
                     </button>
                     <button 
-                      className="add-product-btn"
+                      className="bg-primary-orange text-white border-none px-6 py-3 rounded-lg flex items-center gap-2 text-[0.95rem] font-semibold cursor-pointer transition-all hover:bg-hover-orange hover:-translate-y-0.5"
                       onClick={handleAddCategory}
                     >
                       <i className="fas fa-plus"></i>
@@ -747,25 +753,25 @@ export default function Admin() {
                 </div>
 
                 {!showRemovedCategories && (
-                  <div className="categories-grid-admin">
+                  <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-6">
                     {getActiveCategoriesList().map(category => (
-                      <div key={category.id} className="category-card-admin">
-                        <div className="category-icon-admin">
+                      <div key={category.id} className="bg-white rounded-[15px] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex gap-4 transition-all hover:-translate-y-1.5 hover:shadow-[0_5px_20px_rgba(0,0,0,0.12)] relative">
+                        <div className="w-[60px] h-[60px] min-w-[60px] bg-gradient-to-br from-[#2196f3] to-[#1976d2] rounded-xl flex items-center justify-center text-[1.8rem] text-white">
                           <i className={`fas ${category.icon}`}></i>
                         </div>
-                        <div className="category-details-admin">
-                          <h3>{category.name}</h3>
-                          <p className="category-link">Link: {category.link}</p>
-                          <div className="category-items-preview">
-                            <span className="items-count">
+                        <div className="flex-1">
+                          <h3 className="text-lg text-dark-brown mb-2 font-bold">{category.name}</h3>
+                          <p className="text-sm text-[#666] mb-2 font-mono">Link: {category.link}</p>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs py-1.5 px-3 bg-[#e8f5e9] text-[#388e3c] rounded-full font-semibold flex items-center gap-1">
                               <i className="fas fa-list"></i>
                               {category.items.length} items
                             </span>
                           </div>
                         </div>
-                        <div className="category-actions">
+                        <div className="flex flex-col gap-2">
                           <button 
-                            className="action-btn edit" 
+                            className="bg-transparent border-none p-2.5 cursor-pointer text-[#666] transition-colors text-[0.95rem] hover:text-primary-orange" 
                             title="Edit Category"
                             onClick={() => handleEditCategory(category)}
                           >
@@ -785,33 +791,33 @@ export default function Admin() {
                 )}
 
                 {showRemovedCategories && (
-                  <div className="removed-categories-section">
-                    <h3 className="removed-title">
-                      <i className="fas fa-archive"></i>
+                  <div className="mt-8 p-6 bg-white rounded-[15px] shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+                    <h3 className="text-xl text-[#666] mb-6 flex items-center gap-3">
+                      <i className="fas fa-archive text-primary-orange"></i>
                       Removed Categories ({getRemovedCategoriesList().length})
                     </h3>
                     {getRemovedCategoriesList().length === 0 ? (
-                      <p className="no-removed">No removed categories</p>
+                      <p className="text-center py-12 text-[#999] text-lg bg-white rounded-[15px]">No removed categories</p>
                     ) : (
-                      <div className="categories-grid-admin">
+                      <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-6">
                         {getRemovedCategoriesList().map(category => (
-                          <div key={category.id} className="category-card-admin removed">
-                            <div className="category-icon-admin">
+                          <div key={category.id} className="bg-white rounded-[15px] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex gap-4 transition-all hover:-translate-y-1.5 hover:shadow-[0_5px_20px_rgba(0,0,0,0.12)] relative opacity-70 border-2 border-dashed border-[#ddd] hover:opacity-100 hover:border-[#2196f3]">
+                            <div className="w-[60px] h-[60px] min-w-[60px] bg-gradient-to-br from-[#2196f3] to-[#1976d2] rounded-xl flex items-center justify-center text-[1.8rem] text-white">
                               <i className={`fas ${category.icon}`}></i>
                             </div>
-                            <div className="category-details-admin">
-                              <h3>{category.name}</h3>
-                              <p className="category-link">Link: {category.link}</p>
-                              <div className="category-items-preview">
-                                <span className="items-count">
+                            <div className="flex-1">
+                              <h3 className="text-lg text-dark-brown mb-2 font-bold">{category.name}</h3>
+                              <p className="text-sm text-[#666] mb-2 font-mono">Link: {category.link}</p>
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs py-1.5 px-3 bg-[#e8f5e9] text-[#388e3c] rounded-full font-semibold flex items-center gap-1">
                                   <i className="fas fa-list"></i>
                                   {category.items.length} items
                                 </span>
                               </div>
                             </div>
-                            <div className="category-actions">
+                            <div className="flex flex-col gap-2">
                               <button 
-                                className="action-btn restore" 
+                                className="bg-primary-orange text-white rounded-full w-[35px] h-[35px] flex items-center justify-center border-none p-2.5 cursor-pointer transition-colors text-[0.95rem] hover:bg-hover-orange hover:scale-110" 
                                 title="Restore Category"
                                 onClick={() => handleRestoreCategory(category.id)}
                               >
@@ -828,30 +834,30 @@ export default function Admin() {
             )}
 
             {activeTab === 'customers' && (
-              <div className="admin-customers">
-                <h2>Customer Management</h2>
-                <p className="coming-soon">Customer management interface coming soon...</p>
+              <div>
+                <h2 className="text-xl font-semibold text-dark-brown mb-6">Customer Management</h2>
+                <p className="text-center py-12 text-[#999] text-lg">Customer management interface coming soon...</p>
               </div>
             )}
 
             {activeTab === 'settings' && (
-              <div className="admin-settings">
-                <h2>Settings</h2>
-                <div className="settings-section">
-                  <h3>Store Information</h3>
-                  <div className="form-group">
-                    <label>Store Name</label>
-                    <input type="text" defaultValue="ROBOHATCH" />
+              <div>
+                <h2 className="text-xl font-semibold text-dark-brown mb-6">Settings</h2>
+                <div className="bg-white p-8 rounded-[15px] shadow-[0_2px_8px_rgba(0,0,0,0.08)] max-w-[600px]">
+                  <h3 className="text-2xl font-bold text-dark-brown mb-6">Store Information</h3>
+                  <div className="mb-6">
+                    <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Store Name</label>
+                    <input type="text" defaultValue="ROBOHATCH" className="w-full px-4 py-3.5 border-2 border-[#e0e0e0] rounded-lg text-[0.95rem] transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10" />
                   </div>
-                  <div className="form-group">
-                    <label>Contact Email</label>
-                    <input type="email" defaultValue="info@robohatch.com" />
+                  <div className="mb-6">
+                    <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Contact Email</label>
+                    <input type="email" defaultValue="info@robohatch.com" className="w-full px-4 py-3.5 border-2 border-[#e0e0e0] rounded-lg text-[0.95rem] transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10" />
                   </div>
-                  <div className="form-group">
-                    <label>Phone Number</label>
-                    <input type="tel" defaultValue="+91 1234567890" />
+                  <div className="mb-6">
+                    <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Phone Number</label>
+                    <input type="tel" defaultValue="+91 1234567890" className="w-full px-4 py-3.5 border-2 border-[#e0e0e0] rounded-lg text-[0.95rem] transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10" />
                   </div>
-                  <button className="save-btn">Save Changes</button>
+                  <button className="bg-primary-orange text-white px-8 py-3 rounded-lg font-semibold transition-all hover:bg-hover-orange border-none cursor-pointer shadow-[0_4px_15px_rgba(242,92,5,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(242,92,5,0.4)]">Save Changes</button>
                 </div>
               </div>
             )}
@@ -860,48 +866,51 @@ export default function Admin() {
 
         {/* Edit Product Modal */}
         {editingProduct && (
-          <div className="modal-overlay" onClick={handleCancelEdit}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <div className="modal-header">
-                <h2>Edit Product</h2>
-                <button className="modal-close" onClick={handleCancelEdit}>
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[10000]" onClick={handleCancelEdit}>
+            <div className="bg-white rounded-[20px] w-[90%] max-w-[500px] shadow-[0_10px_40px_rgba(0,0,0,0.3)] animate-modal-slide-in" onClick={(e) => e.stopPropagation()}>
+              <div className="flex justify-between items-center px-8 py-6 border-b-2 border-[#f0f0f0]">
+                <h2 className="text-2xl text-dark-brown m-0">Edit Product</h2>
+                <button className="bg-transparent border-none text-2xl text-[#999] cursor-pointer transition-colors w-[35px] h-[35px] flex items-center justify-center rounded-full hover:text-[#f44336] hover:bg-[#fee]" onClick={handleCancelEdit}>
                   <i className="fas fa-times"></i>
                 </button>
               </div>
-              <div className="modal-body">
-                <div className="form-group">
-                  <label>Product Name</label>
+              <div className="p-8">
+                <div className="mb-6">
+                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Product Name</label>
                   <input 
                     type="text" 
                     value={editForm.name}
                     onChange={(e) => setEditForm({...editForm, name: e.target.value})}
                     placeholder="Enter product name"
+                    className="w-full px-4 py-3.5 border-2 border-[#e0e0e0] rounded-lg text-[0.95rem] transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10"
                   />
                 </div>
-                <div className="form-group">
-                  <label>Price (₹)</label>
+                <div className="mb-6">
+                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Price (₹)</label>
                   <input 
                     type="number" 
                     value={editForm.price}
                     onChange={(e) => setEditForm({...editForm, price: e.target.value})}
                     placeholder="Enter price"
+                    className="w-full px-4 py-3.5 border-2 border-[#e0e0e0] rounded-lg text-[0.95rem] transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10"
                   />
                 </div>
-                <div className="form-group">
-                  <label>Description</label>
+                <div className="mb-6 last:mb-0">
+                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Description</label>
                   <textarea 
                     value={editForm.description}
                     onChange={(e) => setEditForm({...editForm, description: e.target.value})}
                     placeholder="Enter product description"
                     rows="4"
+                    className="w-full px-4 py-3.5 border-2 border-[#e0e0e0] rounded-lg text-[0.95rem] transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10 resize-y min-h-[100px]"
                   />
                 </div>
               </div>
-              <div className="modal-footer">
-                <button className="cancel-btn" onClick={handleCancelEdit}>
+              <div className="flex justify-end gap-4 px-8 py-6 border-t-2 border-[#f0f0f0]">
+                <button className="bg-[#f5f5f5] text-[#666] border-none px-8 py-3.5 rounded-lg text-base font-semibold cursor-pointer transition-all hover:bg-[#e0e0e0]" onClick={handleCancelEdit}>
                   Cancel
                 </button>
-                <button className="save-btn" onClick={handleSaveEdit}>
+                <button className="bg-gradient-to-br from-primary-orange to-hover-orange text-white border-none px-8 py-3.5 rounded-lg text-base font-semibold cursor-pointer transition-all shadow-[0_4px_15px_rgba(242,92,5,0.3)] hover:bg-hover-orange hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(242,92,5,0.4)]" onClick={handleSaveEdit}>
                   Save Changes
                 </button>
               </div>
@@ -911,47 +920,51 @@ export default function Admin() {
 
         {/* Add Product Modal */}
         {showAddModal && (
-          <div className="modal-overlay" onClick={handleCancelAdd}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <div className="modal-header">
-                <h2>Add New Product</h2>
-                <button className="modal-close" onClick={handleCancelAdd}>
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[10000]" onClick={handleCancelAdd}>
+            <div className="bg-white rounded-[20px] w-[90%] max-w-[500px] shadow-[0_10px_40px_rgba(0,0,0,0.3)] animate-modal-slide-in" onClick={(e) => e.stopPropagation()}>
+              <div className="flex justify-between items-center px-8 py-6 border-b-2 border-[#f0f0f0]">
+                <h2 className="text-2xl text-dark-brown m-0">Add New Product</h2>
+                <button className="bg-transparent border-none text-2xl text-[#999] cursor-pointer transition-colors w-[35px] h-[35px] flex items-center justify-center rounded-full hover:text-[#f44336] hover:bg-[#fee]" onClick={handleCancelAdd}>
                   <i className="fas fa-times"></i>
                 </button>
               </div>
-              <div className="modal-body">
-                <div className="form-group">
-                  <label>Product Name *</label>
+              <div className="p-8">
+                <div className="mb-6">
+                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Product Name *</label>
                   <input 
                     type="text" 
                     value={addForm.name}
                     onChange={(e) => setAddForm({...addForm, name: e.target.value})}
                     placeholder="Enter product name"
+                    className="w-full px-4 py-3.5 border-2 border-[#e0e0e0] rounded-lg text-[0.95rem] transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10"
                   />
                 </div>
-                <div className="form-group">
-                  <label>Price (₹) *</label>
+                <div className="mb-6">
+                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Price (₹) *</label>
                   <input 
                     type="number" 
                     value={addForm.price}
                     onChange={(e) => setAddForm({...addForm, price: e.target.value})}
                     placeholder="Enter price"
+                    className="w-full px-4 py-3.5 border-2 border-[#e0e0e0] rounded-lg text-[0.95rem] transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10"
                   />
                 </div>
-                <div className="form-group">
-                  <label>Description</label>
+                <div className="mb-6">
+                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Description</label>
                   <textarea 
                     value={addForm.description}
                     onChange={(e) => setAddForm({...addForm, description: e.target.value})}
                     placeholder="Enter product description"
                     rows="4"
+                    className="w-full px-4 py-3.5 border-2 border-[#e0e0e0] rounded-lg text-[0.95rem] transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10 resize-y min-h-[100px]"
                   />
                 </div>
-                <div className="form-group">
-                  <label>Category *</label>
+                <div className="mb-6">
+                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Category *</label>
                   <select 
                     value={addForm.category}
                     onChange={(e) => setAddForm({...addForm, category: e.target.value})}
+                    className="w-full px-4 py-3.5 border-2 border-[#e0e0e0] rounded-lg text-[0.95rem] transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10"
                   >
                     <option value="keychains">Keychains</option>
                     <option value="superhero">Superhero Models</option>
@@ -966,22 +979,23 @@ export default function Admin() {
                     <option value="jewelry">Jewelry & Accessories</option>
                   </select>
                 </div>
-                <div className="form-group">
-                  <label>Icon Class</label>
+                <div className="mb-6 last:mb-0">
+                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Icon Class</label>
                   <input 
                     type="text" 
                     value={addForm.icon}
                     onChange={(e) => setAddForm({...addForm, icon: e.target.value})}
                     placeholder="e.g., fa-cube, fa-star, fa-heart"
+                    className="w-full px-4 py-3.5 border-2 border-[#e0e0e0] rounded-lg text-[0.95rem] transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10"
                   />
-                  <small>FontAwesome icon class (e.g., fa-cube, fa-star)</small>
+                  <small className="block mt-1 text-[#666] text-sm">FontAwesome icon class (e.g., fa-cube, fa-star)</small>
                 </div>
               </div>
-              <div className="modal-footer">
-                <button className="cancel-btn" onClick={handleCancelAdd}>
+              <div className="flex justify-end gap-4 px-8 py-6 border-t-2 border-[#f0f0f0]">
+                <button className="bg-[#f5f5f5] text-[#666] border-none px-8 py-3.5 rounded-lg text-base font-semibold cursor-pointer transition-all hover:bg-[#e0e0e0]" onClick={handleCancelAdd}>
                   Cancel
                 </button>
-                <button className="save-btn" onClick={handleSaveNewProduct}>
+                <button className="bg-gradient-to-br from-primary-orange to-hover-orange text-white border-none px-8 py-3.5 rounded-lg text-base font-semibold cursor-pointer transition-all shadow-[0_4px_15px_rgba(242,92,5,0.3)] hover:bg-hover-orange hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(242,92,5,0.4)]" onClick={handleSaveNewProduct}>
                   Add Product
                 </button>
               </div>
@@ -991,44 +1005,47 @@ export default function Admin() {
 
         {/* Edit Category Modal */}
         {editingCategory && (
-          <div className="modal-overlay" onClick={handleCancelCategoryEdit}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <div className="modal-header">
-                <h2>Edit Category</h2>
-                <button className="modal-close" onClick={handleCancelCategoryEdit}>
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[10000]" onClick={handleCancelCategoryEdit}>
+            <div className="bg-white rounded-[20px] w-[90%] max-w-[500px] shadow-[0_10px_40px_rgba(0,0,0,0.3)] animate-modal-slide-in" onClick={(e) => e.stopPropagation()}>
+              <div className="flex justify-between items-center px-8 py-6 border-b-2 border-[#f0f0f0]">
+                <h2 className="text-2xl text-dark-brown m-0">Edit Category</h2>
+                <button className="bg-transparent border-none text-2xl text-[#999] cursor-pointer transition-colors w-[35px] h-[35px] flex items-center justify-center rounded-full hover:text-[#f44336] hover:bg-[#fee]" onClick={handleCancelCategoryEdit}>
                   <i className="fas fa-times"></i>
                 </button>
               </div>
-              <div className="modal-body">
-                <div className="form-group">
-                  <label>Category Name</label>
+              <div className="p-8">
+                <div className="mb-6">
+                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Category Name</label>
                   <input 
                     type="text" 
                     value={categoryEditForm.name}
                     onChange={(e) => setCategoryEditForm({...categoryEditForm, name: e.target.value})}
                     placeholder="Enter category name"
+                    className="w-full px-4 py-3.5 border-2 border-[#e0e0e0] rounded-lg text-[0.95rem] transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10"
                   />
                 </div>
-                <div className="form-group">
-                  <label>Icon Class</label>
+                <div className="mb-6">
+                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Icon Class</label>
                   <input 
                     type="text" 
                     value={categoryEditForm.icon}
                     onChange={(e) => setCategoryEditForm({...categoryEditForm, icon: e.target.value})}
                     placeholder="e.g., fa-cube, fa-star"
+                    className="w-full px-4 py-3.5 border-2 border-[#e0e0e0] rounded-lg text-[0.95rem] transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10"
                   />
                 </div>
-                <div className="form-group">
-                  <label>Link URL</label>
+                <div className="mb-6">
+                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Link URL</label>
                   <input 
                     type="text" 
                     value={categoryEditForm.link}
                     onChange={(e) => setCategoryEditForm({...categoryEditForm, link: e.target.value})}
                     placeholder="/category-name"
+                    className="w-full px-4 py-3.5 border-2 border-[#e0e0e0] rounded-lg text-[0.95rem] transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10"
                   />
                 </div>
-                <div className="form-group">
-                  <label>Items (comma separated)</label>
+                <div className="mb-6 last:mb-0">
+                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Items (comma separated)</label>
                   <textarea 
                     value={categoryEditForm.items.join(', ')}
                     onChange={(e) => setCategoryEditForm({
@@ -1037,14 +1054,15 @@ export default function Admin() {
                     })}
                     placeholder="Item 1, Item 2, Item 3"
                     rows="4"
+                    className="w-full px-4 py-3.5 border-2 border-[#e0e0e0] rounded-lg text-[0.95rem] transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10 resize-y min-h-[100px]"
                   />
                 </div>
               </div>
-              <div className="modal-footer">
-                <button className="cancel-btn" onClick={handleCancelCategoryEdit}>
+              <div className="flex justify-end gap-4 px-8 py-6 border-t-2 border-[#f0f0f0]">
+                <button className="bg-[#f5f5f5] text-[#666] border-none px-8 py-3.5 rounded-lg text-base font-semibold cursor-pointer transition-all hover:bg-[#e0e0e0]" onClick={handleCancelCategoryEdit}>
                   Cancel
                 </button>
-                <button className="save-btn" onClick={handleSaveCategoryEdit}>
+                <button className="bg-gradient-to-br from-primary-orange to-hover-orange text-white border-none px-8 py-3.5 rounded-lg text-base font-semibold cursor-pointer transition-all shadow-[0_4px_15px_rgba(242,92,5,0.3)] hover:bg-hover-orange hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(242,92,5,0.4)]" onClick={handleSaveCategoryEdit}>
                   Save Changes
                 </button>
               </div>
@@ -1054,57 +1072,61 @@ export default function Admin() {
 
         {/* Add Category Modal */}
         {showAddCategoryModal && (
-          <div className="modal-overlay" onClick={handleCancelAddCategory}>
-            <div className="modal-content modal-large" onClick={(e) => e.stopPropagation()}>
-              <div className="modal-header">
-                <h2>Add New Category</h2>
-                <button className="modal-close" onClick={handleCancelAddCategory}>
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[10000]" onClick={handleCancelAddCategory}>
+            <div className="bg-white rounded-[20px] w-[90%] max-w-[600px] shadow-[0_10px_40px_rgba(0,0,0,0.3)] animate-modal-slide-in" onClick={(e) => e.stopPropagation()}>
+              <div className="flex justify-between items-center px-8 py-6 border-b-2 border-[#f0f0f0]">
+                <h2 className="text-2xl text-dark-brown m-0">Add New Category</h2>
+                <button className="bg-transparent border-none text-2xl text-[#999] cursor-pointer transition-colors w-[35px] h-[35px] flex items-center justify-center rounded-full hover:text-[#f44336] hover:bg-[#fee]" onClick={handleCancelAddCategory}>
                   <i className="fas fa-times"></i>
                 </button>
               </div>
-              <div className="modal-body">
-                <div className="form-group">
-                  <label>Category Name *</label>
+              <div className="p-8">
+                <div className="mb-6">
+                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Category Name *</label>
                   <input 
                     type="text" 
                     value={addCategoryForm.name}
                     onChange={(e) => setAddCategoryForm({...addCategoryForm, name: e.target.value})}
                     placeholder="Enter category name"
+                    className="w-full px-4 py-3.5 border-2 border-[#e0e0e0] rounded-lg text-[0.95rem] transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10"
                   />
                 </div>
-                <div className="form-group">
-                  <label>Icon Class *</label>
+                <div className="mb-6">
+                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Icon Class *</label>
                   <input 
                     type="text" 
                     value={addCategoryForm.icon}
                     onChange={(e) => setAddCategoryForm({...addCategoryForm, icon: e.target.value})}
                     placeholder="e.g., fa-cube, fa-star, fa-heart"
+                    className="w-full px-4 py-3.5 border-2 border-[#e0e0e0] rounded-lg text-[0.95rem] transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10"
                   />
-                  <small>FontAwesome icon class</small>
+                  <small className="block mt-1 text-[#666] text-sm">FontAwesome icon class</small>
                 </div>
-                <div className="form-group">
-                  <label>Link URL</label>
+                <div className="mb-6">
+                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Link URL</label>
                   <input 
                     type="text" 
                     value={addCategoryForm.link}
                     onChange={(e) => setAddCategoryForm({...addCategoryForm, link: e.target.value})}
                     placeholder="/category-name (leave empty for auto-generate)"
+                    className="w-full px-4 py-3.5 border-2 border-[#e0e0e0] rounded-lg text-[0.95rem] transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10"
                   />
                 </div>
-                <div className="form-group">
-                  <label>Category Items</label>
-                  <div className="items-list">
+                <div className="mb-6 last:mb-0">
+                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Category Items</label>
+                  <div className="flex flex-col gap-3">
                     {addCategoryForm.items.map((item, index) => (
-                      <div key={index} className="item-input-row">
+                      <div key={index} className="flex gap-2 items-center">
                         <input 
                           type="text" 
                           value={item}
                           onChange={(e) => handleCategoryItemChange(index, e.target.value)}
                           placeholder={`Item ${index + 1}`}
+                          className="flex-1 px-4 py-3.5 border-2 border-[#e0e0e0] rounded-lg text-[0.95rem] transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10"
                         />
                         <button 
                           type="button"
-                          className="remove-item-btn"
+                          className="w-[36px] h-[36px] min-w-[36px] bg-[#ffebee] text-[#f44336] border-none rounded-lg cursor-pointer transition-all flex items-center justify-center hover:bg-[#f44336] hover:text-white hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed"
                           onClick={() => handleRemoveCategoryItem(index)}
                           disabled={addCategoryForm.items.length === 1}
                         >
@@ -1114,7 +1136,7 @@ export default function Admin() {
                     ))}
                     <button 
                       type="button"
-                      className="add-item-btn"
+                      className="w-full py-3 bg-[#e3f2fd] text-[#1976d2] border-2 border-dashed border-[#1976d2] rounded-lg cursor-pointer transition-all font-semibold flex items-center justify-center gap-2 hover:bg-[#1976d2] hover:text-white hover:border-[#1976d2]"
                       onClick={handleAddCategoryItem}
                     >
                       <i className="fas fa-plus"></i>
@@ -1123,18 +1145,17 @@ export default function Admin() {
                   </div>
                 </div>
               </div>
-              <div className="modal-footer">
-                <button className="cancel-btn" onClick={handleCancelAddCategory}>
+              <div className="flex justify-end gap-4 px-8 py-6 border-t-2 border-[#f0f0f0]">
+                <button className="bg-[#f5f5f5] text-[#666] border-none px-8 py-3.5 rounded-lg text-base font-semibold cursor-pointer transition-all hover:bg-[#e0e0e0]" onClick={handleCancelAddCategory}>
                   Cancel
                 </button>
-                <button className="save-btn" onClick={handleSaveNewCategory}>
+                <button className="bg-gradient-to-br from-primary-orange to-hover-orange text-white border-none px-8 py-3.5 rounded-lg text-base font-semibold cursor-pointer transition-all shadow-[0_4px_15px_rgba(242,92,5,0.3)] hover:bg-hover-orange hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(242,92,5,0.4)]" onClick={handleSaveNewCategory}>
                   Add Category
                 </button>
               </div>
             </div>
           </div>
         )}
-      </div>
     </>
   )
 }

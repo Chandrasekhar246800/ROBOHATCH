@@ -58,15 +58,15 @@ export default function LoadingScreen() {
   }, [])
 
   return (
-    <div className={`robohatch-loading-screen ${stage === 'complete' ? 'fade-out' : ''}`}>
-      <div className="loading-animation-container">
+    <div className={`fixed inset-0 bg-gradient-to-br from-primary-orange via-hover-orange to-dark-brown flex items-center justify-center z-[9999] ${stage === 'complete' ? 'opacity-0 transition-opacity duration-500' : 'opacity-100'}`}>
+      <div className="relative flex flex-col items-center">
         {/* Rotating items on top */}
         {stage !== 'egg' && (
-          <div className="rotating-items-top">
+          <div className="absolute -top-24 flex gap-4">
             {items.map((item, index) => (
               <div
                 key={index}
-                className={`rotating-item ${currentItem === index ? 'active' : ''}`}
+                className={`w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-white text-xl transition-all duration-300 ${currentItem === index ? 'scale-125 bg-white/40' : 'scale-100'}`}
               >
                 <i className={`fas ${item.icon}`}></i>
               </div>
@@ -75,30 +75,30 @@ export default function LoadingScreen() {
         )}
 
         {/* Egg and Robot Animation */}
-        <div className="egg-container">
+        <div className="relative w-40 h-40 flex items-center justify-center">
           {stage === 'egg' && (
-            <div className="egg bounce-in">
-              <div className="egg-shell"></div>
+            <div className="animate-[bounce_0.5s_ease-out]">
+              <div className="w-32 h-40 bg-white rounded-[50%] shadow-[0_20px_50px_rgba(0,0,0,0.3)]"></div>
             </div>
           )}
 
           {stage === 'crack' && (
-            <div className="egg cracking">
-              <div className="egg-shell crack-animation">
-                <div className="crack crack-1"></div>
-                <div className="crack crack-2"></div>
-                <div className="crack crack-3"></div>
+            <div className="animate-[shake_0.5s_ease-in-out]">
+              <div className="relative w-32 h-40 bg-white rounded-[50%] shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+                <div className="absolute top-1/4 left-1/2 w-1 h-12 bg-dark-brown/40 rotate-45"></div>
+                <div className="absolute top-1/3 right-1/4 w-1 h-10 bg-dark-brown/40 -rotate-12"></div>
+                <div className="absolute bottom-1/3 left-1/3 w-1 h-8 bg-dark-brown/40 rotate-12"></div>
               </div>
             </div>
           )}
 
           {(stage === 'hatch' || stage === 'reveal' || stage === 'complete') && (
-            <div className="robot-hatching">
+            <div className="relative">
               {/* Bottom egg shell stays */}
-              <div className="egg-bottom-shell"></div>
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-32 h-20 bg-white rounded-b-[50%] shadow-[0_10px_30px_rgba(0,0,0,0.2)]"></div>
               
               {/* Robot sitting in egg */}
-              <div className="hatching-robot pop-out">
+              <div className="relative z-10 animate-[popOut_0.6s_ease-out]">
                 <Image 
                   src="/logo.png" 
                   alt="ROBOHATCH Robot" 
@@ -109,27 +109,27 @@ export default function LoadingScreen() {
               </div>
               
               {/* Upper egg shell thrown away */}
-              <div className="egg-piece piece-top-thrown"></div>
+              <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-28 h-20 bg-white rounded-t-[50%] animate-[throwAway_0.5s_ease-out] opacity-0"></div>
             </div>
           )}
         </div>
 
         {/* Company Name */}
         {(stage === 'reveal' || stage === 'complete') && (
-          <h1 className="company-name slide-up">
+          <h1 className="text-5xl font-bold text-white mt-8 tracking-wider animate-[slideUp_0.5s_ease-out]">
             ROBOHATCH
           </h1>
         )}
 
         {/* Loading Bar */}
         {stage !== 'egg' && (
-          <div className="loading-bar-container">
-            <div className="loading-bar-bg">
+          <div className="mt-8 w-80">
+            <div className="relative h-2 bg-white/20 rounded-full overflow-hidden">
               <div 
-                className="loading-bar-fill" 
+                className="absolute top-0 left-0 h-full bg-white rounded-full transition-all duration-300 ease-out" 
                 style={{ width: `${progress}%` }}
               ></div>
-              <span className="loading-percentage">{Math.floor(progress)}%</span>
+              <span className="absolute top-6 left-1/2 -translate-x-1/2 text-white text-sm font-semibold">{Math.floor(progress)}%</span>
             </div>
           </div>
         )}

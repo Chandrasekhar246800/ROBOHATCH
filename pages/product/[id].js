@@ -43,11 +43,11 @@ export default function ProductDetail() {
     return (
       <>
         <Navbar />
-        <div className="product-detail-page">
-          <div className="container">
-            <div className="loading-state">
-              <i className="fas fa-spinner fa-spin"></i>
-              <p>Loading product...</p>
+        <div className="min-h-screen pt-[120px] pb-20 bg-gradient-to-br from-[#f5f7fa] to-[#c3cfe2]">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col items-center justify-center py-20 gap-5">
+              <i className="fas fa-spinner fa-spin text-5xl text-primary-orange"></i>
+              <p className="text-xl text-[#666]">Loading product...</p>
             </div>
           </div>
         </div>
@@ -65,80 +65,99 @@ export default function ProductDetail() {
       
       <Navbar />
       
-      <div className="product-detail-page">
-        <div className="container">
-          <div className="breadcrumb">
-            <Link href="/">Home</Link>
-            <i className="fas fa-chevron-right"></i>
-            <Link href="/#products">Products</Link>
-            <i className="fas fa-chevron-right"></i>
-            <span>{product.name}</span>
+      <div className="min-h-screen pt-[120px] pb-20 bg-gradient-to-br from-[#f5f7fa] to-[#c3cfe2]">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center gap-2 text-sm mb-8 text-[#666]">
+            <Link href="/" className="hover:text-primary-orange transition-colors">Home</Link>
+            <i className="fas fa-chevron-right text-xs"></i>
+            <Link href="/#products" className="hover:text-primary-orange transition-colors">Products</Link>
+            <i className="fas fa-chevron-right text-xs"></i>
+            <span className="text-[#2c3e50] font-medium">{product.name}</span>
           </div>
 
-          <div className="product-detail-content">
-            <div className="product-detail-image">
-              <div className="detail-image-placeholder">
-                <i className={`fas ${product.icon}`}></i>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div className="bg-gradient-to-br from-white to-[#f8f9fa] rounded-[20px] shadow-[0_10px_40px_rgba(0,0,0,0.1)] p-16 flex items-center justify-center">
+              <div className="w-80 h-80 bg-gradient-to-br from-primary-orange/20 to-[#ff3b29]/20 rounded-full flex items-center justify-center">
+                <i className={`fas ${product.icon} text-[150px] text-primary-orange`}></i>
               </div>
             </div>
 
-            <div className="product-detail-info">
-              <h1 className="product-detail-title">{product.name}</h1>
+            <div className="flex flex-col justify-center">
+              <h1 className="text-4xl font-bold text-[#2c3e50] mb-6">{product.name}</h1>
               
-              <div className="product-detail-price">
-                <span className="current-price">₹{product.price}</span>
-                <span className="price-label">Inclusive of all taxes</span>
+              <div className="mb-8">
+                <span className="text-4xl font-bold text-primary-orange">₹{product.price}</span>
+                <span className="block text-sm text-[#888] mt-2">Inclusive of all taxes</span>
               </div>
 
-              <div className="product-detail-description">
-                <h3>Description</h3>
-                <p>{product.description}</p>
+              <div className="mb-8">
+                <h3 className="text-xl font-semibold text-[#2c3e50] mb-4">Description</h3>
+                <p className="text-[#555] leading-relaxed text-lg">{product.description}</p>
               </div>
 
-              <div className="product-features">
-                <h3>Features</h3>
-                <ul>
-                  <li><i className="fas fa-check-circle"></i> High-quality 3D printed material</li>
-                  <li><i className="fas fa-check-circle"></i> Durable and long-lasting</li>
-                  <li><i className="fas fa-check-circle"></i> Customization available</li>
-                  <li><i className="fas fa-check-circle"></i> Eco-friendly production</li>
+              <div className="mb-8">
+                <h3 className="text-xl font-semibold text-[#2c3e50] mb-4">Features</h3>
+                <ul className="space-y-3">
+                  <li className="flex items-center gap-3 text-[#555]">
+                    <i className="fas fa-check-circle text-[#4caf50] text-xl"></i>
+                    High-quality 3D printed material
+                  </li>
+                  <li className="flex items-center gap-3 text-[#555]">
+                    <i className="fas fa-check-circle text-[#4caf50] text-xl"></i>
+                    Durable and long-lasting
+                  </li>
+                  <li className="flex items-center gap-3 text-[#555]">
+                    <i className="fas fa-check-circle text-[#4caf50] text-xl"></i>
+                    Customization available
+                  </li>
+                  <li className="flex items-center gap-3 text-[#555]">
+                    <i className="fas fa-check-circle text-[#4caf50] text-xl"></i>
+                    Eco-friendly production
+                  </li>
                 </ul>
               </div>
 
-              <div className="product-actions">
-                <div className="quantity-selector">
-                  <label>Quantity</label>
-                  <div className="quantity-controls-detail">
+              <div className="flex items-end gap-6 mb-8">
+                <div className="flex flex-col">
+                  <label className="text-sm font-medium text-[#2c3e50] mb-2">Quantity</label>
+                  <div className="flex items-center gap-4 bg-white rounded-lg shadow-md px-2 py-1">
                     <button 
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
                       disabled={quantity <= 1}
+                      className="w-10 h-10 flex items-center justify-center text-primary-orange text-xl transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-primary-orange/10 rounded-lg"
                     >
                       <i className="fas fa-minus"></i>
                     </button>
-                    <span>{quantity}</span>
-                    <button onClick={() => setQuantity(quantity + 1)}>
+                    <span className="text-xl font-semibold text-[#2c3e50] min-w-[40px] text-center">{quantity}</span>
+                    <button 
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="w-10 h-10 flex items-center justify-center text-primary-orange text-xl transition-all hover:bg-primary-orange/10 rounded-lg"
+                    >
                       <i className="fas fa-plus"></i>
                     </button>
                   </div>
                 </div>
 
-                <button className="add-to-cart-detail-btn" onClick={addToCart}>
+                <button 
+                  className="flex-1 bg-gradient-to-r from-primary-orange to-[#ff3b29] text-white text-lg font-semibold px-8 py-4 rounded-[12px] transition-all hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(255,94,77,0.4)] flex items-center justify-center gap-3" 
+                  onClick={addToCart}
+                >
                   <i className="fas fa-shopping-cart"></i>
                   Add to Cart
                 </button>
               </div>
 
-              <div className="product-meta">
-                <div className="meta-item">
-                  <i className="fas fa-truck"></i>
+              <div className="space-y-4 bg-white rounded-xl p-6 shadow-md">
+                <div className="flex items-center gap-4 text-[#555]">
+                  <i className="fas fa-truck text-primary-orange text-xl"></i>
                   <span>Free delivery on orders above ₹500</span>
                 </div>
-                <div className="meta-item">
-                  <i className="fas fa-shield-alt"></i>
+                <div className="flex items-center gap-4 text-[#555]">
+                  <i className="fas fa-shield-alt text-primary-orange text-xl"></i>
                   <span>7 days return policy</span>
                 </div>
-                <div className="meta-item">
-                  <i className="fas fa-headset"></i>
+                <div className="flex items-center gap-4 text-[#555]">
+                  <i className="fas fa-headset text-primary-orange text-xl"></i>
                   <span>24/7 customer support</span>
                 </div>
               </div>
@@ -148,8 +167,8 @@ export default function ProductDetail() {
       </div>
       
       {notification && (
-        <div className="notification-popup">
-          <i className="fas fa-check-circle"></i>
+        <div className="fixed bottom-8 right-8 bg-[#4caf50] text-white px-8 py-5 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.2)] z-[1000] animate-[slideIn_0.3s_ease] flex items-center gap-3">
+          <i className="fas fa-check-circle text-2xl"></i>
           {notification}
         </div>
       )}

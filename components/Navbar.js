@@ -30,32 +30,32 @@ export default function Navbar({ hideLogin = false, hideMenu = false, hideCart =
   }
 
   return (
-    <nav className="navbar">
-      <div className="container">
-        <div className="nav-content">
-          <Link href="/" className="logo">
-            <Image src="/logo.png" alt="ROBOHATCH Logo" width={50} height={50} />
+    <nav className="sticky top-0 bg-white/98 backdrop-blur-md shadow-md z-[1000] transition-all duration-300">
+      <div className="max-w-[1200px] mx-auto px-5">
+        <div className="flex justify-between items-center py-4">
+          <Link href="/" className="text-2xl font-extrabold text-black tracking-wide flex items-center gap-3 no-underline transition-opacity duration-300 hover:opacity-80">
+            <Image src="/logo.png" alt="ROBOHATCH Logo" width={50} height={50} className="rounded-full border-2 border-primary-orange p-[5px] bg-white shadow-[0_2px_10px_rgba(242,92,5,0.3)] transition-transform duration-300 hover:scale-105" />
             <span>ROBOHATCH</span>
           </Link>
           {!hideMenu && (
-            <ul className="nav-menu">
-              <li><Link href="/">Home</Link></li>
-              <li><Link href="/#services">Categories</Link></li>
-              <li><Link href="/#products">Products</Link></li>
-              <li><Link href="/about">About</Link></li>
-              <li><Link href="/contact">Contact</Link></li>
+            <ul className="flex list-none gap-8">
+              <li><Link href="/" className="no-underline text-dark-brown font-medium transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-0.5 after:bg-primary-orange after:transition-[width] after:duration-300 hover:text-primary-orange hover:after:w-full">Home</Link></li>
+              <li><Link href="/#services" className="no-underline text-dark-brown font-medium transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-0.5 after:bg-primary-orange after:transition-[width] after:duration-300 hover:text-primary-orange hover:after:w-full">Categories</Link></li>
+              <li><Link href="/#products" className="no-underline text-dark-brown font-medium transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-0.5 after:bg-primary-orange after:transition-[width] after:duration-300 hover:text-primary-orange hover:after:w-full">Products</Link></li>
+              <li><Link href="/about" className="no-underline text-dark-brown font-medium transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-0.5 after:bg-primary-orange after:transition-[width] after:duration-300 hover:text-primary-orange hover:after:w-full">About</Link></li>
+              <li><Link href="/contact" className="no-underline text-dark-brown font-medium transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-0.5 after:bg-primary-orange after:transition-[width] after:duration-300 hover:text-primary-orange hover:after:w-full">Contact</Link></li>
             </ul>
           )}
-          <div className="nav-icons">
+          <div className="flex items-center gap-6">
             {!hideCart && (
-              <Link href="/cart" className="cart-icon">
+              <Link href="/cart" className="relative text-dark-brown text-[1.3rem] transition-colors duration-300 no-underline hover:text-primary-orange">
                 <i className="fas fa-shopping-cart"></i>
-                <span className="cart-count">{cartCount}</span>
+                <span className="absolute top-[-8px] right-[-10px] bg-primary-orange text-white rounded-full w-[18px] h-[18px] flex items-center justify-center text-[0.7rem] font-bold">{cartCount}</span>
               </Link>
             )}
             {!hideLogin && (
-              <Link href="/login" className="login-btn">
-                <i className="fas fa-user"></i>
+              <Link href="/login" className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-br from-primary-orange to-hover-orange text-white no-underline rounded-full font-semibold text-[0.95rem] shadow-[0_4px_15px_rgba(242,92,5,0.3)] transition-all duration-300 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-[-100%] before:w-full before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/30 before:to-transparent before:transition-[left] before:duration-500 hover:translate-y-[-2px] hover:shadow-[0_6px_20px_rgba(242,92,5,0.4)] hover:before:left-full active:translate-y-0">
+                <i className="fas fa-user text-[1.1rem] animate-pulse-custom"></i>
                 <span>Login</span>
               </Link>
             )}

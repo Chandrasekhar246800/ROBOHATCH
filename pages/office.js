@@ -47,31 +47,31 @@ export default function Office() {
   return (
     <>
       <Navbar />
-      <div className="category-page">
-        <div className="category-hero">
-          <div className="container">
-            <i className="fas fa-briefcase category-hero-icon"></i>
-            <h1>Office Supplies</h1>
-            <p>Professional desk accessories to boost your productivity</p>
+      <div className="min-h-screen pt-20 bg-light-gray">
+        <div className="bg-gradient-to-r from-primary-orange to-hover-orange py-16 mb-12">
+          <div className="container mx-auto px-4 text-center">
+            <i className="fas fa-briefcase text-6xl text-white mb-4"></i>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Office Supplies</h1>
+            <p className="text-xl text-white/90">Professional desk accessories to boost your productivity</p>
           </div>
         </div>
         
-        <div className="container">
-          <div className="products-grid">
+        <div className="container mx-auto px-4 pb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {products.map((product) => (
-              <div key={product.id} className="product-card">
+              <div key={product.id} className="bg-white rounded-[15px] overflow-hidden shadow-[0_5px_20px_rgba(0,0,0,0.08)] hover:-translate-y-2.5 hover:shadow-[0_15px_40px_rgba(0,0,0,0.15)] transition-all duration-300">
                 <Link href={`/product/${product.id}`}>
-                  <div className="product-image">
-                    <i className={`fas ${product.icon}`}></i>
+                  <div className="aspect-square bg-gradient-to-br from-soft-peach to-primary-orange p-8 flex items-center justify-center cursor-pointer">
+                    <i className={`fas ${product.icon} text-6xl text-white`}></i>
                   </div>
-                  <div className="product-info">
-                    <h3>{product.name}</h3>
-                    <p className="product-description">{product.description}</p>
-                    <p className="product-price">₹{product.price}</p>
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold text-dark-brown mb-2">{product.name}</h3>
+                    <p className="text-gray-600 mb-4 text-sm line-clamp-2">{product.description}</p>
+                    <p className="text-2xl font-bold text-primary-orange">₹{product.price}</p>
                   </div>
                 </Link>
                 <button 
-                  className="add-to-cart-btn"
+                  className="w-full px-4 py-3 bg-gradient-to-br from-primary-orange to-hover-orange text-white font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
                   onClick={() => addToCart(product)}
                 >
                   <i className="fas fa-shopping-cart"></i> Add to Cart
@@ -83,7 +83,7 @@ export default function Office() {
       </div>
       
       {notification && (
-        <div className="notification">
+        <div className="fixed bottom-8 right-8 px-6 py-4 bg-green-500 text-white rounded-lg shadow-lg z-50 animate-slideInRight">
           {notification}
         </div>
       )}

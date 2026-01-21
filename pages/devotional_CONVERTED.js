@@ -5,9 +5,9 @@ import Footer from '../components/Footer'
 import Head from 'next/head'
 import { getCategoryProducts } from '../data/products'
 
-export default function SuperheroModels() {
+export default function Devotional() {
   const [notification, setNotification] = useState('')
-  const products = getCategoryProducts('superhero')
+  const products = getCategoryProducts('devotional')
 
   const addToCart = (product) => {
     const cart = JSON.parse(localStorage.getItem('cart') || '[]')
@@ -28,8 +28,8 @@ export default function SuperheroModels() {
   return (
     <>
       <Head>
-        <title>Superhero Models - ROBOHATCH</title>
-        <meta name="description" content="3D printed superhero action figures and collectibles" />
+        <title>Devotional Items - ROBOHATCH</title>
+        <meta name="description" content="3D printed devotional idols and religious items" />
       </Head>
       
       <Navbar />
@@ -38,9 +38,9 @@ export default function SuperheroModels() {
         <div className="container mx-auto px-4 py-12">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold text-dark-brown mb-4">
-              <i className="fas fa-mask mr-3"></i> Superhero Models
+              <i className="fas fa-om mr-3"></i> Devotional Items
             </h1>
-            <p className="text-lg text-gray-600">Collectible superhero action figures and statues</p>
+            <p className="text-lg text-gray-600">Sacred idols and religious figurines</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -72,7 +72,7 @@ export default function SuperheroModels() {
       </div>
       
       {notification && (
-        <div className="fixed bottom-8 right-8 px-6 py-4 bg-green-500 text-white rounded-lg shadow-lg flex items-center gap-3 animate-slideInRight z-50">
+        <div className="fixed bottom-8 right-8 px-6 py-4 bg-green-500 text-white rounded-lg shadow-lg flex items-center gap-3 animate-slideInRight">
           <i className="fas fa-check-circle text-xl"></i>
           {notification}
         </div>

@@ -62,40 +62,44 @@ export default function FAQs() {
       
       <Navbar />
       
-      <div className="faqs-page">
-        <div className="container">
-          <div className="faqs-header">
-            <h1>Frequently Asked Questions</h1>
-            <p>Find answers to common questions about our 3D printing services</p>
+      <div className="min-h-screen bg-gradient-to-br from-orange-50/50 via-white to-amber-50/40 py-20">
+        <div className="max-w-[900px] mx-auto px-5">
+          <div className="text-center mb-16">
+            <h1 className="text-5xl font-bold text-dark-brown mb-4">Frequently Asked Questions</h1>
+            <p className="text-lg text-gray-600">Find answers to common questions about our 3D printing services</p>
           </div>
 
-          <div className="faqs-list">
+          <div className="space-y-4 mb-16">
             {faqData.map((faq, index) => (
               <div 
                 key={index} 
-                className={`faq-item ${openIndex === index ? 'active' : ''}`}
+                className={`bg-white rounded-[20px] shadow-[0_4px_15px_rgba(0,0,0,0.08)] overflow-hidden transition-all duration-300 ${openIndex === index ? 'shadow-[0_8px_25px_rgba(0,0,0,0.15)]' : ''}`}
               >
                 <div 
-                  className="faq-question"
+                  className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors duration-300"
                   onClick={() => toggleFAQ(index)}
                 >
-                  <h3>{faq.question}</h3>
-                  <span className="faq-icon">{openIndex === index ? '−' : '+'}</span>
+                  <h3 className="text-lg font-semibold text-dark-brown pr-6">{faq.question}</h3>
+                  <span className="text-2xl font-bold text-primary-orange flex-shrink-0 w-8 h-8 flex items-center justify-center">
+                    {openIndex === index ? '−' : '+'}
+                  </span>
                 </div>
                 {openIndex === index && (
-                  <div className="faq-answer">
-                    <p>{faq.answer}</p>
+                  <div className="px-6 pb-6 pt-0 animate-[slideDown_0.3s_ease-out]">
+                    <p className="text-gray-700 leading-relaxed">{faq.answer}</p>
                   </div>
                 )}
               </div>
             ))}
           </div>
 
-          <div className="faqs-contact">
-            <h3>Still have questions?</h3>
-            <p>Can't find the answer you're looking for? Please reach out to our customer support team.</p>
+          <div className="bg-gradient-to-br from-primary-orange to-hover-orange rounded-[30px] p-12 text-center text-white shadow-[0_10px_30px_rgba(242,92,5,0.3)]">
+            <h3 className="text-3xl font-bold mb-4">Still have questions?</h3>
+            <p className="text-lg mb-8 text-white/90">Can't find the answer you're looking for? Please reach out to our customer support team.</p>
             <a href="/contact">
-              <button className="contact-btn">Contact Us</button>
+              <button className="bg-white text-primary-orange px-10 py-4 rounded-full font-bold text-lg shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.3)] transition-all duration-300 hover:-translate-y-1 border-none cursor-pointer">
+                Contact Us
+              </button>
             </a>
           </div>
         </div>

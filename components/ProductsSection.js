@@ -69,71 +69,74 @@ export default function ProductsSection() {
   }
 
   return (
-    <section className="products-section" id="products">
-      <div className="container">
-        <h2 className="products-section-title">Our Products</h2>
+    <section className="py-20 bg-gradient-to-br from-white via-orange-50/30 to-white" id="products">
+      <div className="max-w-[1200px] mx-auto px-5">
+        <h2 className="text-4xl font-bold text-dark-brown text-center mb-16">Our Products</h2>
         
-        <div className="products-layout">
+        <div className="flex flex-col lg:flex-row gap-12">
           {/* Left side - Circular Buttons */}
-          <div className="circular-buttons-container">
+          <div className="lg:w-[220px] flex lg:flex-col justify-center gap-6 flex-wrap">
             {categories.map((category) => (
-              <div key={`circle-${category.id}`} className="circular-button-wrapper">
+              <div key={`circle-${category.id}`} className="flex flex-col items-center gap-3">
                 <button
                   onClick={() => handleCategoryClick(category.key)}
-                  className={`circular-product-button ${activeCategory === category.key ? 'active' : ''}`}
-                  style={{'--category-color': '#F25C05'}}
+                  className={`w-24 h-24 rounded-full flex items-center justify-center text-3xl transition-all duration-300 shadow-lg hover:scale-110 ${
+                    activeCategory === category.key
+                      ? 'bg-primary-orange text-white shadow-[0_0_30px_rgba(242,92,5,0.6)] scale-110'
+                      : 'bg-white text-primary-orange shadow-[0_4px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_6px_25px_rgba(242,92,5,0.3)]'
+                  }`}
                 >
                   <i className={`fas ${category.icon}`}></i>
                 </button>
-                <span className="category-label">{category.name}</span>
+                <span className="text-sm font-semibold text-dark-brown text-center max-w-[100px]">{category.name}</span>
               </div>
             ))}
           </div>
 
           {/* Right side - Product Cards */}
-          <div className="products-cards-container">
+          <div className="flex-1">
             {!activeCategory && (
-              <div className="no-category-selected">
-                <i className="fas fa-hand-pointer"></i>
-                <p>Click on a category button to view products</p>
+              <div className="flex flex-col items-center justify-center h-full text-gray-400 gap-4">
+                <i className="fas fa-hand-pointer text-6xl"></i>
+                <p className="text-lg">Click on a category button to view products</p>
               </div>
             )}
 
             {/* Keychains */}
             {activeCategory === 'keychains' && (
-              <div className="category-group active">
-                <div className="category-header">
-                  <h1 className="category-group-title">
-                    <i className="fas fa-key"></i> Keychains
+              <div className="animate-[fadeIn_0.3s_ease-out]">
+                <div className="flex items-center justify-between mb-8">
+                  <h1 className="text-3xl font-bold text-dark-brown flex items-center gap-3">
+                    <i className="fas fa-key text-primary-orange"></i> Keychains
                   </h1>
                   <button 
                     onClick={() => handleViewAll('keychains')} 
-                    className="view-all-link"
+                    className="px-6 py-3 rounded-full font-semibold transition-all duration-300 bg-primary-orange text-white shadow-[0_4px_15px_rgba(242,92,5,0.3)] hover:bg-hover-orange flex items-center gap-2"
                   >
                     {expandedCategory === 'keychains' ? 'Show Less' : 'View All'} 
                     <i className={`fas fa-arrow-${expandedCategory === 'keychains' ? 'up' : 'right'}`}></i>
                   </button>
                 </div>
-                <div className="category-cards-grid">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                   {getDisplayProducts('keychains').map((product, index) => (
-                    <div key={product.id} className="mini-product-card">
-                      <Link href={`/product/${product.id}`} className="product-link-overlay">
-                        <div className="product-image-placeholder">
+                    <div key={product.id} className="bg-white rounded-xl p-4 shadow-[0_4px_15px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-1 relative group">
+                      <Link href={`/product/${product.id}`} className="block">
+                        <div className="bg-gradient-to-br from-primary-orange to-hover-orange rounded-lg p-6 mb-3 flex items-center justify-center text-white text-3xl h-32">
                           <i className={`fas ${product.icon}`}></i>
                         </div>
-                        <div className="product-card-name">
-                          <h4>{product.name}</h4>
-                          <span className="product-card-price">₹{product.price}</span>
+                        <div className="space-y-1">
+                          <h4 className="text-sm font-bold text-dark-brown line-clamp-2 min-h-[2.5rem]">{product.name}</h4>
+                          <span className="text-primary-orange font-bold text-base">₹{product.price}</span>
                         </div>
                       </Link>
                       <button 
-                        className="mini-add-to-cart"
+                        className="absolute bottom-4 right-4 w-9 h-9 bg-primary-orange text-white rounded-full flex items-center justify-center hover:bg-hover-orange transition-all duration-300 shadow-md hover:scale-110"
                         onClick={(e) => {
                           e.preventDefault()
                           addToCart(product)
                         }}
                       >
-                        <i className="fas fa-shopping-cart"></i>
+                        <i className="fas fa-shopping-cart text-xs"></i>
                       </button>
                     </div>
                   ))}
@@ -143,39 +146,39 @@ export default function ProductsSection() {
 
             {/* Superhero Models */}
             {activeCategory === 'superhero' && (
-              <div className="category-group active">
-                <div className="category-header">
-                  <h3 className="category-group-title">
-                    <i className="fas fa-mask"></i> Superhero Models
+              <div className="animate-[fadeIn_0.3s_ease-out]">
+                <div className="flex items-center justify-between mb-8">
+                  <h3 className="text-3xl font-bold text-dark-brown flex items-center gap-3">
+                    <i className="fas fa-mask text-primary-orange"></i> Superhero Models
                   </h3>
                   <button 
                     onClick={() => handleViewAll('superhero')} 
-                    className="view-all-link"
+                    className="px-6 py-3 rounded-full font-semibold transition-all duration-300 bg-primary-orange text-white shadow-[0_4px_15px_rgba(242,92,5,0.3)] hover:bg-hover-orange flex items-center gap-2"
                   >
                     {expandedCategory === 'superhero' ? 'Show Less' : 'View All'} 
                     <i className={`fas fa-arrow-${expandedCategory === 'superhero' ? 'up' : 'right'}`}></i>
                   </button>
                 </div>
-                <div className="category-cards-grid">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                   {getDisplayProducts('superhero').map((product, index) => (
-                    <div key={product.id} className="mini-product-card">
-                      <Link href={`/product/${product.id}`} className="product-link-overlay">
-                        <div className="product-image-placeholder">
+                    <div key={product.id} className="bg-white rounded-xl p-4 shadow-[0_4px_15px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-1 relative group">
+                      <Link href={`/product/${product.id}`} className="block">
+                        <div className="bg-gradient-to-br from-primary-orange to-hover-orange rounded-lg p-6 mb-3 flex items-center justify-center text-white text-3xl h-32">
                           <i className={`fas ${product.icon}`}></i>
                         </div>
-                        <div className="product-card-name">
-                          <h4>{product.name}</h4>
-                          <span className="product-card-price">₹{product.price}</span>
+                        <div className="space-y-1">
+                          <h4 className="text-sm font-bold text-dark-brown line-clamp-2 min-h-[2.5rem]">{product.name}</h4>
+                          <span className="text-primary-orange font-bold text-base">₹{product.price}</span>
                         </div>
                       </Link>
                       <button 
-                        className="mini-add-to-cart"
+                        className="absolute bottom-4 right-4 w-9 h-9 bg-primary-orange text-white rounded-full flex items-center justify-center hover:bg-hover-orange transition-all duration-300 shadow-md hover:scale-110"
                         onClick={(e) => {
                           e.preventDefault()
                           addToCart(product)
                         }}
                       >
-                        <i className="fas fa-shopping-cart"></i>
+                        <i className="fas fa-shopping-cart text-xs"></i>
                       </button>
                     </div>
                   ))}
@@ -185,39 +188,39 @@ export default function ProductsSection() {
 
             {/* Devotional */}
             {activeCategory === 'devotional' && (
-              <div className="category-group active">
-                <div className="category-header">
-                  <h3 className="category-group-title">
-                    <i className="fas fa-om"></i> Devotional
+              <div className="animate-[fadeIn_0.3s_ease-out]">
+                <div className="flex items-center justify-between mb-8">
+                  <h3 className="text-3xl font-bold text-dark-brown flex items-center gap-3">
+                    <i className="fas fa-om text-primary-orange"></i> Devotional
                   </h3>
                   <button 
                     onClick={() => handleViewAll('devotional')} 
-                    className="view-all-link"
+                    className="px-6 py-3 rounded-full font-semibold transition-all duration-300 bg-primary-orange text-white shadow-[0_4px_15px_rgba(242,92,5,0.3)] hover:bg-hover-orange flex items-center gap-2"
                   >
                     {expandedCategory === 'devotional' ? 'Show Less' : 'View All'} 
                     <i className={`fas fa-arrow-${expandedCategory === 'devotional' ? 'up' : 'right'}`}></i>
                   </button>
                 </div>
-                <div className="category-cards-grid">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                   {getDisplayProducts('devotional').map((product, index) => (
-                    <div key={product.id} className="mini-product-card">
-                      <Link href={`/product/${product.id}`} className="product-link-overlay">
-                        <div className="product-image-placeholder">
+                    <div key={product.id} className="bg-white rounded-xl p-4 shadow-[0_4px_15px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-1 relative group">
+                      <Link href={`/product/${product.id}`} className="block">
+                        <div className="bg-gradient-to-br from-primary-orange to-hover-orange rounded-lg p-6 mb-3 flex items-center justify-center text-white text-3xl h-32">
                           <i className={`fas ${product.icon}`}></i>
                         </div>
-                        <div className="product-card-name">
-                          <h4>{product.name}</h4>
-                          <span className="product-card-price">₹{product.price}</span>
+                        <div className="space-y-1">
+                          <h4 className="text-sm font-bold text-dark-brown line-clamp-2 min-h-[2.5rem]">{product.name}</h4>
+                          <span className="text-primary-orange font-bold text-base">₹{product.price}</span>
                         </div>
                       </Link>
                       <button 
-                        className="mini-add-to-cart"
+                        className="absolute bottom-4 right-4 w-9 h-9 bg-primary-orange text-white rounded-full flex items-center justify-center hover:bg-hover-orange transition-all duration-300 shadow-md hover:scale-110"
                         onClick={(e) => {
                           e.preventDefault()
                           addToCart(product)
                         }}
                       >
-                        <i className="fas fa-shopping-cart"></i>
+                        <i className="fas fa-shopping-cart text-xs"></i>
                       </button>
                     </div>
                   ))}
@@ -227,39 +230,39 @@ export default function ProductsSection() {
 
             {/* Toys */}
             {activeCategory === 'toys' && (
-              <div className="category-group active">
-                <div className="category-header">
-                  <h3 className="category-group-title">
-                    <i className="fas fa-dice"></i> Toys
+              <div className="animate-[fadeIn_0.3s_ease-out]">
+                <div className="flex items-center justify-between mb-8">
+                  <h3 className="text-3xl font-bold text-dark-brown flex items-center gap-3">
+                    <i className="fas fa-dice text-primary-orange"></i> Toys
                   </h3>
                   <button 
                     onClick={() => handleViewAll('toys')} 
-                    className="view-all-link"
+                    className="px-6 py-3 rounded-full font-semibold transition-all duration-300 bg-primary-orange text-white shadow-[0_4px_15px_rgba(242,92,5,0.3)] hover:bg-hover-orange flex items-center gap-2"
                   >
                     {expandedCategory === 'toys' ? 'Show Less' : 'View All'} 
                     <i className={`fas fa-arrow-${expandedCategory === 'toys' ? 'up' : 'right'}`}></i>
                   </button>
                 </div>
-                <div className="category-cards-grid">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                   {getDisplayProducts('toys').map((product, index) => (
-                    <div key={product.id} className="mini-product-card">
-                      <Link href={`/product/${product.id}`} className="product-link-overlay">
-                        <div className="product-image-placeholder">
+                    <div key={product.id} className="bg-white rounded-xl p-4 shadow-[0_4px_15px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-1 relative group">
+                      <Link href={`/product/${product.id}`} className="block">
+                        <div className="bg-gradient-to-br from-primary-orange to-hover-orange rounded-lg p-6 mb-3 flex items-center justify-center text-white text-3xl h-32">
                           <i className={`fas ${product.icon}`}></i>
                         </div>
-                        <div className="product-card-name">
-                          <h4>{product.name}</h4>
-                          <span className="product-card-price">₹{product.price}</span>
+                        <div className="space-y-1">
+                          <h4 className="text-sm font-bold text-dark-brown line-clamp-2 min-h-[2.5rem]">{product.name}</h4>
+                          <span className="text-primary-orange font-bold text-base">₹{product.price}</span>
                         </div>
                       </Link>
                       <button 
-                        className="mini-add-to-cart"
+                        className="absolute bottom-4 right-4 w-9 h-9 bg-primary-orange text-white rounded-full flex items-center justify-center hover:bg-hover-orange transition-all duration-300 shadow-md hover:scale-110"
                         onClick={(e) => {
                           e.preventDefault()
                           addToCart(product)
                         }}
                       >
-                        <i className="fas fa-shopping-cart"></i>
+                        <i className="fas fa-shopping-cart text-xs"></i>
                       </button>
                     </div>
                   ))}
@@ -271,7 +274,7 @@ export default function ProductsSection() {
       </div>
       
       {notification && (
-        <div className="notification-popup">
+        <div className="fixed bottom-8 right-8 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 animate-[slideUp_0.3s_ease-out] z-50">
           <i className="fas fa-check-circle"></i>
           {notification}
         </div>

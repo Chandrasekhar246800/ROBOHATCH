@@ -59,103 +59,118 @@ export default function Cart() {
       
       <Navbar />
       
-      <div className="cart-page">
-        <div className="container">
-          <div className="cart-header">
-            <h1>Shopping Cart</h1>
-            <p>{cartItems.length} {cartItems.length === 1 ? 'item' : 'items'} in your cart</p>
+      <div className="min-h-screen bg-gradient-to-br from-orange-50/40 via-white to-amber-50/30 py-12">
+        <div className="max-w-[1200px] mx-auto px-5">
+          <div className="mb-12">
+            <h1 className="text-4xl font-bold text-dark-brown mb-2">Shopping Cart</h1>
+            <p className="text-gray-600">{cartItems.length} {cartItems.length === 1 ? 'item' : 'items'} in your cart</p>
           </div>
 
           {cartItems.length === 0 ? (
-            <div className="empty-cart">
-              <i className="fas fa-shopping-cart"></i>
-              <h2>Your cart is empty</h2>
-              <p>Add some amazing 3D printed products to get started!</p>
-              <Link href="/" className="continue-shopping-btn">
+            <div className="bg-white rounded-[20px] p-16 text-center shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+              <i className="fas fa-shopping-cart text-7xl text-gray-300 mb-6"></i>
+              <h2 className="text-2xl font-bold text-dark-brown mb-3">Your cart is empty</h2>
+              <p className="text-gray-600 mb-8">Add some amazing 3D printed products to get started!</p>
+              <Link href="/" className="inline-flex items-center gap-2 bg-primary-orange text-white px-8 py-4 rounded-full font-semibold text-lg shadow-[0_4px_15px_rgba(242,92,5,0.3)] hover:bg-hover-orange transition-all duration-300 hover:-translate-y-0.5">
+                <i className="fas fa-arrow-left"></i>
                 Continue Shopping
               </Link>
             </div>
           ) : (
-            <div className="cart-content">
-              <div className="cart-items">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2 space-y-4">
                 {cartItems.map(item => (
-                  <div key={item.id} className="cart-item">
-                    <div className="item-image">
-                      <div className="image-placeholder-cart">
-                        <i className={`fas ${item.icon || 'fa-box'}`}></i>
+                  <div key={item.id} className="bg-white rounded-[20px] p-6 shadow-[0_4px_15px_rgba(0,0,0,0.08)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.12)] transition-all duration-300">
+                    <div className="flex gap-6">
+                      <div className="flex-shrink-0">
+                        <div className="w-32 h-32 bg-gradient-to-br from-primary-orange to-hover-orange rounded-xl flex items-center justify-center text-white text-5xl">
+                          <i className={`fas ${item.icon || 'fa-box'}`}></i>
+                        </div>
                       </div>
-                    </div>
-                    <div className="item-details">
-                      <h3>{item.name}</h3>
-                      <p className="item-description">{item.description}</p>
-                      <button 
-                        className="remove-btn"
-                        onClick={() => removeItem(item.id)}
-                      >
-                        <i className="fas fa-trash"></i> Remove
-                      </button>
-                    </div>
-                    <div className="item-quantity">
-                      <label>Quantity</label>
-                      <div className="quantity-controls">
+                      <div className="flex-1 flex flex-col justify-between">
+                        <div>
+                          <h3 className="text-xl font-bold text-dark-brown mb-2">{item.name}</h3>
+                          <p className="text-gray-600 text-sm mb-4">{item.description}</p>
+                        </div>
                         <button 
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          disabled={item.quantity <= 1}
+                          className="flex items-center gap-2 text-red-500 hover:text-red-700 font-medium text-sm transition-colors duration-300 self-start"
+                          onClick={() => removeItem(item.id)}
                         >
-                          <i className="fas fa-minus"></i>
-                        </button>
-                        <span>{item.quantity}</span>
-                        <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>
-                          <i className="fas fa-plus"></i>
+                          <i className="fas fa-trash"></i> Remove
                         </button>
                       </div>
-                    </div>
-                    <div className="item-price">
-                      <label>Price</label>
-                      <p className="price">₹{(item.price * item.quantity).toFixed(2)}</p>
-                      <p className="unit-price">₹{item.price.toFixed(2)} each</p>
+                      <div className="flex flex-col items-end justify-between">
+                        <div className="text-right">
+                          <label className="text-sm text-gray-600 block mb-2">Quantity</label>
+                          <div className="flex items-center gap-3 bg-gray-100 rounded-full px-2 py-1">
+                            <button 
+                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              disabled={item.quantity <= 1}
+                              className="w-8 h-8 rounded-full bg-white shadow-sm hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-dark-brown hover:bg-primary-orange hover:text-white"
+                            >
+                              <i className="fas fa-minus text-xs"></i>
+                            </button>
+                            <span className="text-lg font-bold text-dark-brown min-w-[30px] text-center">{item.quantity}</span>
+                            <button 
+                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              className="w-8 h-8 rounded-full bg-white shadow-sm hover:shadow-md transition-all flex items-center justify-center text-dark-brown hover:bg-primary-orange hover:text-white"
+                            >
+                              <i className="fas fa-plus text-xs"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <label className="text-sm text-gray-600 block mb-1">Price</label>
+                          <p className="text-2xl font-bold text-primary-orange">₹{(item.price * item.quantity).toFixed(2)}</p>
+                          <p className="text-sm text-gray-500">₹{item.price.toFixed(2)} each</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
 
-              <div className="cart-summary">
-                <h2>Order Summary</h2>
-                <div className="summary-row">
-                  <span>Subtotal</span>
-                  <span>₹{subtotal.toFixed(2)}</span>
-                </div>
-                <div className="summary-row">
-                  <span>Shipping</span>
-                  <span>₹{shipping.toFixed(2)}</span>
-                </div>
-                <div className="summary-row">
-                  <span>Tax (8%)</span>
-                  <span>₹{tax.toFixed(2)}</span>
-                </div>
-                <div className="summary-divider"></div>
-                <div className="summary-row total">
-                  <span>Total</span>
-                  <span>₹{total.toFixed(2)}</span>
-                </div>
-                
-                <button className="checkout-btn">
-                  Proceed to Checkout
-                  <i className="fas fa-arrow-right"></i>
-                </button>
-                
-                <Link href="/" className="continue-shopping">
-                  <i className="fas fa-arrow-left"></i>
-                  Continue Shopping
-                </Link>
+              <div className="lg:col-span-1">
+                <div className="bg-white rounded-[20px] p-6 shadow-[0_4px_15px_rgba(0,0,0,0.08)] sticky top-24">
+                  <h2 className="text-2xl font-bold text-dark-brown mb-6">Order Summary</h2>
+                  <div className="space-y-4 mb-6">
+                    <div className="flex justify-between text-gray-700">
+                      <span>Subtotal</span>
+                      <span className="font-semibold">₹{subtotal.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-gray-700">
+                      <span>Shipping</span>
+                      <span className="font-semibold">₹{shipping.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-gray-700">
+                      <span>Tax (8%)</span>
+                      <span className="font-semibold">₹{tax.toFixed(2)}</span>
+                    </div>
+                    <div className="border-t-2 border-gray-200 pt-4"></div>
+                    <div className="flex justify-between text-xl font-bold text-dark-brown">
+                      <span>Total</span>
+                      <span className="text-primary-orange">₹{total.toFixed(2)}</span>
+                    </div>
+                  </div>
+                  
+                  <button className="w-full bg-primary-orange text-white px-6 py-4 rounded-full font-bold text-lg shadow-[0_4px_15px_rgba(242,92,5,0.3)] hover:bg-hover-orange transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_6px_20px_rgba(242,92,5,0.4)] flex items-center justify-center gap-3 mb-4">
+                    Proceed to Checkout
+                    <i className="fas fa-arrow-right"></i>
+                  </button>
+                  
+                  <Link href="/" className="w-full flex items-center justify-center gap-3 text-primary-orange hover:text-hover-orange font-semibold text-sm transition-colors duration-300">
+                    <i className="fas fa-arrow-left"></i>
+                    Continue Shopping
+                  </Link>
 
-                <div className="payment-methods">
-                  <p>We accept</p>
-                  <div className="payment-icons">
-                    <i className="fab fa-cc-visa"></i>
-                    <i className="fab fa-cc-mastercard"></i>
-                    <i className="fab fa-cc-paypal"></i>
-                    <i className="fab fa-cc-amex"></i>
+                  <div className="mt-8 pt-6 border-t border-gray-200">
+                    <p className="text-sm text-gray-600 mb-3 text-center">We accept</p>
+                    <div className="flex justify-center gap-4 text-3xl text-gray-400">
+                      <i className="fab fa-cc-visa hover:text-primary-orange transition-colors duration-300"></i>
+                      <i className="fab fa-cc-mastercard hover:text-primary-orange transition-colors duration-300"></i>
+                      <i className="fab fa-cc-paypal hover:text-primary-orange transition-colors duration-300"></i>
+                      <i className="fab fa-cc-amex hover:text-primary-orange transition-colors duration-300"></i>
+                    </div>
                   </div>
                 </div>
               </div>
