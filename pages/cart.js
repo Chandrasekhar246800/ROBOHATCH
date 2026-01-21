@@ -70,23 +70,23 @@ export default function Cart() {
           </div>
 
           {cartItems.length === 0 ? (
-            <div className="bg-white rounded-[20px] p-8 sm:p-12 md:p-16 text-center shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
-              <i className="fas fa-shopping-cart text-5xl sm:text-6xl md:text-7xl text-gray-300 mb-4 sm:mb-6"></i>
-              <h2 className="text-xl sm:text-2xl font-bold text-dark-brown mb-2 sm:mb-3">Your cart is empty</h2>
-              <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8">Add some amazing 3D printed products to get started!</p>
+            <div className="bg-white rounded-[20px] p-8 sm:p-12 md:p-16 lg:p-20 text-center shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+              <i className="fas fa-shopping-cart text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-gray-300 mb-4 sm:mb-6 md:mb-8"></i>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-dark-brown mb-2 sm:mb-3">Your cart is empty</h2>
+              <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-6 sm:mb-8 md:mb-10">Add some amazing 3D printed products to get started!</p>
               <Link href="/" className="inline-flex items-center gap-2 bg-primary-orange text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg shadow-[0_4px_15px_rgba(242,92,5,0.3)] hover:bg-hover-orange transition-all duration-300 hover:-translate-y-0.5">
                 <i className="fas fa-arrow-left"></i>
                 Continue Shopping
               </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
-              <div className="lg:col-span-2 space-y-3 sm:space-y-4">
+            <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-[2fr_1fr] gap-6 sm:gap-8 lg:gap-10">
+              <div className="space-y-3 sm:space-y-4 md:space-y-5">
                 {cartItems.map(item => (
-                  <div key={item.id} className="bg-white rounded-[20px] p-4 sm:p-6 shadow-[0_4px_15px_rgba(0,0,0,0.08)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.12)] transition-all duration-300">
-                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                  <div key={item.id} className="bg-white rounded-[20px] p-4 sm:p-6 md:p-7 shadow-[0_4px_15px_rgba(0,0,0,0.08)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.12)] transition-all duration-300">
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8">
                       <div className="flex-shrink-0 self-center sm:self-start">
-                        <div className="w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-primary-orange to-hover-orange rounded-xl flex items-center justify-center text-white text-4xl sm:text-5xl">
+                        <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 bg-gradient-to-br from-primary-orange to-hover-orange rounded-xl flex items-center justify-center text-white text-4xl sm:text-5xl md:text-6xl">
                           <i className={`fas ${item.icon || 'fa-box'}`}></i>
                         </div>
                       </div>
@@ -114,23 +114,23 @@ export default function Cart() {
                             <button 
                               onClick={() => updateQuantity(item.id, item.quantity - 1)}
                               disabled={item.quantity <= 1}
-                              className="w-8 h-8 rounded-full bg-white shadow-sm hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-dark-brown hover:bg-primary-orange hover:text-white"
+                              className="w-9 h-9 sm:w-8 sm:h-8 rounded-full bg-white shadow-sm hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-dark-brown hover:bg-primary-orange hover:text-white active:scale-90"
                             >
                               <i className="fas fa-minus text-xs"></i>
                             </button>
-                            <span className="text-lg font-bold text-dark-brown min-w-[30px] text-center">{item.quantity}</span>
+                            <span className="text-lg sm:text-lg font-bold text-dark-brown min-w-[35px] sm:min-w-[30px] text-center">{item.quantity}</span>
                             <button 
                               onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                              className="w-8 h-8 rounded-full bg-white shadow-sm hover:shadow-md transition-all flex items-center justify-center text-dark-brown hover:bg-primary-orange hover:text-white"
+                              className="w-9 h-9 sm:w-8 sm:h-8 rounded-full bg-white shadow-sm hover:shadow-md transition-all flex items-center justify-center text-dark-brown hover:bg-primary-orange hover:text-white active:scale-90"
                             >
                               <i className="fas fa-plus text-xs"></i>
                             </button>
                           </div>
                         </div>
-                        <div className="text-right">
-                          <label className="text-sm text-gray-600 block mb-1">Price</label>
-                          <p className="text-2xl font-bold text-primary-orange">₹{(item.price * item.quantity).toFixed(2)}</p>
-                          <p className="text-sm text-gray-500">₹{item.price.toFixed(2)} each</p>
+                        <div className="flex-1 text-right">
+                          <label className="text-xs sm:text-sm text-gray-600 block mb-1">Price</label>
+                          <p className="text-2xl sm:text-2xl md:text-3xl font-bold text-primary-orange">₹{(item.price * item.quantity).toFixed(2)}</p>
+                          <p className="text-xs sm:text-sm text-gray-500">₹{item.price.toFixed(2)} each</p>
                         </div>
                       </div>
                     </div>

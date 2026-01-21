@@ -65,9 +65,9 @@ export default function ProductDetail() {
       
       <Navbar />
       
-      <div className="min-h-screen pt-[120px] pb-20 bg-gradient-to-br from-[#f5f7fa] to-[#c3cfe2]">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center gap-2 text-sm mb-8 text-[#666]">
+      <div className="min-h-screen pt-[100px] sm:pt-[110px] md:pt-[120px] pb-12 sm:pb-16 md:pb-20 bg-gradient-to-br from-[#f5f7fa] to-[#c3cfe2]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1400px]">
+          <div className="flex items-center gap-2 text-xs sm:text-sm mb-6 sm:mb-8 text-[#666]">
             <Link href="/" className="hover:text-primary-orange transition-colors">Home</Link>
             <i className="fas fa-chevron-right text-xs"></i>
             <Link href="/#products" className="hover:text-primary-orange transition-colors">Products</Link>
@@ -75,19 +75,19 @@ export default function ProductDetail() {
             <span className="text-[#2c3e50] font-medium">{product.name}</span>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div className="bg-gradient-to-br from-white to-[#f8f9fa] rounded-[20px] shadow-[0_10px_40px_rgba(0,0,0,0.1)] p-16 flex items-center justify-center">
-              <div className="w-80 h-80 bg-gradient-to-br from-primary-orange/20 to-[#ff3b29]/20 rounded-full flex items-center justify-center">
-                <i className={`fas ${product.icon} text-[150px] text-primary-orange`}></i>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12">
+            <div className="bg-gradient-to-br from-white to-[#f8f9fa] rounded-[15px] sm:rounded-[20px] shadow-[0_10px_40px_rgba(0,0,0,0.1)] p-8 sm:p-12 md:p-16 flex items-center justify-center">
+              <div className="w-60 h-60 sm:w-72 sm:h-72 md:w-80 md:h-80 bg-gradient-to-br from-primary-orange/20 to-[#ff3b29]/20 rounded-full flex items-center justify-center">
+                <i className={`fas ${product.icon} text-[100px] sm:text-[120px] md:text-[150px] text-primary-orange`}></i>
               </div>
             </div>
 
             <div className="flex flex-col justify-center">
-              <h1 className="text-4xl font-bold text-[#2c3e50] mb-6">{product.name}</h1>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#2c3e50] mb-4 sm:mb-5 md:mb-6">{product.name}</h1>
               
-              <div className="mb-8">
-                <span className="text-4xl font-bold text-primary-orange">₹{product.price}</span>
-                <span className="block text-sm text-[#888] mt-2">Inclusive of all taxes</span>
+              <div className="mb-6 sm:mb-7 md:mb-8">
+                <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary-orange">₹{product.price}</span>
+                <span className="block text-xs sm:text-sm text-[#888] mt-2">Inclusive of all taxes</span>
               </div>
 
               <div className="mb-8">
@@ -95,30 +95,30 @@ export default function ProductDetail() {
                 <p className="text-[#555] leading-relaxed text-lg">{product.description}</p>
               </div>
 
-              <div className="mb-8">
-                <h3 className="text-xl font-semibold text-[#2c3e50] mb-4">Features</h3>
-                <ul className="space-y-3">
-                  <li className="flex items-center gap-3 text-[#555]">
-                    <i className="fas fa-check-circle text-[#4caf50] text-xl"></i>
+              <div className="mb-6 sm:mb-7 md:mb-8">
+                <h3 className=\"text-lg sm:text-xl md:text-2xl font-semibold text-[#2c3e50] mb-3 sm:mb-4\">Features</h3>
+                <ul className=\"space-y-2 sm:space-y-3\">
+                  <li className="flex items-center gap-3 text-sm sm:text-base text-[#555]">
+                    <i className="fas fa-check-circle text-[#4caf50] text-lg sm:text-xl"></i>
                     High-quality 3D printed material
                   </li>
-                  <li className="flex items-center gap-3 text-[#555]">
-                    <i className="fas fa-check-circle text-[#4caf50] text-xl"></i>
+                  <li className="flex items-center gap-3 text-sm sm:text-base text-[#555]">
+                    <i className="fas fa-check-circle text-[#4caf50] text-lg sm:text-xl"></i>
                     Durable and long-lasting
                   </li>
-                  <li className="flex items-center gap-3 text-[#555]">
-                    <i className="fas fa-check-circle text-[#4caf50] text-xl"></i>
+                  <li className="flex items-center gap-3 text-sm sm:text-base text-[#555]">
+                    <i className="fas fa-check-circle text-[#4caf50] text-lg sm:text-xl"></i>
                     Customization available
                   </li>
-                  <li className="flex items-center gap-3 text-[#555]">
-                    <i className="fas fa-check-circle text-[#4caf50] text-xl"></i>
+                  <li className="flex items-center gap-3 text-sm sm:text-base text-[#555]">
+                    <i className="fas fa-check-circle text-[#4caf50] text-lg sm:text-xl"></i>
                     Eco-friendly production
                   </li>
                 </ul>
               </div>
 
-              <div className="flex items-end gap-6 mb-8">
-                <div className="flex flex-col">
+              <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4 sm:gap-6 mb-6 sm:mb-8">
+                <div className="flex flex-col w-full sm:w-auto">
                   <label className="text-sm font-medium text-[#2c3e50] mb-2">Quantity</label>
                   <div className="flex items-center gap-4 bg-white rounded-lg shadow-md px-2 py-1">
                     <button 
@@ -128,7 +128,7 @@ export default function ProductDetail() {
                     >
                       <i className="fas fa-minus"></i>
                     </button>
-                    <span className="text-xl font-semibold text-[#2c3e50] min-w-[40px] text-center">{quantity}</span>
+                    <span className="text-lg sm:text-xl font-semibold text-[#2c3e50] min-w-[40px] text-center">{quantity}</span>
                     <button 
                       onClick={() => setQuantity(quantity + 1)}
                       className="w-10 h-10 flex items-center justify-center text-primary-orange text-xl transition-all hover:bg-primary-orange/10 rounded-lg"
@@ -139,7 +139,7 @@ export default function ProductDetail() {
                 </div>
 
                 <button 
-                  className="flex-1 bg-gradient-to-r from-primary-orange to-[#ff3b29] text-white text-lg font-semibold px-8 py-4 rounded-[12px] transition-all hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(255,94,77,0.4)] flex items-center justify-center gap-3" 
+                  className="flex-1 w-full sm:w-auto bg-gradient-to-r from-primary-orange to-[#ff3b29] text-white text-base sm:text-lg font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-[12px] transition-all hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(255,94,77,0.4)] flex items-center justify-center gap-3" 
                   onClick={addToCart}
                 >
                   <i className="fas fa-shopping-cart"></i>
@@ -147,7 +147,7 @@ export default function ProductDetail() {
                 </button>
               </div>
 
-              <div className="space-y-4 bg-white rounded-xl p-6 shadow-md">
+              <div className=\"space-y-3 sm:space-y-4 bg-white rounded-xl p-5 sm:p-6 shadow-md\">
                 <div className="flex items-center gap-4 text-[#555]">
                   <i className="fas fa-truck text-primary-orange text-xl"></i>
                   <span>Free delivery on orders above ₹500</span>

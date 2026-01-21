@@ -69,18 +69,18 @@ export default function ProductsSection() {
   }
 
   return (
-    <section className="py-20 bg-gradient-to-br from-white via-orange-50/30 to-white" id="products">
-      <div className="max-w-[1200px] mx-auto px-5">
-        <h2 className="text-4xl font-bold text-dark-brown text-center mb-16">Our Products</h2>
+    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-br from-white via-orange-50/30 to-white" id="products">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-5 lg:px-6">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-dark-brown text-center mb-8 sm:mb-12 md:mb-16">Our Products</h2>
         
-        <div className="flex flex-col lg:flex-row gap-12">
+        <div className="flex flex-col lg:flex-row gap-8 md:gap-10 lg:gap-12">
           {/* Left side - Circular Buttons */}
-          <div className="lg:w-[220px] flex lg:flex-col justify-center gap-6 flex-wrap">
+          <div className="lg:w-[220px] xl:w-[250px] flex lg:flex-col justify-center gap-4 sm:gap-5 md:gap-6 flex-wrap">
             {categories.map((category) => (
               <div key={`circle-${category.id}`} className="flex flex-col items-center gap-3">
                 <button
                   onClick={() => handleCategoryClick(category.key)}
-                  className={`w-24 h-24 rounded-full flex items-center justify-center text-3xl transition-all duration-300 shadow-lg hover:scale-110 ${
+                  className={`w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full flex items-center justify-center text-2xl sm:text-3xl md:text-4xl transition-all duration-300 shadow-lg hover:scale-110 ${
                     activeCategory === category.key
                       ? 'bg-primary-orange text-white shadow-[0_0_30px_rgba(242,92,5,0.6)] scale-110'
                       : 'bg-white text-primary-orange shadow-[0_4px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_6px_25px_rgba(242,92,5,0.3)]'
@@ -119,24 +119,24 @@ export default function ProductsSection() {
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                   {getDisplayProducts('keychains').map((product, index) => (
-                    <div key={product.id} className="bg-white rounded-xl p-4 shadow-[0_4px_15px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-1 relative group">
+                    <div key={product.id} className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-[0_4px_15px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-1 relative group active:scale-95">
                       <Link href={`/product/${product.id}`} className="block">
-                        <div className="bg-gradient-to-br from-primary-orange to-hover-orange rounded-lg p-6 mb-3 flex items-center justify-center text-white text-3xl h-32">
+                        <div className="bg-gradient-to-br from-primary-orange to-hover-orange rounded-lg sm:rounded-xl p-4 sm:p-6 mb-2 sm:mb-3 flex items-center justify-center text-white text-2xl sm:text-3xl h-24 sm:h-32">
                           <i className={`fas ${product.icon}`}></i>
                         </div>
                         <div className="space-y-1">
-                          <h4 className="text-sm font-bold text-dark-brown line-clamp-2 min-h-[2.5rem]">{product.name}</h4>
-                          <span className="text-primary-orange font-bold text-base">₹{product.price}</span>
+                          <h4 className="text-xs sm:text-sm font-bold text-dark-brown line-clamp-2 min-h-[2rem] sm:min-h-[2.5rem] leading-tight">{product.name}</h4>
+                          <span className="text-primary-orange font-bold text-sm sm:text-base">₹{product.price}</span>
                         </div>
                       </Link>
                       <button 
-                        className="absolute bottom-4 right-4 w-9 h-9 bg-primary-orange text-white rounded-full flex items-center justify-center hover:bg-hover-orange transition-all duration-300 shadow-md hover:scale-110"
+                        className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 w-8 h-8 sm:w-9 sm:h-9 bg-primary-orange text-white rounded-full flex items-center justify-center hover:bg-hover-orange transition-all duration-300 shadow-md hover:scale-110 active:scale-95"
                         onClick={(e) => {
                           e.preventDefault()
                           addToCart(product)
                         }}
                       >
-                        <i className="fas fa-shopping-cart text-xs"></i>
+                        <i className="fas fa-shopping-cart text-[10px] sm:text-xs"></i>
                       </button>
                     </div>
                   ))}

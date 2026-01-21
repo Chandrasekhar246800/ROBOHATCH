@@ -63,26 +63,26 @@ export default function Navbar({ hideLogin = false, hideMenu = false, hideCart =
   return (
     <>
       <nav className="sticky top-0 bg-white/98 backdrop-blur-md shadow-md z-[1000] transition-all duration-300">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-5">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-5 lg:px-6 xl:px-8">
           <div className="flex justify-between items-center py-3 sm:py-4">
-            <Link href="/" className="text-lg sm:text-2xl font-extrabold text-black tracking-wide flex items-center gap-2 sm:gap-3 no-underline transition-opacity duration-300 hover:opacity-80">
-              <Image src="/logo.png" alt="ROBOHATCH Logo" width={40} height={40} className="sm:w-[50px] sm:h-[50px] rounded-full border-2 border-primary-orange p-[5px] bg-white shadow-[0_2px_10px_rgba(242,92,5,0.3)] transition-transform duration-300 hover:scale-105" />
+            <Link href="/" className="text-lg sm:text-2xl md:text-3xl font-extrabold text-black tracking-wide flex items-center gap-2 sm:gap-3 no-underline transition-opacity duration-300 hover:opacity-80">
+              <Image src="/logo.png" alt="ROBOHATCH Logo" width={40} height={40} className="sm:w-[50px] sm:h-[50px] md:w-[55px] md:h-[55px] rounded-full border-2 border-primary-orange p-[5px] bg-white shadow-[0_2px_10px_rgba(242,92,5,0.3)] transition-transform duration-300 hover:scale-105" />
               <span className="hidden sm:inline">ROBOHATCH</span>
               <span className="sm:hidden">ROBO</span>
             </Link>
             {!hideMenu && (
               <>
                 {/* Desktop Menu */}
-                <ul className="hidden md:flex list-none gap-6 lg:gap-8">
-                  <li><Link href="/" className="no-underline text-dark-brown font-medium text-sm lg:text-base transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-0.5 after:bg-primary-orange after:transition-[width] after:duration-300 hover:text-primary-orange hover:after:w-full">Home</Link></li>
-                  <li><Link href="/#services" className="no-underline text-dark-brown font-medium text-sm lg:text-base transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-0.5 after:bg-primary-orange after:transition-[width] after:duration-300 hover:text-primary-orange hover:after:w-full">Categories</Link></li>
-                  <li><Link href="/#products" className="no-underline text-dark-brown font-medium text-sm lg:text-base transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-0.5 after:bg-primary-orange after:transition-[width] after:duration-300 hover:text-primary-orange hover:after:w-full">Products</Link></li>
-                  <li><Link href="/about" className="no-underline text-dark-brown font-medium text-sm lg:text-base transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-0.5 after:bg-primary-orange after:transition-[width] after:duration-300 hover:text-primary-orange hover:after:w-full">About</Link></li>
-                  <li><Link href="/contact" className="no-underline text-dark-brown font-medium text-sm lg:text-base transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-0.5 after:bg-primary-orange after:transition-[width] after:duration-300 hover:text-primary-orange hover:after:w-full">Contact</Link></li>
+                <ul className="hidden md:flex list-none gap-6 lg:gap-8 xl:gap-10">
+                  <li><Link href="/" className="no-underline text-dark-brown font-medium text-sm lg:text-base xl:text-lg transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-0.5 after:bg-primary-orange after:transition-[width] after:duration-300 hover:text-primary-orange hover:after:w-full">Home</Link></li>
+                  <li><Link href="/#services" className="no-underline text-dark-brown font-medium text-sm lg:text-base xl:text-lg transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-0.5 after:bg-primary-orange after:transition-[width] after:duration-300 hover:text-primary-orange hover:after:w-full">Categories</Link></li>
+                  <li><Link href="/#products" className="no-underline text-dark-brown font-medium text-sm lg:text-base xl:text-lg transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-0.5 after:bg-primary-orange after:transition-[width] after:duration-300 hover:text-primary-orange hover:after:w-full">Products</Link></li>
+                  <li><Link href="/about" className="no-underline text-dark-brown font-medium text-sm lg:text-base xl:text-lg transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-0.5 after:bg-primary-orange after:transition-[width] after:duration-300 hover:text-primary-orange hover:after:w-full">About</Link></li>
+                  <li><Link href="/contact" className="no-underline text-dark-brown font-medium text-sm lg:text-base xl:text-lg transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-0.5 after:bg-primary-orange after:transition-[width] after:duration-300 hover:text-primary-orange hover:after:w-full">Contact</Link></li>
                 </ul>
                 {/* Mobile Menu Button */}
                 <button
-                  className="md:hidden text-dark-brown text-xl p-2"
+                  className="md:hidden text-dark-brown text-2xl p-2 hover:bg-orange-50 rounded-lg transition-all active:scale-90"
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                   aria-label="Toggle menu"
                 >
@@ -90,11 +90,11 @@ export default function Navbar({ hideLogin = false, hideMenu = false, hideCart =
                 </button>
               </>
             )}
-            <div className="flex items-center gap-3 sm:gap-6">
+            <div className="flex items-center gap-4 sm:gap-6">
               {!hideCart && (
-                <Link href="/cart" className="relative text-dark-brown text-xl sm:text-[1.3rem] transition-colors duration-300 no-underline hover:text-primary-orange">
+                <Link href="/cart" className="relative text-dark-brown text-2xl sm:text-[1.3rem] transition-colors duration-300 no-underline hover:text-primary-orange active:scale-90 p-1">
                   <i className="fas fa-shopping-cart"></i>
-                  <span className="absolute top-[-8px] right-[-10px] bg-primary-orange text-white rounded-full w-[16px] h-[16px] sm:w-[18px] sm:h-[18px] flex items-center justify-center text-[0.6rem] sm:text-[0.7rem] font-bold">{cartCount}</span>
+                  <span className="absolute top-[-10px] right-[-12px] bg-gradient-to-br from-primary-orange to-hover-orange text-white rounded-full w-[18px] h-[18px] sm:w-[18px] sm:h-[18px] flex items-center justify-center text-[0.65rem] sm:text-[0.7rem] font-bold shadow-md">{cartCount}</span>
                 </Link>
               )}
               {!hideLogin && (
@@ -128,11 +128,11 @@ export default function Navbar({ hideLogin = false, hideMenu = false, hideCart =
       {/* Updates Banner */}
       {updates.length > 0 && (
         <div className="bg-gradient-to-r from-primary-orange via-hover-orange to-primary-orange py-2 sm:py-2.5 px-3 sm:px-5 shadow-md overflow-hidden relative">
-          <div className="max-w-[1200px] mx-auto">
+          <div className="max-w-[1400px] mx-auto px-4 sm:px-5 lg:px-6 xl:px-8">
             <div className="flex items-center justify-center gap-2 sm:gap-3 text-white">
-              <i className="fas fa-bullhorn animate-pulse text-sm sm:text-base"></i>
+              <i className="fas fa-bullhorn animate-pulse text-sm sm:text-base md:text-lg"></i>
               <div className="flex-1 text-center overflow-hidden">
-                <p className="m-0 font-medium text-xs sm:text-sm md:text-base animate-fade-in line-clamp-2">
+                <p className="m-0 font-medium text-xs sm:text-sm md:text-base lg:text-lg animate-fade-in line-clamp-2">
                   {updates[currentUpdateIndex]?.message}
                 </p>
               </div>

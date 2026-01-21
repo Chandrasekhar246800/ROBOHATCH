@@ -21,26 +21,26 @@ export default function Products() {
   }
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-orange-50 via-white to-orange-50" id="products">
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-5">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-dark-brown text-center mb-3 sm:mb-4 opacity-0 animate-[slideUp_0.6s_ease-out_forwards]">Featured Products</h2>
-        <p className="text-sm sm:text-base text-gray-600 text-center mb-8 sm:mb-10 md:mb-12 opacity-0 animate-[slideUp_0.6s_ease-out_forwards] [animation-delay:100ms]">Handpicked bestsellers and new arrivals</p>
+    <section className="py-10 sm:py-16 md:py-20 lg:py-24 xl:py-28 bg-gradient-to-br from-orange-50 via-white to-orange-50" id="products">
+      <div className="max-w-[1400px] mx-auto px-5 sm:px-5 lg:px-6 xl:px-8">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-dark-brown text-center mb-2 sm:mb-3 md:mb-4 opacity-0 animate-[slideUp_0.6s_ease-out_forwards]">Featured Products</h2>
+        <p className="text-sm sm:text-base md:text-lg text-gray-600 text-center mb-6 sm:mb-10 md:mb-12 lg:mb-16 opacity-0 animate-[slideUp_0.6s_ease-out_forwards] [animation-delay:100ms]">Handpicked bestsellers and new arrivals</p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-10">
           {products.map((product, index) => (
             <div 
               key={product.name} 
-              className="bg-gradient-to-br from-white to-orange-50/30 rounded-[20px] overflow-hidden shadow-[0_10px_30px_rgba(242,92,5,0.1)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(242,92,5,0.2)] hover:to-orange-100/40 opacity-0 animate-[slideUp_0.6s_ease-out_forwards]"
+              className="bg-gradient-to-br from-white to-orange-50/30 rounded-2xl sm:rounded-[20px] overflow-hidden shadow-[0_10px_30px_rgba(242,92,5,0.1)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(242,92,5,0.2)] hover:to-orange-100/40 opacity-0 animate-[slideUp_0.6s_ease-out_forwards] active:scale-95"
               style={{ animationDelay: `${(index + 1) * 100}ms` }}
             >
               <div className="relative">
-                <div className="bg-gradient-to-br from-primary-orange to-hover-orange h-64 flex items-center justify-center text-white text-6xl">
+                <div className="bg-gradient-to-br from-primary-orange to-hover-orange h-52 sm:h-64 flex items-center justify-center text-white text-5xl sm:text-6xl">
                   <i className={`fas ${product.icon}`}></i>
                 </div>
-                {product.badge && <span className="absolute top-4 right-4 bg-white text-primary-orange px-4 py-2 rounded-full text-sm font-bold shadow-md">{product.badge}</span>}
+                {product.badge && <span className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-white text-primary-orange px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-bold shadow-md">{product.badge}</span>}
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-dark-brown mb-2">{product.name}</h3>
+              <div className="p-5 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-bold text-dark-brown mb-2">{product.name}</h3>
                 <p className="text-gray-600 text-sm mb-4">{product.category}</p>
                 <div className="flex items-center justify-between">
                   <span className="text-2xl font-bold text-primary-orange">{product.price}</span>
