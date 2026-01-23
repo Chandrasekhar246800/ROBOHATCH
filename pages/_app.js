@@ -3,14 +3,23 @@ import { useEffect, useState } from 'react'
 import LoadingScreen from '@/components/LoadingScreen'
 
 export default function App({ Component, pageProps }) {
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false)
-    }, 4500) // 4s loading + 0.5s fade out
+    // Check if loading screen has already been shown in this session
+    const hasShownLoading = sessionStorage.getItem('hasShownLoading')
+    
+    if (!hasShownLoading) {
+      // Show loading screen only on first visit
+      setLoading(true)
+      
+      const timer = setTimeout(() => {
+        setLoading(false)
+        sessionStorage.setItem('hasShownLoading', 'true')
+      }, 4500) // 4s loading + 0.5s fade out
 
-    return () => clearTimeout(timer)
+      return () => clearTimeout(timer)
+    }
   }, [])
 
   return (
