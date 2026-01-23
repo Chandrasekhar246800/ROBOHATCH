@@ -506,6 +506,13 @@ export default function Admin() {
               Updates
             </button>
             <button 
+              className={`flex items-center gap-3 px-6 py-3.5 text-left transition-all border-none bg-transparent cursor-pointer w-full text-sm font-medium ${activeTab === 'reviews' ? 'bg-primary-orange/10 text-primary-orange border-l-4 border-primary-orange' : 'text-white/80 hover:bg-white/5 hover:text-white'}`}
+              onClick={() => router.push('/admin/reviews')}
+            >
+              <i className="fas fa-star text-lg"></i>
+              Reviews
+            </button>
+            <button 
               className={`flex items-center gap-3 px-6 py-3.5 text-left transition-all border-none bg-transparent cursor-pointer w-full text-sm font-medium ${activeTab === 'settings' ? 'bg-primary-orange/10 text-primary-orange border-l-4 border-primary-orange' : 'text-white/80 hover:bg-white/5 hover:text-white'}`}
               onClick={() => setActiveTab('settings')}
             >
@@ -609,7 +616,16 @@ export default function Admin() {
 
             {activeTab === 'orders' && (
               <div>
-                <h2 className="text-xl font-semibold text-dark-brown mb-6">All Orders</h2>
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-xl font-semibold text-dark-brown">All Orders</h2>
+                  <button 
+                    className="bg-red-100 text-red-700 px-6 py-3 rounded-lg font-medium transition-all hover:bg-red-200 border-none cursor-pointer flex items-center gap-2"
+                    onClick={() => setActiveTab('cancelled-orders')}
+                  >
+                    <i className="fas fa-times-circle"></i>
+                    Cancelled Orders ({orders.filter(o => o.status.toLowerCase() === 'cancelled').length})
+                  </button>
+                </div>
                 <div className="overflow-x-auto">
                   <table className="w-full border-collapse">
                     <thead className="bg-[#f8f9fa]">
@@ -625,7 +641,7 @@ export default function Admin() {
                       </tr>
                     </thead>
                     <tbody>
-                      {orders.map(order => (
+                      {orders.filter(order => order.status.toLowerCase() !== 'cancelled').map(order => (
                         <tr key={order.id} className="hover:bg-gray-50 transition-colors duration-200">
                           <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm font-medium">#{order.id}</td>
                           <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm">{order.customer}</td>
@@ -663,6 +679,83 @@ export default function Admin() {
                     </tbody>
                   </table>
                 </div>
+              </div>
+            )}
+
+            {activeTab === 'cancelled-orders' && (
+              <div>
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-xl font-semibold text-dark-brown">Cancelled Orders</h2>
+                  <button 
+                    className="bg-primary-orange text-white px-6 py-3 rounded-lg font-medium transition-all hover:bg-hover-orange border-none cursor-pointer flex items-center gap-2"
+                    onClick={() => setActiveTab('orders')}
+                  >
+                    <i className="fas fa-arrow-left"></i>
+                    Back to All Orders
+                  </button>
+                </div>
+                {orders.filter(order => order.status.toLowerCase() === 'cancelled').length > 0 ? (
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse">
+                      <thead className="bg-[#f8f9fa]">
+                        <tr>
+                          <th className="p-4 text-left font-semibold text-dark-brown text-sm border-b-2 border-[#e9ecef]">Order ID</th>
+                          <th className="p-4 text-left font-semibold text-dark-brown text-sm border-b-2 border-[#e9ecef]">Customer</th>
+                          <th className="p-4 text-left font-semibold text-dark-brown text-sm border-b-2 border-[#e9ecef]">Email</th>
+                          <th className="p-4 text-left font-semibold text-dark-brown text-sm border-b-2 border-[#e9ecef]">Product</th>
+                          <th className="p-4 text-left font-semibold text-dark-brown text-sm border-b-2 border-[#e9ecef]">Total</th>
+                          <th className="p-4 text-left font-semibold text-dark-brown text-sm border-b-2 border-[#e9ecef]">Date</th>
+                          <th className="p-4 text-left font-semibold text-dark-brown text-sm border-b-2 border-[#e9ecef]">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {orders.filter(order => order.status.toLowerCase() === 'cancelled').map(order => (
+                          <tr key={order.id} className="hover:bg-gray-50 transition-colors duration-200">
+                            <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm font-medium">#{order.id}</td>
+                            <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm">{order.customer}</td>
+                            <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm">{order.email}</td>
+                            <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm">{order.product}</td>
+                            <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm font-semibold">{order.total}</td>
+                            <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm">{order.date}</td>
+                            <td className="p-4 border-b border-[#e9ecef] text-[#666] text-sm">
+                              <button 
+                                onClick={() => handleViewOrder(order)}
+                                className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors duration-200 mr-2"
+                                title="View Details"
+                              >
+                                <i className="fas fa-eye"></i>
+                              </button>
+                              <button 
+                                onClick={() => handleDeleteOrder(order.id)}
+                                className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition-colors duration-200"
+                                title="Delete Order"
+                              >
+                                <i className="fas fa-trash"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <div className="bg-white rounded-2xl shadow-lg p-8 sm:p-12 text-center">
+                    <div className="w-24 h-24 sm:w-32 sm:h-32 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <i className="fas fa-times-circle text-5xl sm:text-6xl text-red-500/50"></i>
+                    </div>
+                    <h2 className="text-xl sm:text-2xl font-bold text-dark-brown mb-3">No Cancelled Orders</h2>
+                    <p className="text-gray-600 text-sm sm:text-base mb-6">
+                      There are no cancelled orders at the moment
+                    </p>
+                    <button
+                      onClick={() => setActiveTab('orders')}
+                      className="bg-gradient-to-r from-primary-orange to-hover-orange text-white px-8 py-3 rounded-full font-semibold text-sm sm:text-base hover:shadow-lg transition-all active:scale-95"
+                    >
+                      <i className="fas fa-arrow-left mr-2"></i>
+                      Back to All Orders
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 

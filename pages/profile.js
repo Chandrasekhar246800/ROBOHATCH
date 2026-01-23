@@ -62,7 +62,7 @@ export default function Profile() {
       window.dispatchEvent(new Event('authChanged'))
     }
     
-    router.push('/login')
+    router.push('/')
   }
 
   if (isLoading) {
@@ -247,12 +247,20 @@ export default function Profile() {
               <div className="bg-white rounded-2xl shadow-lg p-5 sm:p-6">
                 <h3 className="text-lg sm:text-xl font-bold text-dark-brown mb-4">Quick Actions</h3>
                 <div className="space-y-3">
+                  <a href="/my-orders" className="flex items-center gap-3 p-3 rounded-lg bg-orange-50 hover:bg-orange-100 transition-colors group">
+                    <i className="fas fa-box text-primary-orange text-lg"></i>
+                    <span className="text-sm sm:text-base font-medium text-gray-700 group-hover:text-primary-orange">My Orders</span>
+                  </a>
+                  <a href="/cancelled-orders" className="flex items-center gap-3 p-3 rounded-lg bg-red-50 hover:bg-red-100 transition-colors group">
+                    <i className="fas fa-times-circle text-red-600 text-lg"></i>
+                    <span className="text-sm sm:text-base font-medium text-gray-700 group-hover:text-red-600">Cancelled Orders</span>
+                  </a>
                   <a href="/cart" className="flex items-center gap-3 p-3 rounded-lg bg-orange-50 hover:bg-orange-100 transition-colors group">
                     <i className="fas fa-shopping-cart text-primary-orange text-lg"></i>
                     <span className="text-sm sm:text-base font-medium text-gray-700 group-hover:text-primary-orange">View Cart</span>
                   </a>
                   <a href="/#products" className="flex items-center gap-3 p-3 rounded-lg bg-orange-50 hover:bg-orange-100 transition-colors group">
-                    <i className="fas fa-box text-primary-orange text-lg"></i>
+                    <i className="fas fa-shopping-bag text-primary-orange text-lg"></i>
                     <span className="text-sm sm:text-base font-medium text-gray-700 group-hover:text-primary-orange">Browse Products</span>
                   </a>
                   <a href="/contact" className="flex items-center gap-3 p-3 rounded-lg bg-orange-50 hover:bg-orange-100 transition-colors group">

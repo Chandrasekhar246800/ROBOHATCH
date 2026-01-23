@@ -38,6 +38,8 @@ export default function Checkout() {
 
   const [errors, setErrors] = useState({})
   const [isProcessing, setIsProcessing] = useState(false)
+  const [orderStatus, setOrderStatus] = useState(null) // null, 'success', or 'failed'
+  const [orderId, setOrderId] = useState(null)
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)
   // Constant delivery charge of ₹100
@@ -101,6 +103,7 @@ export default function Checkout() {
     e.preventDefault()
     
     if (!validateForm()) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
       return
     }
     
@@ -108,41 +111,60 @@ export default function Checkout() {
     
     // Simulate order processing
     setTimeout(() => {
-      // Create order object
-      const order = {
-        id: Date.now(),
-        customer: `${formData.firstName} ${formData.lastName}`,
-        email: formData.email,
-        phone: formData.phone,
-        address: formData.address,
-        city: formData.city,
-        state: formData.state,
-        zipCode: formData.zipCode,
-        country: formData.country,
-        items: cartItems,
-        subtotal: subtotal,
-        shipping: shipping,
-        tax: tax,
-        total: `₹${total.toFixed(2)}`,
-        paymentMethod: formData.paymentMethod,
-        orderNotes: formData.orderNotes,
-        status: 'Pending',
-        date: new Date().toISOString().split('T')[0]
+      try {
+        // Create order object
+        const order = {
+          id: Date.now(),
+          customer: `${formData.firstName} ${formData.lastName}`,
+          email: formData.email,
+          phone: formData.phone,
+          address: formData.address,
+          city: formData.city,
+          state: formData.state,
+          zipCode: formData.zipCode,
+          country: formData.country,
+          items: cartItems,
+          subtotal: subtotal,
+          shipping: shipping,
+          tax: tax,
+          total: total.toFixed(2),
+          paymentMethod: formData.paymentMethod,
+          orderNotes: formData.orderNotes,
+          status: 'Confirmed',
+          date: new Date().toLocaleDateString('en-IN', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          })
+        }
+        
+        // Save order to localStorage
+        const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]')
+        existingOrders.push(order)
+        localStorage.setItem('orders', JSON.stringify(existingOrders))
+        
+        // Save to order history for profile
+        const orderHistory = JSON.parse(localStorage.getItem('orderHistory') || '[]')
+        orderHistory.push(order)
+        localStorage.setItem('orderHistory', JSON.stringify(orderHistory))
+        
+        // Clear cart
+        localStorage.setItem('cart', JSON.stringify([]))
+        window.dispatchEvent(new Event('cartUpdated'))
+        
+        // Show success status
+        setOrderId(order.id)
+        setOrderStatus('success')
+        setIsProcessing(false)
+        
+        // Scroll to top to see the message
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      } catch (error) {
+        console.error('Order placement failed:', error)
+        setOrderStatus('failed')
+        setIsProcessing(false)
+        window.scrollTo({ top: 0, behavior: 'smooth' })
       }
-      
-      // Save order to localStorage
-      const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]')
-      existingOrders.push(order)
-      localStorage.setItem('orders', JSON.stringify(existingOrders))
-      
-      // Clear cart
-      localStorage.setItem('cart', JSON.stringify([]))
-      window.dispatchEvent(new Event('cartUpdated'))
-      
-      // Redirect to success page or show success message
-      alert('Order placed successfully! Thank you for your purchase.')
-      router.push('/')
-      setIsProcessing(false)
     }, 2000)
   }
 
@@ -158,6 +180,75 @@ export default function Checkout() {
       </Head>
       
       <Navbar />
+      
+      {/* Order Status Modal */}
+      {orderStatus && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[10000] flex items-center justify-center p-4 animate-[fadeIn_0.3s_ease-out]">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full animate-[slideUp_0.4s_ease-out]">
+            {orderStatus === 'success' ? (
+              <>
+                <div className="text-center">
+                  <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-[scaleIn_0.5s_ease-out]">
+                    <i className="fas fa-check-circle text-green-600 text-4xl"></i>
+                  </div>
+                  <h2 className="text-2xl font-bold text-dark-brown mb-2">Order Placed Successfully!</h2>
+                  <p className="text-gray-600 mb-4">Thank you for your purchase</p>
+                  <div className="bg-orange-50 rounded-lg p-4 mb-6">
+                    <p className="text-sm text-gray-700 mb-1">Order ID</p>
+                    <p className="text-lg font-bold text-primary-orange">#{orderId}</p>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-6">
+                    A confirmation email has been sent to {formData.email}
+                  </p>
+                  <div className="flex flex-col gap-3">
+                    <button
+                      onClick={() => router.push('/')}
+                      className="w-full bg-gradient-to-r from-primary-orange to-hover-orange text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all"
+                    >
+                      Continue Shopping
+                    </button>
+                    <button
+                      onClick={() => router.push('/profile')}
+                      className="w-full bg-white border-2 border-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:border-primary-orange hover:text-primary-orange transition-all"
+                    >
+                      View My Orders
+                    </button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="text-center">
+                  <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-[scaleIn_0.5s_ease-out]">
+                    <i className="fas fa-times-circle text-red-600 text-4xl"></i>
+                  </div>
+                  <h2 className="text-2xl font-bold text-dark-brown mb-2">Order Failed</h2>
+                  <p className="text-gray-600 mb-6">
+                    We couldn't process your order. Please try again or contact support.
+                  </p>
+                  <div className="flex flex-col gap-3">
+                    <button
+                      onClick={() => {
+                        setOrderStatus(null)
+                        setIsProcessing(false)
+                      }}
+                      className="w-full bg-gradient-to-r from-primary-orange to-hover-orange text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all"
+                    >
+                      Try Again
+                    </button>
+                    <button
+                      onClick={() => router.push('/contact')}
+                      className="w-full bg-white border-2 border-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:border-primary-orange hover:text-primary-orange transition-all"
+                    >
+                      Contact Support
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
       
       <div className="min-h-screen bg-gradient-to-br from-orange-50/40 via-white to-amber-50/30 py-5 sm:py-8 md:py-12">
         <div className="max-w-[1400px] mx-auto px-5 sm:px-5">
