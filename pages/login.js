@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Navbar from '../components/Navbar'
+import { setAuthToken } from '../utils/api'
 
 export default function Login() {
   const router = useRouter()
@@ -12,6 +13,7 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [email, setEmail] = useState('')
+  const [name, setName] = useState('')
   const [passwordErrors, setPasswordErrors] = useState([])
   const [passwordStrength, setPasswordStrength] = useState({ score: 0, label: '', color: '' })
   const [loginError, setLoginError] = useState('')
@@ -74,13 +76,79 @@ export default function Login() {
     setLoginError('')
 
     if (!isSignUp) {
-      if (email === 'nenudevudini@gmail.com' && password === '1122334455@Rh') {
-        router.push('/admin')
-      } else {
-        setLoginError('Invalid email or password')
-      }
+      // Sign In: call API proxy
+      ;(async () => {
+        try {
+          const resp = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+          })
+
+          const data = await resp.json()
+
+          if (!resp.ok) {
+            setLoginError(data?.error || 'Invalid email or password')
+            return
+          }
+
+          // Store token if present; adjust key based on backend response
+          const token = data?.accessToken || data?.token || data?.data?.token || data?.access_token
+          if (token) {
+            setAuthToken(token)
+            console.log('Token stored successfully')
+          } else {
+            console.warn('No token found in response:', data)
+          }
+
+          router.push('/admin')
+        } catch (error) {
+          setLoginError('Unable to reach login service')
+        }
+      })()
     } else {
-      console.log('Sign up attempted')
+      // Sign Up: call register API
+      if (password !== confirmPassword) {
+        setLoginError('Passwords do not match')
+        return
+      }
+      if (passwordErrors.length > 0) {
+        setLoginError('Please fix password requirements')
+        return
+      }
+      ;(async () => {
+        try {
+          console.log('Sending registration request with:', { name, email, password: '***' })
+          const resp = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password }),
+          })
+
+          const data = await resp.json()
+          console.log('Registration response:', data)
+
+          if (!resp.ok) {
+            setLoginError(data?.error || 'Registration failed')
+            return
+          }
+
+          // Registration successful, store token if present and redirect
+          const token = data?.accessToken || data?.token || data?.data?.token || data?.access_token
+          if (token) {
+            setAuthToken(token)
+            console.log('Registration token stored successfully')
+          } else {
+            console.warn('No token found in registration response:', data)
+          }
+
+          // Redirect to admin or show success message
+          router.push('/admin')
+        } catch (error) {
+          console.error('Registration error:', error)
+          setLoginError('Unable to reach registration service')
+        }
+      })()
     }
   }
 
@@ -124,6 +192,8 @@ export default function Login() {
                     type="text" 
                     id="name" 
                     placeholder="Enter your full name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     required
                     className="w-full px-4 py-3.5 border-2 border-border-color rounded-lg transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10"
                   />

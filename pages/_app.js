@@ -14,9 +14,9 @@ export default function App({ Component, pageProps }) {
   }, [])
 
   return (
-    <>
+    <div style={{ width: '100%', overflowX: 'hidden', position: 'relative' }}>
       {loading && <LoadingScreen />}
       <Component {...pageProps} />
-    </>
+    </div>
   )
 }
