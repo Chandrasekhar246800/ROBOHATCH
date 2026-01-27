@@ -167,7 +167,7 @@ export default function CustomPrinting() {
                         <>
                           <i className="fas fa-cloud-upload-alt text-5xl text-primary-orange"></i>
                           <span className="text-lg text-[#2c3e50] font-medium">Click to upload or drag & drop</span>
-                          <small className="text-sm text-[#666]">Supported: STL, OBJ, 3MF, JPG, PNG, PDF</small>
+                          <small className="text-sm text-[#666]">Supported: STL, OBJ, 3MF</small>
                         </>
                       )}
                     </label>

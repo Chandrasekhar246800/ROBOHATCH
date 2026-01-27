@@ -119,7 +119,12 @@ export default function Login() {
             window.dispatchEvent(new Event('authChanged'))
           }
 
-          router.push('/')
+          // Check if user is admin and redirect accordingly
+          if (email === 'admin@robohatch.com') {
+            router.push('/admin')
+          } else {
+            router.push('/')
+          }
         } catch (error) {
           setLoginError('Unable to reach login service')
         }

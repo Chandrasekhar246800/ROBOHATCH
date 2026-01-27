@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import Navbar from '../components/Navbar'
 import { allProducts } from '../data/products'
 import { defaultCategories } from '../data/categories'
+import { getAuthToken, removeAuthToken } from '../utils/api'
 
 export default function Admin() {
   const router = useRouter()
@@ -16,7 +17,7 @@ export default function Admin() {
   const [editingCategory, setEditingCategory] = useState(null)
   const [productEdits, setProductEdits] = useState({})
   const [categoryEdits, setCategoryEdits] = useState({})
-  const [editForm, setEditForm] = useState({ name: '', price: '', description: '' })
+  const [editForm, setEditForm] = useState({ name: '', price: '', description: '', image: '' })
   const [categoryEditForm, setCategoryEditForm] = useState({ name: '', icon: '', link: '', items: [] })
   const [showAddModal, setShowAddModal] = useState(false)
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false)
@@ -27,7 +28,8 @@ export default function Admin() {
     price: '',
     description: '',
     category: 'keychains',
-    icon: 'fa-cube'
+    icon: 'fa-cube',
+    image: ''
   })
   const [addCategoryForm, setAddCategoryForm] = useState({
     name: '',
@@ -41,9 +43,39 @@ export default function Admin() {
   const [siteUpdates, setSiteUpdates] = useState([])
   const [editingUpdate, setEditingUpdate] = useState(null)
   const [updateForm, setUpdateForm] = useState({ message: '', active: true })
+  const [isLoading, setIsLoading] = useState(true)
+  const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false)
+  const [updateToDelete, setUpdateToDelete] = useState(null)
+
+  // Check authentication and admin access
+  useEffect(() => {
+    const token = getAuthToken()
+    const userProfile = localStorage.getItem('userProfile')
+    
+    if (!token) {
+      router.push('/login')
+      return
+    }
+
+    // Check if user is admin
+    if (userProfile) {
+      const user = JSON.parse(userProfile)
+      if (user.email !== 'admin@robohatch.com') {
+        router.push('/')
+        return
+      }
+    } else {
+      router.push('/login')
+      return
+    }
+
+    setIsLoading(false)
+  }, [router])
 
   // Load removed products, edits, and custom products from localStorage on mount
   useEffect(() => {
+    if (isLoading) return
+
     const stored = localStorage.getItem('removedProducts')
     if (stored) {
       setRemovedProducts(JSON.parse(stored))
@@ -76,7 +108,7 @@ export default function Admin() {
     
     // Load updates
     loadUpdates()
-  }, [])
+  }, [isLoading])
 
   const loadOrders = () => {
     const storedOrders = localStorage.getItem('orders')
@@ -125,12 +157,19 @@ export default function Admin() {
   }
 
   const handleDeleteUpdate = (updateId) => {
-    if (confirm('Are you sure you want to delete this update?')) {
-      const updatedUpdates = siteUpdates.filter(update => update.id !== updateId)
+    setUpdateToDelete(updateId)
+    setShowDeleteConfirmModal(true)
+  }
+
+  const confirmDeleteUpdate = () => {
+    if (updateToDelete) {
+      const updatedUpdates = siteUpdates.filter(update => update.id !== updateToDelete)
       setSiteUpdates(updatedUpdates)
       localStorage.setItem('siteUpdates', JSON.stringify(updatedUpdates))
       window.dispatchEvent(new Event('updatesChanged'))
     }
+    setShowDeleteConfirmModal(false)
+    setUpdateToDelete(null)
   }
 
   const handleToggleUpdateStatus = (updateId) => {
@@ -171,6 +210,14 @@ export default function Admin() {
   }
 
   const handleLogout = () => {
+    removeAuthToken()
+    localStorage.removeItem('userProfile')
+    
+    // Trigger auth state change
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('authChanged'))
+    }
+    
     router.push('/login')
   }
 
@@ -195,7 +242,8 @@ export default function Admin() {
     setEditForm({
       name: productEdits[product.id]?.name || product.name,
       price: productEdits[product.id]?.price || product.price,
-      description: productEdits[product.id]?.description || product.description
+      description: productEdits[product.id]?.description || product.description,
+      image: productEdits[product.id]?.image || product.image || ''
     })
   }
 
@@ -207,7 +255,8 @@ export default function Admin() {
       [editingProduct.id]: {
         name: editForm.name,
         price: parseFloat(editForm.price),
-        description: editForm.description
+        description: editForm.description,
+        image: editForm.image
       }
     }
     
@@ -220,7 +269,34 @@ export default function Admin() {
 
   const handleCancelEdit = () => {
     setEditingProduct(null)
-    setEditForm({ name: '', price: '', description: '' })
+    setEditForm({ name: '', price: '', description: '', image: '' })
+  }
+
+  const handleImageUpload = (e, formType) => {
+    const file = e.target.files[0]
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        alert('Please upload an image file')
+        return
+      }
+      
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Image size should be less than 5MB')
+        return
+      }
+      
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        if (formType === 'edit') {
+          setEditForm({...editForm, image: reader.result})
+        } else if (formType === 'add') {
+          setAddForm({...addForm, image: reader.result})
+        }
+      }
+      reader.readAsDataURL(file)
+    }
   }
 
   const handleAddProduct = () => {
@@ -230,7 +306,8 @@ export default function Admin() {
       price: '',
       description: '',
       category: 'keychains',
-      icon: 'fa-cube'
+      icon: 'fa-cube',
+      image: ''
     })
   }
 
@@ -247,7 +324,7 @@ export default function Admin() {
       description: addForm.description,
       icon: addForm.icon,
       category: addForm.category,
-      image: '/products/custom.jpg'
+      image: addForm.image || '/products/custom.jpg'
     }
 
     const updatedCustomProducts = [...customProducts, newProduct]
@@ -265,7 +342,8 @@ export default function Admin() {
       price: '',
       description: '',
       category: 'keychains',
-      icon: 'fa-cube'
+      icon: 'fa-cube',
+      image: ''
     })
   }
 
@@ -451,6 +529,14 @@ export default function Admin() {
   const getRemovedProductsList = () => {
     const allProductsList = getAllProductsList()
     return allProductsList.filter(p => removedProducts.includes(p.id))
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <i className="fas fa-spinner fa-spin text-4xl text-primary-orange"></i>
+      </div>
+    )
   }
 
   return (
@@ -862,17 +948,28 @@ export default function Admin() {
 
                 {!showRemoved && (
                   <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-6">
-                    {getFilteredProducts().map(product => (
+                    {getFilteredProducts().map(product => {
+                      const displayProduct = {
+                        ...product,
+                        ...(productEdits[product.id] || {})
+                      }
+                      return (
                       <div key={product.id} className="bg-white rounded-[15px] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex gap-4 transition-all hover:-translate-y-1.5 hover:shadow-[0_5px_20px_rgba(0,0,0,0.12)] relative">
-                        <div className="w-[60px] h-[60px] min-w-[60px] bg-gradient-to-br from-primary-orange to-hover-orange rounded-xl flex items-center justify-center text-[1.8rem] text-white">
-                          <i className={`fas ${product.icon}`}></i>
-                        </div>
+                        {displayProduct.image ? (
+                          <div className="w-[60px] h-[60px] min-w-[60px] rounded-xl overflow-hidden bg-gray-100">
+                            <img src={displayProduct.image} alt={displayProduct.name} className="w-full h-full object-cover" />
+                          </div>
+                        ) : (
+                          <div className="w-[60px] h-[60px] min-w-[60px] bg-gradient-to-br from-primary-orange to-hover-orange rounded-xl flex items-center justify-center text-[1.8rem] text-white">
+                            <i className={`fas ${displayProduct.icon}`}></i>
+                          </div>
+                        )}
                         <div className="flex-1">
-                          <h3 className="text-lg text-dark-brown mb-2 font-bold">{product.name}</h3>
-                          <p className="text-sm text-[#666] mb-3 leading-snug">{product.description}</p>
+                          <h3 className="text-lg text-dark-brown mb-2 font-bold">{displayProduct.name}</h3>
+                          <p className="text-sm text-[#666] mb-3 leading-snug">{displayProduct.description}</p>
                           <div className="flex justify-between items-center gap-3">
-                            <span className="text-xs py-1.5 px-3 bg-[#e3f2fd] text-[#1976d2] rounded-full font-semibold">{product.category}</span>
-                            <span className="text-lg font-bold text-primary-orange">₹{product.price}</span>
+                            <span className="text-xs py-1.5 px-3 bg-[#e3f2fd] text-[#1976d2] rounded-full font-semibold">{displayProduct.category}</span>
+                            <span className="text-lg font-bold text-primary-orange">₹{displayProduct.price}</span>
                           </div>
                         </div>
                         <div className="flex flex-col gap-2">
@@ -892,7 +989,7 @@ export default function Admin() {
                           </button>
                         </div>
                       </div>
-                    ))}
+                    )})}
                   </div>
                 )}
 
@@ -906,17 +1003,28 @@ export default function Admin() {
                       <p className="text-center py-12 text-[#999] text-lg bg-white rounded-[15px]">No removed products</p>
                     ) : (
                       <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-6">
-                        {getRemovedProductsList().map(product => (
+                        {getRemovedProductsList().map(product => {
+                          const displayProduct = {
+                            ...product,
+                            ...(productEdits[product.id] || {})
+                          }
+                          return (
                           <div key={product.id} className="bg-white rounded-[15px] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex gap-4 transition-all hover:-translate-y-1.5 hover:shadow-[0_5px_20px_rgba(0,0,0,0.12)] relative opacity-70 border-2 border-dashed border-[#ddd] hover:opacity-100 hover:border-primary-orange">
-                            <div className="w-[60px] h-[60px] min-w-[60px] bg-gradient-to-br from-primary-orange to-hover-orange rounded-xl flex items-center justify-center text-[1.8rem] text-white">
-                              <i className={`fas ${product.icon}`}></i>
-                            </div>
+                            {displayProduct.image ? (
+                              <div className="w-[60px] h-[60px] min-w-[60px] rounded-xl overflow-hidden bg-gray-100">
+                                <img src={displayProduct.image} alt={displayProduct.name} className="w-full h-full object-cover" />
+                              </div>
+                            ) : (
+                              <div className="w-[60px] h-[60px] min-w-[60px] bg-gradient-to-br from-primary-orange to-hover-orange rounded-xl flex items-center justify-center text-[1.8rem] text-white">
+                                <i className={`fas ${displayProduct.icon}`}></i>
+                              </div>
+                            )}
                             <div className="flex-1">
-                              <h3 className="text-lg text-dark-brown mb-2 font-bold">{product.name}</h3>
-                              <p className="text-sm text-[#666] mb-3 leading-snug">{product.description}</p>
+                              <h3 className="text-lg text-dark-brown mb-2 font-bold">{displayProduct.name}</h3>
+                              <p className="text-sm text-[#666] mb-3 leading-snug">{displayProduct.description}</p>
                               <div className="flex justify-between items-center gap-3">
-                                <span className="text-xs py-1.5 px-3 bg-[#e3f2fd] text-[#1976d2] rounded-full font-semibold">{product.category}</span>
-                                <span className="text-lg font-bold text-primary-orange">₹{product.price}</span>
+                                <span className="text-xs py-1.5 px-3 bg-[#e3f2fd] text-[#1976d2] rounded-full font-semibold">{displayProduct.category}</span>
+                                <span className="text-lg font-bold text-primary-orange">₹{displayProduct.price}</span>
                               </div>
                             </div>
                             <div className="flex flex-col gap-2">
@@ -929,7 +1037,7 @@ export default function Admin() {
                               </button>
                             </div>
                           </div>
-                        ))}
+                        )})}
                       </div>
                     )}
                   </div>
@@ -1100,9 +1208,9 @@ export default function Admin() {
                     <div className="divide-y divide-gray-200">
                       {siteUpdates.map((update) => (
                         <div key={update.id} className="p-6 hover:bg-gray-50 transition-colors">
-                          <div className="flex items-start justify-between gap-4">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-3 mb-2">
+                          <div className="flex flex-col sm:flex-row items-start sm:items-start justify-between gap-4">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-3 mb-2 flex-wrap">
                                 <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                                   update.active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
                                 }`}>
@@ -1112,12 +1220,12 @@ export default function Admin() {
                                   {new Date(update.createdAt).toLocaleDateString()}
                                 </span>
                               </div>
-                              <p className="text-dark-brown font-medium mb-2">{update.message}</p>
+                              <p className="text-dark-brown font-medium mb-2 break-words">{update.message}</p>
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-2 flex-shrink-0">
                               <button
                                 onClick={() => handleToggleUpdateStatus(update.id)}
-                                className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
+                                className={`px-3 py-2 rounded-lg font-semibold text-sm transition-all border-none cursor-pointer ${
                                   update.active
                                     ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                     : 'bg-green-100 text-green-700 hover:bg-green-200'
@@ -1128,14 +1236,14 @@ export default function Admin() {
                               </button>
                               <button
                                 onClick={() => handleEditUpdate(update)}
-                                className="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg font-semibold text-sm hover:bg-blue-200 transition-all"
+                                className="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg font-semibold text-sm hover:bg-blue-200 transition-all border-none cursor-pointer"
                                 title="Edit"
                               >
                                 <i className="fas fa-edit"></i>
                               </button>
                               <button
                                 onClick={() => handleDeleteUpdate(update.id)}
-                                className="px-4 py-2 bg-red-100 text-red-700 rounded-lg font-semibold text-sm hover:bg-red-200 transition-all"
+                                className="px-3 py-2 bg-red-100 text-red-700 rounded-lg font-semibold text-sm hover:bg-red-200 transition-all border-none cursor-pointer"
                                 title="Delete"
                               >
                                 <i className="fas fa-trash"></i>
@@ -1220,15 +1328,15 @@ export default function Admin() {
 
         {/* Edit Product Modal */}
         {editingProduct && (
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[10000]" onClick={handleCancelEdit}>
-            <div className="bg-white rounded-[20px] w-[90%] max-w-[500px] shadow-[0_10px_40px_rgba(0,0,0,0.3)] animate-modal-slide-in" onClick={(e) => e.stopPropagation()}>
-              <div className="flex justify-between items-center px-8 py-6 border-b-2 border-[#f0f0f0]">
-                <h2 className="text-2xl text-dark-brown m-0">Edit Product</h2>
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[10000] p-4" onClick={handleCancelEdit}>
+            <div className="bg-white rounded-[20px] w-[90%] max-w-[500px] max-h-[90vh] flex flex-col shadow-[0_10px_40px_rgba(0,0,0,0.3)] animate-modal-slide-in" onClick={(e) => e.stopPropagation()}>
+              <div className="flex justify-between items-center px-6 py-4 border-b-2 border-[#f0f0f0] flex-shrink-0">
+                <h2 className="text-xl text-dark-brown m-0">Edit Product</h2>
                 <button className="bg-transparent border-none text-2xl text-[#999] cursor-pointer transition-colors w-[35px] h-[35px] flex items-center justify-center rounded-full hover:text-[#f44336] hover:bg-[#fee]" onClick={handleCancelEdit}>
                   <i className="fas fa-times"></i>
                 </button>
               </div>
-              <div className="p-8">
+              <div className="p-6 overflow-y-auto flex-1">
                 <div className="mb-6">
                   <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Product Name</label>
                   <input 
@@ -1249,7 +1357,7 @@ export default function Admin() {
                     className="w-full px-4 py-3.5 border-2 border-[#e0e0e0] rounded-lg text-[0.95rem] transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10"
                   />
                 </div>
-                <div className="mb-6 last:mb-0">
+                <div className="mb-6">
                   <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Description</label>
                   <textarea 
                     value={editForm.description}
@@ -1259,12 +1367,40 @@ export default function Admin() {
                     className="w-full px-4 py-3.5 border-2 border-[#e0e0e0] rounded-lg text-[0.95rem] transition-all focus:outline-none focus:border-primary-orange focus:ring-4 focus:ring-primary-orange/10 resize-y min-h-[100px]"
                   />
                 </div>
+                <div className="mb-6 last:mb-0">
+                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Product Image</label>
+                  <div className="flex flex-col gap-2">
+                    {editForm.image && (
+                      <div className="relative w-full h-32 border-2 border-[#e0e0e0] rounded-lg overflow-hidden bg-gray-50">
+                        <img 
+                          src={editForm.image} 
+                          alt="Product preview" 
+                          className="w-full h-full object-contain"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setEditForm({...editForm, image: ''})}
+                          className="absolute top-1 right-1 bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors text-xs"
+                        >
+                          <i className="fas fa-times"></i>
+                        </button>
+                      </div>
+                    )}
+                    <input 
+                      type="file" 
+                      accept="image/*"
+                      onChange={(e) => handleImageUpload(e, 'edit')}
+                      className="w-full px-3 py-2 border-2 border-[#e0e0e0] rounded-lg text-sm transition-all focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange/10 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-primary-orange file:text-white hover:file:bg-hover-orange cursor-pointer"
+                    />
+                    <small className="block text-[#666] text-xs">Max 5MB, JPG/PNG/GIF</small>
+                  </div>
+                </div>
               </div>
-              <div className="flex justify-end gap-4 px-8 py-6 border-t-2 border-[#f0f0f0]">
-                <button className="bg-[#f5f5f5] text-[#666] border-none px-8 py-3.5 rounded-lg text-base font-semibold cursor-pointer transition-all hover:bg-[#e0e0e0]" onClick={handleCancelEdit}>
+              <div className="flex justify-end gap-3 px-6 py-4 border-t-2 border-[#f0f0f0] flex-shrink-0">
+                <button className="bg-[#f5f5f5] text-[#666] border-none px-6 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-all hover:bg-[#e0e0e0]" onClick={handleCancelEdit}>
                   Cancel
                 </button>
-                <button className="bg-gradient-to-br from-primary-orange to-hover-orange text-white border-none px-8 py-3.5 rounded-lg text-base font-semibold cursor-pointer transition-all shadow-[0_4px_15px_rgba(242,92,5,0.3)] hover:bg-hover-orange hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(242,92,5,0.4)]" onClick={handleSaveEdit}>
+                <button className="bg-gradient-to-br from-primary-orange to-hover-orange text-white border-none px-6 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-all shadow-[0_4px_15px_rgba(242,92,5,0.3)] hover:bg-hover-orange hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(242,92,5,0.4)]" onClick={handleSaveEdit}>
                   Save Changes
                 </button>
               </div>
@@ -1274,15 +1410,15 @@ export default function Admin() {
 
         {/* Add Product Modal */}
         {showAddModal && (
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[10000]" onClick={handleCancelAdd}>
-            <div className="bg-white rounded-[20px] w-[90%] max-w-[500px] shadow-[0_10px_40px_rgba(0,0,0,0.3)] animate-modal-slide-in" onClick={(e) => e.stopPropagation()}>
-              <div className="flex justify-between items-center px-8 py-6 border-b-2 border-[#f0f0f0]">
-                <h2 className="text-2xl text-dark-brown m-0">Add New Product</h2>
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[10000] p-4" onClick={handleCancelAdd}>
+            <div className="bg-white rounded-[20px] w-[90%] max-w-[500px] max-h-[90vh] flex flex-col shadow-[0_10px_40px_rgba(0,0,0,0.3)] animate-modal-slide-in" onClick={(e) => e.stopPropagation()}>
+              <div className="flex justify-between items-center px-6 py-4 border-b-2 border-[#f0f0f0] flex-shrink-0">
+                <h2 className="text-xl text-dark-brown m-0">Add New Product</h2>
                 <button className="bg-transparent border-none text-2xl text-[#999] cursor-pointer transition-colors w-[35px] h-[35px] flex items-center justify-center rounded-full hover:text-[#f44336] hover:bg-[#fee]" onClick={handleCancelAdd}>
                   <i className="fas fa-times"></i>
                 </button>
               </div>
-              <div className="p-8">
+              <div className="p-6 overflow-y-auto flex-1">
                 <div className="mb-6">
                   <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Product Name *</label>
                   <input 
@@ -1333,7 +1469,7 @@ export default function Admin() {
                     <option value="jewelry">Jewelry & Accessories</option>
                   </select>
                 </div>
-                <div className="mb-6 last:mb-0">
+                <div className="mb-6">
                   <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Icon Class</label>
                   <input 
                     type="text" 
@@ -1344,12 +1480,40 @@ export default function Admin() {
                   />
                   <small className="block mt-1 text-[#666] text-sm">FontAwesome icon class (e.g., fa-cube, fa-star)</small>
                 </div>
+                <div className="mb-6 last:mb-0">
+                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Product Image</label>
+                  <div className="flex flex-col gap-2">
+                    {addForm.image && (
+                      <div className="relative w-full h-32 border-2 border-[#e0e0e0] rounded-lg overflow-hidden bg-gray-50">
+                        <img 
+                          src={addForm.image} 
+                          alt="Product preview" 
+                          className="w-full h-full object-contain"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setAddForm({...addForm, image: ''})}
+                          className="absolute top-1 right-1 bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors text-xs"
+                        >
+                          <i className="fas fa-times"></i>
+                        </button>
+                      </div>
+                    )}
+                    <input 
+                      type="file" 
+                      accept="image/*"
+                      onChange={(e) => handleImageUpload(e, 'add')}
+                      className="w-full px-3 py-2 border-2 border-[#e0e0e0] rounded-lg text-sm transition-all focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange/10 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-primary-orange file:text-white hover:file:bg-hover-orange cursor-pointer"
+                    />
+                    <small className="block text-[#666] text-xs">Max 5MB, JPG/PNG/GIF</small>
+                  </div>
+                </div>
               </div>
-              <div className="flex justify-end gap-4 px-8 py-6 border-t-2 border-[#f0f0f0]">
-                <button className="bg-[#f5f5f5] text-[#666] border-none px-8 py-3.5 rounded-lg text-base font-semibold cursor-pointer transition-all hover:bg-[#e0e0e0]" onClick={handleCancelAdd}>
+              <div className="flex justify-end gap-3 px-6 py-4 border-t-2 border-[#f0f0f0] flex-shrink-0">
+                <button className="bg-[#f5f5f5] text-[#666] border-none px-6 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-all hover:bg-[#e0e0e0]" onClick={handleCancelAdd}>
                   Cancel
                 </button>
-                <button className="bg-gradient-to-br from-primary-orange to-hover-orange text-white border-none px-8 py-3.5 rounded-lg text-base font-semibold cursor-pointer transition-all shadow-[0_4px_15px_rgba(242,92,5,0.3)] hover:bg-hover-orange hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(242,92,5,0.4)]" onClick={handleSaveNewProduct}>
+                <button className="bg-gradient-to-br from-primary-orange to-hover-orange text-white border-none px-6 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-all shadow-[0_4px_15px_rgba(242,92,5,0.3)] hover:bg-hover-orange hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(242,92,5,0.4)]" onClick={handleSaveNewProduct}>
                   Add Product
                 </button>
               </div>
@@ -1691,6 +1855,37 @@ export default function Admin() {
             </div>
           </div>
         )}
+
+      {/* Delete Update Confirmation Modal */}
+      {showDeleteConfirmModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[10001]" onClick={() => setShowDeleteConfirmModal(false)}>
+          <div className="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i className="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
+              </div>
+              <h2 className="text-2xl font-bold text-dark-brown mb-2">Confirm Deletion</h2>
+              <p className="text-gray-600 mb-6">
+                Are you sure you want to delete this update? This action cannot be undone.
+              </p>
+              <div className="flex gap-4">
+                <button
+                  onClick={() => setShowDeleteConfirmModal(false)}
+                  className="flex-1 bg-gray-200 text-dark-brown px-6 py-3 rounded-lg font-bold hover:bg-gray-300 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmDeleteUpdate}
+                  className="flex-1 bg-red-500 text-white px-6 py-3 rounded-lg font-bold hover:bg-red-600 transition-colors"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }

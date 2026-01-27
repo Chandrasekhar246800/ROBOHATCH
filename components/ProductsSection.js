@@ -121,9 +121,15 @@ export default function ProductsSection() {
                   {getDisplayProducts('keychains').map((product, index) => (
                     <div key={product.id} className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-[0_4px_15px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-1 relative group active:scale-95">
                       <Link href={`/product/${product.id}`} className="block">
-                        <div className="bg-gradient-to-br from-primary-orange to-hover-orange rounded-lg sm:rounded-xl p-4 sm:p-6 mb-2 sm:mb-3 flex items-center justify-center text-white text-2xl sm:text-3xl h-24 sm:h-32">
-                          <i className={`fas ${product.icon}`}></i>
-                        </div>
+                        {product.image ? (
+                          <div className="bg-gray-100 rounded-lg sm:rounded-xl mb-2 sm:mb-3 overflow-hidden h-24 sm:h-32">
+                            <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                          </div>
+                        ) : (
+                          <div className="bg-gradient-to-br from-primary-orange to-hover-orange rounded-lg sm:rounded-xl p-4 sm:p-6 mb-2 sm:mb-3 flex items-center justify-center text-white text-2xl sm:text-3xl h-24 sm:h-32">
+                            <i className={`fas ${product.icon}`}></i>
+                          </div>
+                        )}
                         <div className="space-y-1">
                           <h4 className="text-xs sm:text-sm font-bold text-dark-brown line-clamp-2 min-h-[2rem] sm:min-h-[2.5rem] leading-tight">{product.name}</h4>
                           <span className="text-primary-orange font-bold text-sm sm:text-base">₹{product.price}</span>
@@ -163,9 +169,15 @@ export default function ProductsSection() {
                   {getDisplayProducts('superhero').map((product, index) => (
                     <div key={product.id} className="bg-white rounded-xl p-4 shadow-[0_4px_15px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-1 relative group">
                       <Link href={`/product/${product.id}`} className="block">
-                        <div className="bg-gradient-to-br from-primary-orange to-hover-orange rounded-lg p-6 mb-3 flex items-center justify-center text-white text-3xl h-32">
-                          <i className={`fas ${product.icon}`}></i>
-                        </div>
+                        {product.image ? (
+                          <div className="bg-gray-100 rounded-lg mb-3 overflow-hidden h-32">
+                            <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                          </div>
+                        ) : (
+                          <div className="bg-gradient-to-br from-primary-orange to-hover-orange rounded-lg p-6 mb-3 flex items-center justify-center text-white text-3xl h-32">
+                            <i className={`fas ${product.icon}`}></i>
+                          </div>
+                        )}
                         <div className="space-y-1">
                           <h4 className="text-sm font-bold text-dark-brown line-clamp-2 min-h-[2.5rem]">{product.name}</h4>
                           <span className="text-primary-orange font-bold text-base">₹{product.price}</span>
@@ -205,9 +217,15 @@ export default function ProductsSection() {
                   {getDisplayProducts('devotional').map((product, index) => (
                     <div key={product.id} className="bg-white rounded-xl p-4 shadow-[0_4px_15px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-1 relative group">
                       <Link href={`/product/${product.id}`} className="block">
-                        <div className="bg-gradient-to-br from-primary-orange to-hover-orange rounded-lg p-6 mb-3 flex items-center justify-center text-white text-3xl h-32">
-                          <i className={`fas ${product.icon}`}></i>
-                        </div>
+                        {product.image ? (
+                          <div className="bg-gray-100 rounded-lg mb-3 overflow-hidden h-32">
+                            <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                          </div>
+                        ) : (
+                          <div className="bg-gradient-to-br from-primary-orange to-hover-orange rounded-lg p-6 mb-3 flex items-center justify-center text-white text-3xl h-32">
+                            <i className={`fas ${product.icon}`}></i>
+                          </div>
+                        )}
                         <div className="space-y-1">
                           <h4 className="text-sm font-bold text-dark-brown line-clamp-2 min-h-[2.5rem]">{product.name}</h4>
                           <span className="text-primary-orange font-bold text-base">₹{product.price}</span>
@@ -247,9 +265,15 @@ export default function ProductsSection() {
                   {getDisplayProducts('toys').map((product, index) => (
                     <div key={product.id} className="bg-white rounded-xl p-4 shadow-[0_4px_15px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-1 relative group">
                       <Link href={`/product/${product.id}`} className="block">
-                        <div className="bg-gradient-to-br from-primary-orange to-hover-orange rounded-lg p-6 mb-3 flex items-center justify-center text-white text-3xl h-32">
-                          <i className={`fas ${product.icon}`}></i>
-                        </div>
+                        {product.image ? (
+                          <div className="bg-gray-100 rounded-lg mb-3 overflow-hidden h-32">
+                            <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                          </div>
+                        ) : (
+                          <div className="bg-gradient-to-br from-primary-orange to-hover-orange rounded-lg p-6 mb-3 flex items-center justify-center text-white text-3xl h-32">
+                            <i className={`fas ${product.icon}`}></i>
+                          </div>
+                        )}
                         <div className="space-y-1">
                           <h4 className="text-sm font-bold text-dark-brown line-clamp-2 min-h-[2.5rem]">{product.name}</h4>
                           <span className="text-primary-orange font-bold text-base">₹{product.price}</span>
