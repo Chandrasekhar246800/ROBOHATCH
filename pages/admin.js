@@ -17,7 +17,7 @@ export default function Admin() {
   const [editingCategory, setEditingCategory] = useState(null)
   const [productEdits, setProductEdits] = useState({})
   const [categoryEdits, setCategoryEdits] = useState({})
-  const [editForm, setEditForm] = useState({ name: '', price: '', description: '', image: '' })
+  const [editForm, setEditForm] = useState({ name: '', price: '', description: '', images: [] })
   const [categoryEditForm, setCategoryEditForm] = useState({ name: '', icon: '', link: '', items: [] })
   const [showAddModal, setShowAddModal] = useState(false)
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false)
@@ -29,7 +29,7 @@ export default function Admin() {
     description: '',
     category: 'keychains',
     icon: 'fa-cube',
-    image: ''
+    images: []
   })
   const [addCategoryForm, setAddCategoryForm] = useState({
     name: '',
@@ -243,7 +243,7 @@ export default function Admin() {
       name: productEdits[product.id]?.name || product.name,
       price: productEdits[product.id]?.price || product.price,
       description: productEdits[product.id]?.description || product.description,
-      image: productEdits[product.id]?.image || product.image || ''
+      images: productEdits[product.id]?.images || product.images || (product.image ? [product.image] : [])
     })
   }
 
@@ -256,7 +256,7 @@ export default function Admin() {
         name: editForm.name,
         price: parseFloat(editForm.price),
         description: editForm.description,
-        image: editForm.image
+        images: editForm.images
       }
     }
     
@@ -273,29 +273,46 @@ export default function Admin() {
   }
 
   const handleImageUpload = (e, formType) => {
-    const file = e.target.files[0]
-    if (file) {
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        alert('Please upload an image file')
-        return
-      }
-      
-      // Validate file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        alert('Image size should be less than 5MB')
-        return
-      }
-      
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        if (formType === 'edit') {
-          setEditForm({...editForm, image: reader.result})
-        } else if (formType === 'add') {
-          setAddForm({...addForm, image: reader.result})
+    const files = e.target.files
+    if (files && files.length > 0) {
+      const imagePromises = Array.from(files).map(file => {
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+          alert('Please upload an image file')
+          return null
         }
-      }
-      reader.readAsDataURL(file)
+        
+        // Validate file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+          alert('Image size should be less than 5MB')
+          return null
+        }
+        
+        return new Promise((resolve) => {
+          const reader = new FileReader()
+          reader.onloadend = () => resolve(reader.result)
+          reader.readAsDataURL(file)
+        })
+      })
+
+      Promise.all(imagePromises).then(results => {
+        const validImages = results.filter(img => img !== null)
+        if (formType === 'edit') {
+          setEditForm({...editForm, images: [...editForm.images, ...validImages]})
+        } else if (formType === 'add') {
+          setAddForm({...addForm, images: [...addForm.images, ...validImages]})
+        }
+      })
+    }
+  }
+
+  const handleRemoveImage = (index, formType) => {
+    if (formType === 'edit') {
+      const newImages = editForm.images.filter((_, i) => i !== index)
+      setEditForm({...editForm, images: newImages})
+    } else if (formType === 'add') {
+      const newImages = addForm.images.filter((_, i) => i !== index)
+      setAddForm({...addForm, images: newImages})
     }
   }
 
@@ -307,7 +324,7 @@ export default function Admin() {
       description: '',
       category: 'keychains',
       icon: 'fa-cube',
-      image: ''
+      images: []
     })
   }
 
@@ -324,7 +341,7 @@ export default function Admin() {
       description: addForm.description,
       icon: addForm.icon,
       category: addForm.category,
-      image: addForm.image || '/products/custom.jpg'
+      images: addForm.images.length > 0 ? addForm.images : ['/products/custom.jpg']
     }
 
     const updatedCustomProducts = [...customProducts, newProduct]
@@ -1368,31 +1385,39 @@ export default function Admin() {
                   />
                 </div>
                 <div className="mb-6 last:mb-0">
-                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Product Image</label>
-                  <div className="flex flex-col gap-2">
-                    {editForm.image && (
-                      <div className="relative w-full h-32 border-2 border-[#e0e0e0] rounded-lg overflow-hidden bg-gray-50">
-                        <img 
-                          src={editForm.image} 
-                          alt="Product preview" 
-                          className="w-full h-full object-contain"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setEditForm({...editForm, image: ''})}
-                          className="absolute top-1 right-1 bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors text-xs"
-                        >
-                          <i className="fas fa-times"></i>
-                        </button>
+                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Product Images</label>
+                  <div className="flex flex-col gap-3">
+                    {editForm.images && editForm.images.length > 0 && (
+                      <div className="grid grid-cols-3 gap-2">
+                        {editForm.images.map((img, index) => (
+                          <div key={index} className="relative w-full h-24 border-2 border-[#e0e0e0] rounded-lg overflow-hidden bg-gray-50">
+                            <img 
+                              src={img} 
+                              alt={`Product ${index + 1}`} 
+                              className="w-full h-full object-contain"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveImage(index, 'edit')}
+                              className="absolute top-1 right-1 bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors text-xs"
+                            >
+                              <i className="fas fa-times"></i>
+                            </button>
+                            {index === 0 && (
+                              <span className="absolute bottom-1 left-1 bg-primary-orange text-white text-[10px] px-1.5 py-0.5 rounded">Main</span>
+                            )}
+                          </div>
+                        ))}
                       </div>
                     )}
                     <input 
                       type="file" 
                       accept="image/*"
+                      multiple
                       onChange={(e) => handleImageUpload(e, 'edit')}
                       className="w-full px-3 py-2 border-2 border-[#e0e0e0] rounded-lg text-sm transition-all focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange/10 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-primary-orange file:text-white hover:file:bg-hover-orange cursor-pointer"
                     />
-                    <small className="block text-[#666] text-xs">Max 5MB, JPG/PNG/GIF</small>
+                    <small className="block text-[#666] text-xs">Select multiple images. First image will be the main display. Max 5MB each.</small>
                   </div>
                 </div>
               </div>
@@ -1481,31 +1506,39 @@ export default function Admin() {
                   <small className="block mt-1 text-[#666] text-sm">FontAwesome icon class (e.g., fa-cube, fa-star)</small>
                 </div>
                 <div className="mb-6 last:mb-0">
-                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Product Image</label>
-                  <div className="flex flex-col gap-2">
-                    {addForm.image && (
-                      <div className="relative w-full h-32 border-2 border-[#e0e0e0] rounded-lg overflow-hidden bg-gray-50">
-                        <img 
-                          src={addForm.image} 
-                          alt="Product preview" 
-                          className="w-full h-full object-contain"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setAddForm({...addForm, image: ''})}
-                          className="absolute top-1 right-1 bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors text-xs"
-                        >
-                          <i className="fas fa-times"></i>
-                        </button>
+                  <label className="block font-semibold text-dark-brown mb-2 text-[0.95rem]">Product Images</label>
+                  <div className="flex flex-col gap-3">
+                    {addForm.images && addForm.images.length > 0 && (
+                      <div className="grid grid-cols-3 gap-2">
+                        {addForm.images.map((img, index) => (
+                          <div key={index} className="relative w-full h-24 border-2 border-[#e0e0e0] rounded-lg overflow-hidden bg-gray-50">
+                            <img 
+                              src={img} 
+                              alt={`Product ${index + 1}`} 
+                              className="w-full h-full object-contain"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveImage(index, 'add')}
+                              className="absolute top-1 right-1 bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors text-xs"
+                            >
+                              <i className="fas fa-times"></i>
+                            </button>
+                            {index === 0 && (
+                              <span className="absolute bottom-1 left-1 bg-primary-orange text-white text-[10px] px-1.5 py-0.5 rounded">Main</span>
+                            )}
+                          </div>
+                        ))}
                       </div>
                     )}
                     <input 
                       type="file" 
                       accept="image/*"
+                      multiple
                       onChange={(e) => handleImageUpload(e, 'add')}
                       className="w-full px-3 py-2 border-2 border-[#e0e0e0] rounded-lg text-sm transition-all focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange/10 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-primary-orange file:text-white hover:file:bg-hover-orange cursor-pointer"
                     />
-                    <small className="block text-[#666] text-xs">Max 5MB, JPG/PNG/GIF</small>
+                    <small className="block text-[#666] text-xs">Select multiple images. First image will be the main display. Max 5MB each.</small>
                   </div>
                 </div>
               </div>

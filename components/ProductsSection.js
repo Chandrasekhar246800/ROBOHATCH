@@ -3,6 +3,64 @@ import { useState, useEffect } from 'react'
 import { getCategoryProducts } from '../data/products'
 import Link from 'next/link'
 
+// Image carousel component for products
+const ProductImageCarousel = ({ images, productName }) => {
+  const [currentIndex, setCurrentIndex] = useState(0)
+  
+  if (!images || images.length === 0) return null
+  if (images.length === 1) {
+    return <img src={images[0]} alt={productName} className="w-full h-full object-cover" />
+  }
+
+  const nextImage = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setCurrentIndex((prev) => (prev + 1) % images.length)
+  }
+
+  const prevImage = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length)
+  }
+
+  return (
+    <div className="relative w-full h-full group/carousel">
+      <img 
+        src={images[currentIndex]} 
+        alt={`${productName} - ${currentIndex + 1}`} 
+        className="w-full h-full object-cover"
+      />
+      {images.length > 1 && (
+        <>
+          <button
+            onClick={prevImage}
+            className="absolute left-1 top-1/2 -translate-y-1/2 w-5 h-5 bg-black/50 text-white rounded-full flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-opacity hover:bg-black/70 z-10"
+          >
+            <i className="fas fa-chevron-left text-[8px]"></i>
+          </button>
+          <button
+            onClick={nextImage}
+            className="absolute right-1 top-1/2 -translate-y-1/2 w-5 h-5 bg-black/50 text-white rounded-full flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-opacity hover:bg-black/70 z-10"
+          >
+            <i className="fas fa-chevron-right text-[8px]"></i>
+          </button>
+          <div className="absolute bottom-1 left-1/2 -translate-x-1/2 flex gap-1">
+            {images.map((_, idx) => (
+              <div
+                key={idx}
+                className={`w-1 h-1 rounded-full transition-all ${
+                  idx === currentIndex ? 'bg-white w-2' : 'bg-white/50'
+                }`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
 export default function ProductsSection() {
   const [activeCategory, setActiveCategory] = useState('keychains')
   const [expandedCategory, setExpandedCategory] = useState(null)
@@ -121,9 +179,12 @@ export default function ProductsSection() {
                   {getDisplayProducts('keychains').map((product, index) => (
                     <div key={product.id} className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-[0_4px_15px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-1 relative group active:scale-95">
                       <Link href={`/product/${product.id}`} className="block">
-                        {product.image ? (
+                        {(product.images && product.images.length > 0) || product.image ? (
                           <div className="bg-gray-100 rounded-lg sm:rounded-xl mb-2 sm:mb-3 overflow-hidden h-24 sm:h-32">
-                            <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                            <ProductImageCarousel 
+                              images={product.images || (product.image ? [product.image] : [])} 
+                              productName={product.name}
+                            />
                           </div>
                         ) : (
                           <div className="bg-gradient-to-br from-primary-orange to-hover-orange rounded-lg sm:rounded-xl p-4 sm:p-6 mb-2 sm:mb-3 flex items-center justify-center text-white text-2xl sm:text-3xl h-24 sm:h-32">
@@ -169,9 +230,12 @@ export default function ProductsSection() {
                   {getDisplayProducts('superhero').map((product, index) => (
                     <div key={product.id} className="bg-white rounded-xl p-4 shadow-[0_4px_15px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-1 relative group">
                       <Link href={`/product/${product.id}`} className="block">
-                        {product.image ? (
+                        {(product.images && product.images.length > 0) || product.image ? (
                           <div className="bg-gray-100 rounded-lg mb-3 overflow-hidden h-32">
-                            <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                            <ProductImageCarousel 
+                              images={product.images || (product.image ? [product.image] : [])} 
+                              productName={product.name}
+                            />
                           </div>
                         ) : (
                           <div className="bg-gradient-to-br from-primary-orange to-hover-orange rounded-lg p-6 mb-3 flex items-center justify-center text-white text-3xl h-32">
@@ -217,9 +281,12 @@ export default function ProductsSection() {
                   {getDisplayProducts('devotional').map((product, index) => (
                     <div key={product.id} className="bg-white rounded-xl p-4 shadow-[0_4px_15px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-1 relative group">
                       <Link href={`/product/${product.id}`} className="block">
-                        {product.image ? (
+                        {(product.images && product.images.length > 0) || product.image ? (
                           <div className="bg-gray-100 rounded-lg mb-3 overflow-hidden h-32">
-                            <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                            <ProductImageCarousel 
+                              images={product.images || (product.image ? [product.image] : [])} 
+                              productName={product.name}
+                            />
                           </div>
                         ) : (
                           <div className="bg-gradient-to-br from-primary-orange to-hover-orange rounded-lg p-6 mb-3 flex items-center justify-center text-white text-3xl h-32">
@@ -265,9 +332,12 @@ export default function ProductsSection() {
                   {getDisplayProducts('toys').map((product, index) => (
                     <div key={product.id} className="bg-white rounded-xl p-4 shadow-[0_4px_15px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-1 relative group">
                       <Link href={`/product/${product.id}`} className="block">
-                        {product.image ? (
+                        {(product.images && product.images.length > 0) || product.image ? (
                           <div className="bg-gray-100 rounded-lg mb-3 overflow-hidden h-32">
-                            <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                            <ProductImageCarousel 
+                              images={product.images || (product.image ? [product.image] : [])} 
+                              productName={product.name}
+                            />
                           </div>
                         ) : (
                           <div className="bg-gradient-to-br from-primary-orange to-hover-orange rounded-lg p-6 mb-3 flex items-center justify-center text-white text-3xl h-32">
