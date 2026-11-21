@@ -1,35 +1,10 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { ArrowRight, Compass, ShieldCheck, Layers } from "lucide-react";
 import { MainContainer } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 
 export function HeroSection() {
-  const shouldReduceMotion = useReducedMotion();
-
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: shouldReduceMotion ? 0 : 0.12,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5, ease: "easeOut" },
-    },
-  };
-
   return (
     <section className="relative overflow-hidden border-b border-border bg-background pb-16 pt-12 sm:pb-24 sm:pt-16 lg:pb-28 lg:pt-20">
       {/* Subtle architectural grid pattern background */}
@@ -43,45 +18,31 @@ export function HeroSection() {
       />
 
       <MainContainer size="xl" className="relative">
-        <motion.div
-          className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
           {/* Left Column: Brand Typography & Action Hierarchy */}
           <div className="flex flex-col space-y-6 lg:col-span-7">
             {/* Architectural Status Pill */}
-            <motion.div variants={itemVariants}>
+            <div className="duration-500 animate-in fade-in-0 slide-in-from-bottom-2 fill-mode-both motion-reduce:animate-none">
               <div className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/80 px-3.5 py-1 text-xs font-medium text-foreground">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#E87536]" />
                 <span>Precision Additive Manufacturing</span>
               </div>
-            </motion.div>
+            </div>
 
             {/* Headline */}
-            <motion.h1
-              variants={itemVariants}
-              className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl lg:leading-[1.1]"
-            >
+            <h1 className="text-4xl font-bold tracking-tight text-foreground delay-100 duration-500 animate-in fade-in-0 slide-in-from-bottom-3 fill-mode-both motion-reduce:animate-none sm:text-5xl lg:text-6xl lg:leading-[1.1]">
               Designed Digitally. <br />
               <span className="text-[#171717]">Crafted Physically.</span>
-            </motion.h1>
+            </h1>
 
             {/* Supporting Copy */}
-            <motion.p
-              variants={itemVariants}
-              className="max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
-            >
+            <p className="max-w-xl text-base leading-relaxed text-muted-foreground delay-150 duration-500 animate-in fade-in-0 slide-in-from-bottom-3 fill-mode-both motion-reduce:animate-none sm:text-lg">
               Discover thoughtfully designed 3D-printed products that bring creativity,
               precision and functionality into everyday life.
-            </motion.p>
+            </p>
 
             {/* Call to Actions */}
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-wrap items-center gap-3 pt-2"
-            >
+            <div className="flex flex-wrap items-center gap-3 pt-2 delay-200 duration-500 animate-in fade-in-0 slide-in-from-bottom-3 fill-mode-both motion-reduce:animate-none">
               <Button
                 asChild
                 variant="brand"
@@ -97,13 +58,10 @@ export function HeroSection() {
               <Button asChild variant="outline" size="lg" className="text-sm font-medium">
                 <Link href="/about">Discover RoboHatch</Link>
               </Button>
-            </motion.div>
+            </div>
 
             {/* Trust Badges / Specification Highlights */}
-            <motion.div
-              variants={itemVariants}
-              className="grid grid-cols-3 gap-4 border-t border-border/60 pt-6 sm:pt-8"
-            >
+            <div className="grid grid-cols-3 gap-4 border-t border-border/60 pt-6 delay-300 duration-500 animate-in fade-in-0 slide-in-from-bottom-3 fill-mode-both motion-reduce:animate-none sm:pt-8">
               <div className="space-y-1">
                 <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
                   <Compass className="h-3.5 w-3.5 text-[#E87536]" />
@@ -127,11 +85,11 @@ export function HeroSection() {
                 </div>
                 <p className="text-[11px] text-muted-foreground">Satin Matte Surface</p>
               </div>
-            </motion.div>
+            </div>
           </div>
 
           {/* Right Column: Hero Product Visual Presentation */}
-          <motion.div variants={itemVariants} className="relative lg:col-span-5">
+          <div className="relative delay-150 duration-700 animate-in fade-in-0 zoom-in-95 fill-mode-both motion-reduce:animate-none lg:col-span-5">
             <div className="relative mx-auto aspect-square w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-secondary/50 shadow-sm transition-all duration-300">
               {/* Product Hero Image */}
               <Image
@@ -160,8 +118,8 @@ export function HeroSection() {
                 </div>
               </div>
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </MainContainer>
     </section>
   );
