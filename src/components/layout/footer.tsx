@@ -147,7 +147,9 @@ export function Footer() {
 
         {/* Bottom Bar: Copyright & Legal */}
         <div className="flex flex-col items-center justify-between gap-4 text-xs text-muted-foreground sm:flex-row">
-          <p>© {currentYear} RoboHatch Studio. All rights reserved.</p>
+          <p suppressHydrationWarning>
+            © {currentYear} RoboHatch Studio. All rights reserved.
+          </p>
           <div className="flex items-center gap-6">
             {footerNavigation.legal.map((item) => (
               <Link
