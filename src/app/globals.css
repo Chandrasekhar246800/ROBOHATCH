@@ -26,14 +26,20 @@
     --accent: 21 80.2% 56.1%; /* #E87536 Brand Orange Accent */
     --accent-foreground: 0 0% 100%; /* #FFFFFF Text on Accent */
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84.2% 60.2%; /* #EF4444 Error Red */
     --destructive-foreground: 0 0% 98%;
+
+    --success: 142.1 76.2% 36.3%; /* #16A34A Success Emerald */
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 92% 50%; /* #F59E0B Warning Amber */
+    --warning-foreground: 0 0% 100%;
 
     --border: 0 0% 89.8%; /* #E5E5E5 Border */
     --input: 0 0% 89.8%; /* #E5E5E5 Input Border */
     --ring: 21 80.2% 56.1%; /* #E87536 Focus Ring */
 
-    --radius: 0.5rem;
+    --radius: 0.5rem; /* 8px base radius */
   }
 
   .dark {
@@ -61,6 +67,12 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
+    --success: 142.1 70.6% 45.3%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+
     --border: 0 0% 18%;
     --input: 0 0% 18%;
     --ring: 21 80.2% 56.1%;
@@ -76,5 +88,16 @@
     font-feature-settings:
       "rlig" 1,
       "calt" 1;
+  }
+  /* Refined scrollbar styling for minimal industrial aesthetic */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-border transition-colors hover:bg-muted-foreground/30;
   }
 }

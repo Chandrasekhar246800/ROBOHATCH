@@ -1,3 +1,11 @@
+import { Navbar, Footer } from "@/components/layout";
+
 export default function StoreLayout({ children }: { children: React.ReactNode }) {
-  return <div className="flex min-h-screen flex-col">{children}</div>;
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Navbar />
+      <main className="flex-1">{children}</main>
+      <Footer />
+    </div>
+  );
 }

@@ -1,68 +1,108 @@
+import { Navbar, Footer, MainContainer } from "@/components/layout";
+import {
+  PageHeader,
+  SectionHeading,
+  ProductCard,
+  DesignSystemShowcase,
+} from "@/components/common";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Terminal, ShieldCheck, Database, Layers, CheckCircle2 } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { CheckCircle2, ArrowRight } from "lucide-react";
 
-export default function HomePage() {
+export default function DesignSystemPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-6 text-center">
-      <div className="mx-auto max-w-xl space-y-8 rounded-xl border border-border bg-card p-8 shadow-sm">
-        <div className="space-y-3">
-          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#E87536]" />
-            Phase 0: Technical Architecture & Foundation
-          </div>
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-            RoboHatch
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Premium e-commerce platform for high-precision 3D-printed products. Core
-            technical foundation and architecture initialized.
-          </p>
-        </div>
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
+      {/* 1. Global Navigation Shell */}
+      <Navbar cartCount={0} />
 
-        <div className="grid grid-cols-2 gap-3 text-left text-xs">
-          <div className="flex items-center gap-2.5 rounded-lg border border-border bg-secondary/50 p-3">
-            <Layers className="h-4 w-4 text-[#E87536]" />
-            <div>
-              <div className="font-medium text-foreground">Next.js 15 App Router</div>
-              <div className="text-muted-foreground">React 19 & TypeScript</div>
+      <main className="flex-1 pb-20">
+        <MainContainer size="xl" className="space-y-16 pt-8 sm:pt-12">
+          {/* 2. Page Header Primitive */}
+          <PageHeader
+            badge="Phase 1A Foundation"
+            title="Design System & Component Architecture"
+            description="The comprehensive visual design foundation, semantic token system, and accessible component library for RoboHatch."
+            actions={
+              <Badge variant="success-subtle" className="gap-1.5 px-3 py-1 text-xs">
+                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                Phase 1A Verified
+              </Badge>
+            }
+          />
+
+          {/* 3. Interactive Design System Primitives Showcase */}
+          <DesignSystemShowcase />
+
+          <Separator />
+
+          {/* 4. Shared Section Heading & ProductCard Base Structure Preview */}
+          <section className="space-y-8">
+            <SectionHeading
+              badge="Architecture Component"
+              title="ProductCard Base Structure"
+              description="A reusable presentational card engineered with strict aspect ratios, material overlays, and subtle hover interactions."
+              action={
+                <Button variant="ghost" size="sm" className="gap-1.5 text-[#E87536]">
+                  Preview Architecture <ArrowRight className="h-4 w-4" />
+                </Button>
+              }
+            />
+
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <ProductCard
+                id="preview-1"
+                name="Voronoi Kinetic Vessel"
+                slug="voronoi-kinetic-vessel"
+                categoryName="Architectural Decor"
+                price={2499}
+                compareAtPrice={3199}
+                material="Carbon PETG"
+                badge="Limited Batch"
+                isFeatured
+                actionSlot={
+                  <Button variant="brand" size="sm">
+                    View Spec
+                  </Button>
+                }
+              />
+
+              <ProductCard
+                id="preview-2"
+                name="Tessellated Mechanical Planter"
+                slug="tessellated-mechanical-planter"
+                categoryName="Desk Accessories"
+                price={1850}
+                material="Matte PLA"
+                badge="New"
+                actionSlot={
+                  <Button variant="outline" size="sm">
+                    View Spec
+                  </Button>
+                }
+              />
+
+              <ProductCard
+                id="preview-3"
+                name="Gyroid Acoustic Diffuser Tile"
+                slug="gyroid-acoustic-diffuser"
+                categoryName="Acoustic Panels"
+                price={3400}
+                material="Tough Resin"
+                isFeatured
+                actionSlot={
+                  <Button variant="outline" size="sm">
+                    View Spec
+                  </Button>
+                }
+              />
             </div>
-          </div>
+          </section>
+        </MainContainer>
+      </main>
 
-          <div className="flex items-center gap-2.5 rounded-lg border border-border bg-secondary/50 p-3">
-            <Database className="h-4 w-4 text-[#E87536]" />
-            <div>
-              <div className="font-medium text-foreground">Prisma ORM</div>
-              <div className="text-muted-foreground">PostgreSQL Schema Ready</div>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2.5 rounded-lg border border-border bg-secondary/50 p-3">
-            <Terminal className="h-4 w-4 text-[#E87536]" />
-            <div>
-              <div className="font-medium text-foreground">Design System</div>
-              <div className="text-muted-foreground">Tailwind CSS & Tokens</div>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2.5 rounded-lg border border-border bg-secondary/50 p-3">
-            <ShieldCheck className="h-4 w-4 text-[#E87536]" />
-            <div>
-              <div className="font-medium text-foreground">Modular Architecture</div>
-              <div className="text-muted-foreground">Strict Type Contracts</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between border-t border-border pt-4 text-xs text-muted-foreground">
-          <span className="flex items-center gap-1.5 text-emerald-600">
-            <CheckCircle2 className="h-4 w-4" />
-            Foundation Status: Ready for Phase 1
-          </span>
-          <Button variant="brand" size="sm">
-            Phase 0 Verified
-          </Button>
-        </div>
-      </div>
-    </main>
+      {/* 5. Global Footer Shell */}
+      <Footer />
+    </div>
   );
 }
