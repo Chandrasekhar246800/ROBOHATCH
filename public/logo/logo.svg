@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" fill="none">
+  <!-- RoboHatch Hexagonal Hatching Emblem -->
+  <g transform="translate(4, 4)">
+    <path d="M20 2L36 11.2376V29.7128L20 38.9504L4 29.7128V11.2376L20 2Z" stroke="#171717" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- Precision 3D Layer Hatch lines -->
+    <path d="M11 16L29 16" stroke="#E87536" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M8 20.5L32 20.5" stroke="#E87536" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M11 25L29 25" stroke="#E87536" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+  <!-- Wordmark -->
+  <text x="54" y="29" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" letter-spacing="-0.03em" fill="#171717">Robo<tspan fill="#E87536">Hatch</tspan></text>
+</svg>

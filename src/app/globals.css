@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* RoboHatch Brand Design Tokens */
+    --background: 60 14% 98%; /* #FAFAF8 Primary Background */
+    --foreground: 0 0% 9%; /* #171717 Primary Text */
+
+    --card: 60 14% 98%; /* #FAFAF8 Card Background */
+    --card-foreground: 0 0% 9%; /* #171717 Card Text */
+
+    --popover: 60 14% 98%; /* #FAFAF8 Popover Background */
+    --popover-foreground: 0 0% 9%; /* #171717 Popover Text */
+
+    --primary: 0 0% 9%; /* #171717 Primary Button / Brand Dark */
+    --primary-foreground: 60 14% 98%; /* #FAFAF8 Primary Button Text */
+
+    --secondary: 60 6% 94%; /* #F1F1EF Secondary Background */
+    --secondary-foreground: 0 0% 9%; /* #171717 Secondary Text */
+
+    --muted: 60 6% 94%; /* #F1F1EF Muted Background */
+    --muted-foreground: 0 0% 45.1%; /* #737373 Secondary / Muted Text */
+
+    --accent: 21 80.2% 56.1%; /* #E87536 Brand Orange Accent */
+    --accent-foreground: 0 0% 100%; /* #FFFFFF Text on Accent */
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 89.8%; /* #E5E5E5 Border */
+    --input: 0 0% 89.8%; /* #E5E5E5 Input Border */
+    --ring: 21 80.2% 56.1%; /* #E87536 Focus Ring */
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 7%;
+    --foreground: 60 14% 98%;
+
+    --card: 0 0% 9%;
+    --card-foreground: 60 14% 98%;
+
+    --popover: 0 0% 9%;
+    --popover-foreground: 60 14% 98%;
+
+    --primary: 60 14% 98%;
+    --primary-foreground: 0 0% 9%;
+
+    --secondary: 0 0% 14%;
+    --secondary-foreground: 60 14% 98%;
+
+    --muted: 0 0% 14%;
+    --muted-foreground: 0 0% 63.9%;
+
+    --accent: 21 80.2% 56.1%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 21 80.2% 56.1%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
+  }
+}
