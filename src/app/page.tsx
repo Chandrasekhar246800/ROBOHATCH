@@ -1,107 +1,52 @@
-import { Navbar, Footer, MainContainer } from "@/components/layout";
+import { Navbar, Footer } from "@/components/layout";
 import {
-  PageHeader,
-  SectionHeading,
-  ProductCard,
-  DesignSystemShowcase,
-} from "@/components/common";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { CheckCircle2, ArrowRight } from "lucide-react";
+  HeroSection,
+  FeaturedCategories,
+  BestSellers,
+  NewArrivals,
+  BrandStory,
+  FeaturedCollection,
+  MaterialsQuality,
+  CustomerTestimonials,
+  Newsletter,
+} from "@/components/home";
 
-export default function DesignSystemPage() {
+export default function HomePage() {
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
-      {/* 1. Global Navigation Shell */}
+      {/* Navigation */}
       <Navbar cartCount={0} />
 
-      <main className="flex-1 pb-20">
-        <MainContainer size="xl" className="space-y-16 pt-8 sm:pt-12">
-          {/* 2. Page Header Primitive */}
-          <PageHeader
-            badge="Phase 1A Foundation"
-            title="Design System & Component Architecture"
-            description="The comprehensive visual design foundation, semantic token system, and accessible component library for RoboHatch."
-            actions={
-              <Badge variant="success-subtle" className="gap-1.5 px-3 py-1 text-xs">
-                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
-                Phase 1A Verified
-              </Badge>
-            }
-          />
+      <main className="flex-1">
+        {/* SECTION 1: HERO */}
+        <HeroSection />
 
-          {/* 3. Interactive Design System Primitives Showcase */}
-          <DesignSystemShowcase />
+        {/* SECTION 2: FEATURED CATEGORIES */}
+        <FeaturedCategories />
 
-          <Separator />
+        {/* SECTION 3: BEST SELLERS */}
+        <BestSellers />
 
-          {/* 4. Shared Section Heading & ProductCard Base Structure Preview */}
-          <section className="space-y-8">
-            <SectionHeading
-              badge="Architecture Component"
-              title="ProductCard Base Structure"
-              description="A reusable presentational card engineered with strict aspect ratios, material overlays, and subtle hover interactions."
-              action={
-                <Button variant="ghost" size="sm" className="gap-1.5 text-[#E87536]">
-                  Preview Architecture <ArrowRight className="h-4 w-4" />
-                </Button>
-              }
-            />
+        {/* SECTION 4: NEW ARRIVALS */}
+        <NewArrivals />
 
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              <ProductCard
-                id="preview-1"
-                name="Voronoi Kinetic Vessel"
-                slug="voronoi-kinetic-vessel"
-                categoryName="Architectural Decor"
-                price={2499}
-                compareAtPrice={3199}
-                material="Carbon PETG"
-                badge="Limited Batch"
-                isFeatured
-                actionSlot={
-                  <Button variant="brand" size="sm">
-                    View Spec
-                  </Button>
-                }
-              />
+        {/* SECTION 5: BRAND STORY */}
+        <BrandStory />
 
-              <ProductCard
-                id="preview-2"
-                name="Tessellated Mechanical Planter"
-                slug="tessellated-mechanical-planter"
-                categoryName="Desk Accessories"
-                price={1850}
-                material="Matte PLA"
-                badge="New"
-                actionSlot={
-                  <Button variant="outline" size="sm">
-                    View Spec
-                  </Button>
-                }
-              />
+        {/* SECTION 6: FEATURED COLLECTION */}
+        <FeaturedCollection />
 
-              <ProductCard
-                id="preview-3"
-                name="Gyroid Acoustic Diffuser Tile"
-                slug="gyroid-acoustic-diffuser"
-                categoryName="Acoustic Panels"
-                price={3400}
-                material="Tough Resin"
-                isFeatured
-                actionSlot={
-                  <Button variant="outline" size="sm">
-                    View Spec
-                  </Button>
-                }
-              />
-            </div>
-          </section>
-        </MainContainer>
+        {/* SECTION 7: MATERIALS & QUALITY */}
+        <MaterialsQuality />
+
+        {/* SECTION 8: CUSTOMER TESTIMONIALS */}
+        <CustomerTestimonials />
+
+        {/* SECTION 9: NEWSLETTER */}
+        <Newsletter />
       </main>
 
-      {/* 5. Global Footer Shell */}
+      {/* SECTION 10: FOOTER */}
       <Footer />
     </div>
   );
