@@ -253,9 +253,9 @@ export function DesignSystemShowcase() {
 
         <div className="max-w-xl space-y-2">
           <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Textarea (Custom Specifications)
+            Textarea (Order Notes & Instructions)
           </label>
-          <Textarea placeholder="Provide any custom infill density or dimensional tolerance requests..." />
+          <Textarea placeholder="Add special delivery instructions, gift messaging, or packaging preferences..." />
         </div>
       </section>
 
@@ -278,12 +278,12 @@ export function DesignSystemShowcase() {
             <DialogTrigger asChild>
               <Button variant="outline">
                 <Box className="mr-2 h-4 w-4" />
-                Open 3D Print Specs Dialog
+                Open Product Specs Dialog
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>3D Fabrication Specifications</DialogTitle>
+                <DialogTitle>Product Engineering Specifications</DialogTitle>
                 <DialogDescription>
                   RoboHatch manufactures products on industrial-grade enclosed systems.
                 </DialogDescription>

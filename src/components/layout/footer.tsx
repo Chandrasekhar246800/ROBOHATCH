@@ -3,22 +3,28 @@ import { MainContainer } from "./main-container";
 import { Separator } from "@/components/ui/separator";
 
 const footerNavigation = {
-  products: [
+  shop: [
+    { name: "All Products", href: "/products" },
+    { name: "Featured Collections", href: "/products?featured=true" },
+    { name: "New Arrivals", href: "/products?sort=newest" },
+    { name: "Limited Batches", href: "/products?filter=limited" },
+  ],
+  categories: [
     { name: "Architectural Decor", href: "/categories/architectural-decor" },
     { name: "Mechanical Accents", href: "/categories/mechanical-accents" },
     { name: "Desk Accessories", href: "/categories/desk-accessories" },
-    { name: "Custom Fabrication", href: "/custom" },
+    { name: "Sculptural & Lighting", href: "/categories/sculptural-lighting" },
   ],
-  materials: [
-    { name: "Carbon Fiber PETG", href: "/materials#carbon-petg" },
-    { name: "High-Detail Tough Resin", href: "/materials#tough-resin" },
-    { name: "Industrial Matte PLA", href: "/materials#matte-pla" },
-    { name: "3D Specs & Tolerances", href: "/specifications" },
-  ],
-  company: [
+  information: [
     { name: "Our Studio", href: "/about" },
-    { name: "Design Philosophy", href: "/philosophy" },
+    { name: "Materials & Tolerances", href: "/materials" },
+    { name: "Design Philosophy", href: "/about#philosophy" },
     { name: "Sustainability", href: "/sustainability" },
+  ],
+  support: [
+    { name: "Order Tracking", href: "/orders/track" },
+    { name: "Shipping & Delivery", href: "/shipping" },
+    { name: "Returns & Warranty", href: "/returns" },
     { name: "Contact Studio", href: "/contact" },
   ],
   legal: [
@@ -34,9 +40,9 @@ export function Footer() {
   return (
     <footer className="border-t border-border bg-secondary/40 text-foreground">
       <MainContainer size="xl" className="py-12 sm:py-16 lg:py-20">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-5">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-6">
           {/* Brand Column */}
-          <div className="space-y-4 lg:col-span-2">
+          <div className="space-y-4 sm:col-span-2 lg:col-span-2">
             <Link
               href="/"
               className="inline-flex items-center gap-2.5 transition-opacity hover:opacity-90"
@@ -60,13 +66,13 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Links: Products */}
+          {/* Links: Shop */}
           <div className="space-y-3">
             <h4 className="text-xs font-semibold uppercase tracking-wider text-foreground">
-              Catalog
+              Shop
             </h4>
             <ul className="space-y-2.5 text-sm text-muted-foreground">
-              {footerNavigation.products.map((item) => (
+              {footerNavigation.shop.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
@@ -79,13 +85,13 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Links: Materials */}
+          {/* Links: Categories */}
           <div className="space-y-3">
             <h4 className="text-xs font-semibold uppercase tracking-wider text-foreground">
-              Materials & Specs
+              Categories
             </h4>
             <ul className="space-y-2.5 text-sm text-muted-foreground">
-              {footerNavigation.materials.map((item) => (
+              {footerNavigation.categories.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
@@ -98,13 +104,32 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Links: Studio & Legal */}
+          {/* Links: Information */}
           <div className="space-y-3">
             <h4 className="text-xs font-semibold uppercase tracking-wider text-foreground">
-              Studio
+              Information
             </h4>
             <ul className="space-y-2.5 text-sm text-muted-foreground">
-              {footerNavigation.company.map((item) => (
+              {footerNavigation.information.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    href={item.href}
+                    className="transition-colors hover:text-foreground"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Links: Customer Support */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-foreground">
+              Customer Support
+            </h4>
+            <ul className="space-y-2.5 text-sm text-muted-foreground">
+              {footerNavigation.support.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}

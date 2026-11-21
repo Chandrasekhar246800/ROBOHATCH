@@ -15,9 +15,9 @@ export interface NavItem {
 }
 
 const defaultNavItems: NavItem[] = [
-  { title: "Catalog", href: "/products" },
+  { title: "Home", href: "/" },
+  { title: "Shop", href: "/products" },
   { title: "Categories", href: "/categories" },
-  { title: "Custom Prints", href: "/custom" },
   { title: "About", href: "/about" },
 ];
 
@@ -35,6 +35,17 @@ export function Navbar({
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const pathname = usePathname();
 
+  // Close mobile menu on resize to desktop
+  React.useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <header
       className={cn(
@@ -51,7 +62,7 @@ export function Navbar({
             aria-label="RoboHatch Home"
           >
             {/* Minimalist Hatching Hex Logo */}
-            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-[#171717] text-white">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#171717] text-white">
               <span className="font-mono text-sm font-bold tracking-tight text-[#E87536]">
                 RH
               </span>
@@ -64,7 +75,11 @@ export function Navbar({
           {/* Desktop Navigation Links */}
           <nav className="hidden items-center gap-6 md:flex">
             {navItems.map((item) => {
-              const isActive = pathname === item.href;
+              const isActive =
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname === item.href || pathname.startsWith(item.href + "/");
+
               return (
                 <Link
                   key={item.href}
@@ -90,12 +105,12 @@ export function Navbar({
         </div>
 
         {/* Right Actions: Search, Account, Cart, Mobile Toggle */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-2.5">
           {/* Search Trigger Placeholder */}
           <Button
             variant="ghost"
             size="icon"
-            className="text-muted-foreground hover:text-foreground"
+            className="h-9 w-9 text-muted-foreground hover:text-foreground"
             aria-label="Search products"
           >
             <Search className="h-4 w-4" />
@@ -105,7 +120,7 @@ export function Navbar({
           <Button
             variant="ghost"
             size="icon"
-            className="text-muted-foreground hover:text-foreground"
+            className="h-9 w-9 text-muted-foreground hover:text-foreground"
             aria-label="Customer account"
           >
             <User className="h-4 w-4" />
@@ -115,7 +130,7 @@ export function Navbar({
           <Button
             variant="outline"
             size="sm"
-            className="relative gap-2 border-border font-medium"
+            className="relative gap-2 border-border px-3 font-medium"
             aria-label={`Shopping bag with ${cartCount} items`}
           >
             <ShoppingBag className="h-4 w-4 text-foreground" />
@@ -133,7 +148,7 @@ export function Navbar({
           <Button
             variant="ghost"
             size="icon"
-            className="text-muted-foreground hover:text-foreground md:hidden"
+            className="h-9 w-9 text-muted-foreground hover:text-foreground md:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           >
@@ -144,28 +159,35 @@ export function Navbar({
 
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
-        <div className="border-b border-border bg-background px-4 py-6 md:hidden">
-          <nav className="flex flex-col space-y-4">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className={cn(
-                  "flex items-center justify-between border-b border-border/40 py-2 text-base font-medium",
-                  pathname === item.href
-                    ? "font-semibold text-[#E87536]"
-                    : "text-foreground"
-                )}
-              >
-                <span>{item.title}</span>
-                {item.badge && (
-                  <span className="rounded-full bg-[#E87536]/10 px-2 py-0.5 text-xs font-medium text-[#E87536]">
-                    {item.badge}
-                  </span>
-                )}
-              </Link>
-            ))}
+        <div className="border-b border-border bg-background px-4 py-6 duration-150 animate-in fade-in-0 md:hidden">
+          <nav className="flex flex-col space-y-3">
+            {navItems.map((item) => {
+              const isActive =
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname === item.href || pathname.startsWith(item.href + "/");
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={cn(
+                    "flex items-center justify-between border-b border-border/40 py-2.5 text-base font-medium transition-colors",
+                    isActive
+                      ? "font-semibold text-[#E87536]"
+                      : "text-foreground hover:text-[#E87536]"
+                  )}
+                >
+                  <span>{item.title}</span>
+                  {item.badge && (
+                    <span className="rounded-full bg-[#E87536]/10 px-2 py-0.5 text-xs font-medium text-[#E87536]">
+                      {item.badge}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
           </nav>
         </div>
       )}

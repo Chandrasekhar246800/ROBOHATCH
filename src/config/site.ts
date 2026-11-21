@@ -11,7 +11,8 @@ export const siteConfig = {
   },
   nav: {
     main: [
-      { title: "Catalog", href: "/products" },
+      { title: "Home", href: "/" },
+      { title: "Shop", href: "/products" },
       { title: "Categories", href: "/categories" },
       { title: "About", href: "/about" },
     ],
