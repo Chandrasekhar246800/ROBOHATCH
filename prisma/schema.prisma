@@ -44,6 +44,33 @@ enum DiscountType {
   FIXED_AMOUNT
 }
 
+enum TaxVerificationStatus {
+  UNVERIFIED
+  PENDING_REVIEW
+  VERIFIED
+}
+
+enum WebhookEventStatus {
+  PENDING
+  PROCESSING
+  PROCESSED
+  FAILED
+  IGNORED
+}
+
+enum ReservationStatus {
+  RESERVED
+  COMMITTED
+  RELEASED
+  EXPIRED
+}
+
+enum RefundStatus {
+  PENDING
+  PROCESSED
+  FAILED
+}
+
 // ----------------------------------------------------
 // AUTHENTICATION (Auth.js / NextAuth Architecture)
 // ----------------------------------------------------
@@ -52,6 +79,7 @@ model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
+  passwordHash  String?
   emailVerified DateTime?
   image         String?
   role          Role      @default(CUSTOMER)
@@ -131,19 +159,23 @@ model Category {
 }
 
 model Product {
-  id               String   @id @default(cuid())
-  name             String
-  slug             String   @unique
-  description      String   @db.Text
-  shortDescription String?  @db.Text
-  basePrice        Decimal  @db.Decimal(10, 2)
-  compareAtPrice   Decimal? @db.Decimal(10, 2)
-  isActive         Boolean  @default(true)
-  isFeatured       Boolean  @default(false)
-  categoryId       String
-  metadata         Json?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id                    String                @id @default(cuid())
+  name                  String
+  slug                  String                @unique
+  description           String                @db.Text
+  shortDescription      String?               @db.Text
+  basePrice             Decimal               @db.Decimal(10, 2)
+  compareAtPrice        Decimal?              @db.Decimal(10, 2)
+  taxRate               Decimal?              @db.Decimal(5, 2)
+  hsnCode               String?
+  taxCategory           String?
+  taxVerificationStatus TaxVerificationStatus @default(UNVERIFIED)
+  isActive              Boolean               @default(true)
+  isFeatured            Boolean               @default(false)
+  categoryId            String
+  metadata              Json?
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
 
   category   Category         @relation(fields: [categoryId], references: [id])
   images     ProductImage[]
@@ -185,9 +217,10 @@ model ProductVariant {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
-  cartItems  CartItem[]
-  orderItems OrderItem[]
+  product      Product                @relation(fields: [productId], references: [id], onDelete: Cascade)
+  cartItems    CartItem[]
+  orderItems   OrderItem[]
+  reservations InventoryReservation[]
 
   @@index([productId])
   @@index([sku])
@@ -263,21 +296,32 @@ model Order {
   userId            String?
   status            OrderStatus @default(PENDING)
   subtotal          Decimal     @db.Decimal(10, 2)
+  taxableAmount     Decimal?    @db.Decimal(10, 2)
   taxAmount         Decimal     @default(0.00) @db.Decimal(10, 2)
+  cgstAmount        Decimal?    @db.Decimal(10, 2)
+  sgstAmount        Decimal?    @db.Decimal(10, 2)
+  igstAmount        Decimal?    @db.Decimal(10, 2)
   shippingAmount    Decimal     @default(0.00) @db.Decimal(10, 2)
   discountAmount    Decimal     @default(0.00) @db.Decimal(10, 2)
   totalAmount       Decimal     @db.Decimal(10, 2)
   couponId          String?
   shippingAddressId String?
   notes             String?     @db.Text
+  confirmedAt       DateTime?
+  paidAt            DateTime?
+  cancelledAt       DateTime?
+  cancelReason      String?
+  shippingSnapshot  Json?
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
 
-  user            User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
-  coupon          Coupon?     @relation(fields: [couponId], references: [id], onDelete: SetNull)
-  shippingAddress Address?    @relation("ShippingAddress", fields: [shippingAddressId], references: [id], onDelete: SetNull)
+  user            User?                  @relation(fields: [userId], references: [id], onDelete: SetNull)
+  coupon          Coupon?                @relation(fields: [couponId], references: [id], onDelete: SetNull)
+  shippingAddress Address?               @relation("ShippingAddress", fields: [shippingAddressId], references: [id], onDelete: SetNull)
   items           OrderItem[]
   payments        Payment[]
+  reservations    InventoryReservation[]
+  refunds         Refund[]
 
   @@index([userId])
   @@index([orderNumber])
@@ -286,16 +330,21 @@ model Order {
 }
 
 model OrderItem {
-  id          String   @id @default(cuid())
-  orderId     String
-  productId   String
-  variantId   String?
-  productName String
-  variantName String?
-  quantity    Int
-  unitPrice   Decimal  @db.Decimal(10, 2)
-  totalPrice  Decimal  @db.Decimal(10, 2)
-  createdAt   DateTime @default(now())
+  id            String   @id @default(cuid())
+  orderId       String
+  productId     String
+  variantId     String?
+  sku           String?
+  productName   String
+  variantName   String?
+  quantity      Int
+  unitPrice     Decimal  @db.Decimal(10, 2)
+  totalPrice    Decimal  @db.Decimal(10, 2)
+  gstRate       Decimal? @db.Decimal(5, 2)
+  hsnCode       String?
+  taxableAmount Decimal? @db.Decimal(10, 2)
+  taxAmount     Decimal? @db.Decimal(10, 2)
+  createdAt     DateTime @default(now())
 
   order   Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product Product         @relation(fields: [productId], references: [id])
@@ -317,13 +366,114 @@ model Payment {
   razorpayOrderId   String?       @unique
   razorpayPaymentId String?       @unique
   razorpaySignature String?
+  method            String?
+  bank              String?
+  wallet            String?
+  vpa               String?
+  capturedAt        DateTime?
+  authorizedAt      DateTime?
+  fee               Decimal?      @db.Decimal(10, 2)
+  tax               Decimal?      @db.Decimal(10, 2)
   errorDetails      Json?
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
 
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  order   Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  refunds Refund[]
 
   @@index([orderId])
+  @@index([status])
+}
+
+model PaymentInitiationClaim {
+  id         String   @id @default(cuid())
+  claimKey   String   @unique
+  userId     String
+  intentHash String
+  status     String   @default("PENDING") // PENDING, COMPLETED, FAILED
+  orderId    String?
+  paymentId  String?
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([claimKey])
+  @@index([userId])
+  @@index([status])
+  @@index([expiresAt])
+}
+
+// ----------------------------------------------------
+// PHASE 7E: RECONCILIATION, WEBHOOKS & INVENTORY
+// ----------------------------------------------------
+
+model RazorpayWebhookEvent {
+  id          String             @id @default(cuid())
+  eventId     String             @unique
+  eventType   String
+  payload     Json
+  rawBodyHash String
+  status      WebhookEventStatus @default(PENDING)
+  version     Int                @default(0) // Optimistic fencing/lease ownership token
+  attempts    Int                @default(0)
+  maxAttempts Int                @default(5)
+  lastError   String?            @db.Text
+  lockedAt    DateTime?
+  lockedBy    String?
+  processedAt DateTime?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@index([status, lockedAt])
+  @@index([eventType])
+  @@index([createdAt])
+}
+
+model InventoryReservation {
+  id            String            @id @default(cuid())
+  orderId       String
+  variantId     String
+  generation    Int               @default(1) // Reservation attempt/generation counter
+  quantity      Int
+  status        ReservationStatus @default(RESERVED)
+  expiresAt     DateTime
+  committedAt   DateTime?
+  releasedAt    DateTime?
+  releaseReason String?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  order   Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Restrict)
+
+  @@unique([orderId, variantId, generation])
+  @@index([orderId])
+  @@index([variantId])
+  @@index([status, expiresAt])
+  @@index([orderId, variantId, status])
+}
+
+model Refund {
+  id                String       @id @default(cuid())
+  orderId           String
+  paymentId         String
+  idempotencyKey    String       @unique
+  razorpayRefundId  String?      @unique
+  razorpayPaymentId String
+  amount            Decimal      @db.Decimal(10, 2)
+  currency          String       @default("INR")
+  status            RefundStatus @default(PENDING)
+  reason            String
+  errorDetails      Json?
+  processedAt       DateTime?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Restrict)
+
+  @@index([orderId])
+  @@index([paymentId])
   @@index([status])
 }
 
