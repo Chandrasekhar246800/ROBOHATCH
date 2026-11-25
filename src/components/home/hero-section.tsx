@@ -93,7 +93,7 @@ export function HeroSection() {
             <div className="relative mx-auto aspect-square w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-secondary/50 shadow-sm transition-all duration-300">
               {/* Product Hero Image */}
               <Image
-                src="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=1200&q=85"
+                src="/images/hero/hero-voronoi-vessel.jpg"
                 alt="RoboHatch Voronoi Kinetic Vessel 3D-Printed Design"
                 fill
                 priority

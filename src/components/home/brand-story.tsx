@@ -31,7 +31,7 @@ export function BrandStory() {
           <div className="relative lg:col-span-6">
             <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border bg-secondary/50 shadow-sm sm:aspect-[5/4]">
               <Image
-                src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=85"
+                src="/images/editorial/brand-story.jpg"
                 alt="RoboHatch Additive Engineering & Material Science Studio"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"

@@ -54,7 +54,7 @@ export function FeaturedCollection() {
             <div className="relative lg:col-span-5">
               <div className="relative mx-auto aspect-square w-full max-w-md overflow-hidden rounded-xl border border-white/10 bg-white/5 shadow-2xl">
                 <Image
-                  src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=1000&q=85"
+                  src="/images/editorial/featured-capsule.jpg"
                   alt="RoboHatch Curated Capsule Collection"
                   fill
                   sizes="(max-width: 1024px) 100vw, 40vw"

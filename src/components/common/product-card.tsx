@@ -1,7 +1,7 @@
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Box, Layers } from "lucide-react";
+import { Box, Layers, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency, cn } from "@/lib/utils";
 
@@ -16,6 +16,7 @@ export interface ProductCardProps {
   imageAlt?: string;
   material?: string;
   badge?: string;
+  availability?: string;
   isFeatured?: boolean;
   className?: string;
   actionSlot?: React.ReactNode;
@@ -31,6 +32,7 @@ export function ProductCard({
   imageAlt,
   material,
   badge,
+  availability,
   isFeatured,
   className,
   actionSlot,
@@ -71,6 +73,19 @@ export function ProductCard({
           {isFeatured && !badge && (
             <Badge variant="secondary" className="text-[10px] font-medium tracking-wide">
               Featured
+            </Badge>
+          )}
+          {availability && availability !== "In Stock" && (
+            <Badge
+              variant="outline"
+              className={cn(
+                "border-border/60 bg-background/90 text-[10px] font-medium backdrop-blur-sm",
+                availability === "Low Stock"
+                  ? "text-amber-600 dark:text-amber-400"
+                  : "text-foreground"
+              )}
+            >
+              {availability}
             </Badge>
           )}
         </div>
@@ -114,7 +129,16 @@ export function ProductCard({
             )}
           </div>
 
-          {actionSlot && <div className="relative z-10">{actionSlot}</div>}
+          <div className="relative z-10">
+            {actionSlot !== undefined ? (
+              actionSlot
+            ) : (
+              <span className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground transition-colors group-hover:text-[#E87536]">
+                View{" "}
+                <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>

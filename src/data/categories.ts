@@ -1,3 +1,5 @@
+import { PRODUCTS_DATA } from "./products";
+
 export interface CategoryItem {
   id: string;
   name: string;
@@ -15,8 +17,7 @@ export const CATEGORIES_DATA: CategoryItem[] = [
     description:
       "Parametric planters, kinetic centerpieces, and organic interior sculptures.",
     itemCount: 14,
-    imageUrl:
-      "https://images.unsplash.com/photo-1581783342308-f792dbdd27c5?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "/images/categories/home-and-living.jpg",
   },
   {
     id: "cat-2",
@@ -24,8 +25,7 @@ export const CATEGORIES_DATA: CategoryItem[] = [
     slug: "desk-accessories",
     description: "Modular organizers, ergonomic docking rests, and precision pen wells.",
     itemCount: 19,
-    imageUrl:
-      "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "/images/categories/desk-accessories.jpg",
   },
   {
     id: "cat-3",
@@ -33,8 +33,7 @@ export const CATEGORIES_DATA: CategoryItem[] = [
     slug: "gadgets-and-accessories",
     description: "MagSafe pedestals, cable management tracks, and audio mounts.",
     itemCount: 12,
-    imageUrl:
-      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "/images/categories/gadgets-and-accessories.jpg",
   },
   {
     id: "cat-4",
@@ -42,8 +41,7 @@ export const CATEGORIES_DATA: CategoryItem[] = [
     slug: "miniatures-and-collectibles",
     description: "High-resolution resin automatons, mechanical models, and chess sets.",
     itemCount: 8,
-    imageUrl:
-      "https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "/images/categories/miniatures-and-collectibles.jpg",
   },
   {
     id: "cat-5",
@@ -51,8 +49,7 @@ export const CATEGORIES_DATA: CategoryItem[] = [
     slug: "art-and-decor",
     description: "Voronoi wall panels, mathematical lattices, and optical vases.",
     itemCount: 16,
-    imageUrl:
-      "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "/images/categories/art-and-decor.jpg",
   },
   {
     id: "cat-6",
@@ -61,7 +58,14 @@ export const CATEGORIES_DATA: CategoryItem[] = [
     description:
       "Calibrated measuring tool stands, kitchen jigs, and heavy-duty brackets.",
     itemCount: 11,
-    imageUrl:
-      "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "/images/categories/functional-objects.jpg",
   },
 ];
+
+export function getCategoryBySlug(slug: string): CategoryItem | undefined {
+  return CATEGORIES_DATA.find((c) => c.slug === slug);
+}
+
+export function getActualProductCountForCategory(slug: string): number {
+  return PRODUCTS_DATA.filter((p) => p.categorySlug === slug).length;
+}

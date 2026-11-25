@@ -9,3 +9,4 @@ export * from "./skeleton";
 export * from "./dialog";
 export * from "./tooltip";
 export * from "./sonner";
+export * from "./sheet";

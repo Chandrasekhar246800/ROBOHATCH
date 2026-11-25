@@ -1,18 +1,40 @@
+import * as React from "react";
+import type { Metadata } from "next";
 import { MainContainer } from "@/components/layout";
-import { PageHeader } from "@/components/common";
-import { Badge } from "@/components/ui/badge";
+import { PageHeader, Breadcrumb } from "@/components/common";
+import { CategoryGrid } from "@/components/catalog/category-grid";
+import { CATEGORIES_DATA } from "@/data/categories";
+import { PRODUCTS_DATA } from "@/data/products";
+
+export const metadata: Metadata = {
+  title: "Categories | RoboHatch",
+  description:
+    "Explore our complete range of 3D-printed product categories, from home decor and desk accessories to miniatures and functional hardware.",
+};
 
 export default function CategoriesPage() {
+  // Compute actual product counts dynamically from centralized PRODUCTS_DATA
+  const productCounts = React.useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const cat of CATEGORIES_DATA) {
+      counts[cat.slug] = PRODUCTS_DATA.filter((p) => p.categorySlug === cat.slug).length;
+    }
+    return counts;
+  }, []);
+
   return (
-    <MainContainer size="xl" className="py-12">
+    <MainContainer size="xl" className="py-8 sm:py-12">
       <PageHeader
-        badge="Hierarchy"
+        breadcrumb={
+          <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Categories" }]} />
+        }
+        badge="Taxonomy"
         title="Product Categories"
-        description="Browse products organized by functional domains and design collections."
-        actions={<Badge variant="brand-subtle">Phase 3: Catalog Feature</Badge>}
+        description="Discover our specialized additive manufacturing collections organized by functional domains and design disciplines."
       />
-      <div className="mt-8 rounded-lg border border-dashed border-border bg-card/50 p-12 text-center text-sm text-muted-foreground">
-        Category collections and taxonomy hierarchy will be implemented in Phase 3.
+
+      <div className="mt-8 sm:mt-12">
+        <CategoryGrid categories={CATEGORIES_DATA} productCounts={productCounts} />
       </div>
     </MainContainer>
   );

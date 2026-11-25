@@ -5,15 +5,15 @@ import { Separator } from "@/components/ui/separator";
 const footerNavigation = {
   shop: [
     { name: "All Products", href: "/products" },
-    { name: "Featured Collections", href: "/products?featured=true" },
+    { name: "Featured Designs", href: "/products?sort=featured" },
     { name: "New Arrivals", href: "/products?sort=newest" },
-    { name: "Limited Batches", href: "/products?filter=limited" },
+    { name: "All Categories", href: "/categories" },
   ],
   categories: [
-    { name: "Architectural Decor", href: "/categories/architectural-decor" },
-    { name: "Mechanical Accents", href: "/categories/mechanical-accents" },
+    { name: "Home & Living", href: "/categories/home-and-living" },
     { name: "Desk Accessories", href: "/categories/desk-accessories" },
-    { name: "Sculptural & Lighting", href: "/categories/sculptural-lighting" },
+    { name: "Gadgets & Accessories", href: "/categories/gadgets-and-accessories" },
+    { name: "Art & Decor", href: "/categories/art-and-decor" },
   ],
   information: [
     { name: "Our Studio", href: "/about" },

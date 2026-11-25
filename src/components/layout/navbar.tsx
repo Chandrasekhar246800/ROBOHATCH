@@ -3,8 +3,11 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ShoppingBag, User, Search, Menu, X } from "lucide-react";
+import { ShoppingBag, Search, Menu, X } from "lucide-react";
 import { MainContainer } from "./main-container";
+import { SearchModal } from "./search-modal";
+import { UserNav, MobileUserNav } from "./user-nav";
+import { CartDrawer, useCart } from "@/features/cart";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -29,11 +32,17 @@ export interface NavbarProps {
 
 export function Navbar({
   navItems = defaultNavItems,
-  cartCount = 0,
+  cartCount: propCartCount,
   className,
 }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const [searchOpen, setSearchOpen] = React.useState(false);
   const pathname = usePathname();
+  const { itemCount: storeItemCount, openDrawer } = useCart();
+
+  // Use dynamic cart store count, fallback to prop if provided
+  const activeCartCount =
+    typeof propCartCount === "number" ? propCartCount : storeItemCount;
 
   // Close mobile menu on resize to desktop
   React.useEffect(() => {
@@ -53,12 +62,15 @@ export function Navbar({
         className
       )}
     >
-      <MainContainer size="xl" className="flex h-16 items-center justify-between">
+      <MainContainer
+        size="xl"
+        className="flex h-16 items-center justify-between gap-1.5 px-2.5 sm:gap-4 sm:px-6 lg:px-8"
+      >
         {/* Brand Logo */}
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-2 sm:gap-8">
           <Link
             href="/"
-            className="flex items-center gap-2.5 transition-opacity hover:opacity-90"
+            className="flex items-center gap-2 transition-opacity hover:opacity-90 sm:gap-2.5"
             aria-label="RoboHatch Home"
           >
             {/* Minimalist Hatching Hex Logo */}
@@ -67,7 +79,7 @@ export function Navbar({
                 RH
               </span>
             </div>
-            <span className="text-lg font-bold tracking-tight text-foreground">
+            <span className="text-base font-bold tracking-tight text-foreground sm:text-lg">
               Robo<span className="text-[#E87536]">Hatch</span>
             </span>
           </Link>
@@ -105,42 +117,40 @@ export function Navbar({
         </div>
 
         {/* Right Actions: Search, Account, Cart, Mobile Toggle */}
-        <div className="flex items-center gap-1.5 sm:gap-2.5">
-          {/* Search Trigger Placeholder */}
+        <div className="flex items-center gap-0.5 sm:gap-2.5">
+          {/* Search Trigger */}
           <Button
             variant="ghost"
             size="icon"
-            className="h-9 w-9 text-muted-foreground hover:text-foreground"
+            className="h-8 w-8 text-muted-foreground hover:text-foreground sm:h-9 sm:w-9"
+            onClick={() => setSearchOpen(true)}
             aria-label="Search products"
           >
             <Search className="h-4 w-4" />
           </Button>
 
-          {/* Account Profile Placeholder */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-9 w-9 text-muted-foreground hover:text-foreground"
-            aria-label="Customer account"
-          >
-            <User className="h-4 w-4" />
-          </Button>
+          {/* Customer Account Navigation */}
+          <UserNav />
 
           {/* Shopping Bag / Cart */}
           <Button
+            type="button"
             variant="outline"
             size="sm"
-            className="relative gap-2 border-border px-3 font-medium"
-            aria-label={`Shopping bag with ${cartCount} items`}
+            onClick={openDrawer}
+            className="relative gap-1 border-border px-1.5 font-medium transition-all hover:border-foreground/30 active:scale-95 sm:gap-2 sm:px-3"
+            aria-label={
+              activeCartCount > 0
+                ? `Shopping cart with ${activeCartCount} items`
+                : "Shopping cart is empty"
+            }
           >
             <ShoppingBag className="h-4 w-4 text-foreground" />
             <span className="hidden sm:inline">Cart</span>
-            {cartCount > 0 ? (
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#E87536] text-[10px] font-semibold text-white">
-                {cartCount}
+            {activeCartCount > 0 && (
+              <span className="shadow-xs flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#E87536] px-1 text-[10px] font-bold text-white">
+                {activeCartCount > 99 ? "99+" : activeCartCount}
               </span>
-            ) : (
-              <span className="text-xs text-muted-foreground">0</span>
             )}
           </Button>
 
@@ -148,7 +158,7 @@ export function Navbar({
           <Button
             variant="ghost"
             size="icon"
-            className="h-9 w-9 text-muted-foreground hover:text-foreground md:hidden"
+            className="h-8 w-8 text-muted-foreground hover:text-foreground sm:h-9 sm:w-9 md:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           >
@@ -189,8 +199,17 @@ export function Navbar({
               );
             })}
           </nav>
+
+          {/* Customer Account Mobile Navigation */}
+          <MobileUserNav onItemClick={() => setMobileMenuOpen(false)} />
         </div>
       )}
+
+      {/* Global Search Dialog Modal */}
+      <SearchModal open={searchOpen} onOpenChange={setSearchOpen} />
+
+      {/* Global Cart Slide-Over Drawer */}
+      <CartDrawer />
     </header>
   );
 }
