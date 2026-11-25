@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { SessionProvider } from "next-auth/react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -10,13 +11,15 @@ interface AppProvidersProps {
 
 /**
  * Global App Providers
- * Wraps the application with tooltip, toast, and theme context providers.
+ * Wraps the application with Auth.js SessionProvider, tooltip, and toast providers.
  */
 export function AppProviders({ children }: AppProvidersProps) {
   return (
-    <TooltipProvider delayDuration={200}>
-      {children}
-      <Toaster position="bottom-right" />
-    </TooltipProvider>
+    <SessionProvider>
+      <TooltipProvider delayDuration={200}>
+        {children}
+        <Toaster position="bottom-right" />
+      </TooltipProvider>
+    </SessionProvider>
   );
 }
